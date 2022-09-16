@@ -2,6 +2,9 @@ package com.medicare_backend.medicare_backend.service;
 
 import com.medicare_backend.medicare_backend.entity.User;
 import com.medicare_backend.medicare_backend.repository.UserRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,10 @@ public class UserService {
 
     public void registerUser(User user) {
         userRepository.save(user);
+    }
+
+    public List<User> getListUser() {
+        return userRepository.findAll();
     }
 
 }
