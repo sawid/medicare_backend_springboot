@@ -28,8 +28,6 @@ public class UserService {
             if (userIsMatch != null && userIsMatch.isEmpty()) {
                 System.out.println(userIsMatch);
                 byte[] hash = authservice.getEncryptedPassword(user.getPasswordId(), "salt".getBytes());
-                // System.out.println(Arrays.toString(hash));
-                // System.out.println(authservice.bytesToHex(hash));
                 user.setPasswordId(authservice.bytesToHex(hash));
                 userRepository.save(user);
                 returnString = "Register Success";

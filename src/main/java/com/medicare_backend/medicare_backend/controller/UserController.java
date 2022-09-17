@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +32,14 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String registerNewUser(@RequestBody User user) {
-        return userService.registerUser(user);
+    public ResponseEntity<?> registerNewUser(@RequestBody User user) {
+        String data = userService.registerUser(user);
+        if (data == "Register Success") {
+            return ResponseEntity.ok().body(data);
+        } else {
+            return ResponseEntity.status(500).body(data);
+        }
+        
     }
 
 }
