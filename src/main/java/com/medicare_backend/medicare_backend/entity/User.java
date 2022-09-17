@@ -16,16 +16,18 @@ public class User {
     private String emailId;
     private String passwordId;
     private String phoneNumber;
+    private String identificationNumber;
  
     public User() {
   
     }
  
-    public User(String name, String emailId, String passwordId, String phoneNumber) {
+    public User(String name, String emailId, String passwordId, String phoneNumber, String identificationNumber) {
          this.name = name;
          this.emailId = emailId;
          this.passwordId = passwordId;
          this.phoneNumber = phoneNumber;
+         this.identificationNumber = identificationNumber;
     }
  
     @Id
@@ -69,6 +71,15 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Column(name = "identificationNumber", nullable = false)
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
     }
 
     @Override

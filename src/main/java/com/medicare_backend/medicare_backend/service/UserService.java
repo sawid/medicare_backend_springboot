@@ -42,11 +42,24 @@ public class UserService {
     }
 
     public String loginUser(Authentication auth) {
+        String returnString = "";
         try {
-            byte[] passwordToByte = authservice.hexToByte("C81BDC96AFBB8AD447C176B2CD1DBFE1568C11EE8B6205DE29B27F336B3AE2DE8B122880A4FFB1C3A85FE9F391EE762DD0A990A73F10DAF44EC693A33EE8B7C3");
-            System.out.println(authservice.authenticate("FolkSawit@gmail.com", passwordToByte, "salt".getBytes()));
-            System.out.println(authservice.authenticate("FolkSawit@gmail.com", passwordToByte, "salty".getBytes()));
-        return "token";
+            List<User> userQuery = userRepository.findByIdentificationNumber(auth.getUsername());
+            if (!(userQuery != null && userQuery.isEmpty())) {
+                String userPassword = userQuery.get(0).getPasswordId();
+                byte[] passwordToByte = authservice.hexToByte(userPassword);
+                if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
+                    returnString = "Auth Success";
+                }
+                else {
+                    returnString = "Auth Failed";
+                }
+            }
+            else {
+                returnString = "User Not Found";
+            }
+            
+            return returnString;
         } catch (Exception e) {
             // TODO: handle exception
         }

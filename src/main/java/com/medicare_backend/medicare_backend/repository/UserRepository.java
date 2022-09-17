@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByNameContaining(@Param("name") String isbn);
 
     List<User> findByName(String name);
+
+    List<User> findByIdentificationNumber(String identificationNumber);
 }

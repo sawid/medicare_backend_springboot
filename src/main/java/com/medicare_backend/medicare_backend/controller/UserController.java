@@ -1,6 +1,7 @@
 package com.medicare_backend.medicare_backend.controller;
 
 import com.medicare_backend.medicare_backend.service.UserService;
+import com.medicare_backend.medicare_backend.entity.Authentication;
 import com.medicare_backend.medicare_backend.entity.User;
 
 import java.util.List;
@@ -22,11 +23,16 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<User> getListUser() {
-        return userService.getListUser();
+    public ResponseEntity<?> getListUser() {
+        List<User> data = userService.getListUser();
+        if (!(data != null && data.isEmpty())) {
+            return ResponseEntity.ok().body(data);
+        } else {
+            return ResponseEntity.status(500).body("User List Not Found");
+        }
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/findUserById/{id}")
     public Optional<User> getUserByOneUser(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
@@ -35,6 +41,17 @@ public class UserController {
     public ResponseEntity<?> registerNewUser(@RequestBody User user) {
         String data = userService.registerUser(user);
         if (data == "Register Success") {
+            return ResponseEntity.ok().body(data);
+        } else {
+            return ResponseEntity.status(500).body(data);
+        }
+        
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<?> loginToUser(@RequestBody Authentication auth) {
+        String data = userService.loginUser(auth);
+        if (data == "Login Success") {
             return ResponseEntity.ok().body(data);
         } else {
             return ResponseEntity.status(500).body(data);
