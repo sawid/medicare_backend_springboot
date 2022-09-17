@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<?> loginToUser(@RequestBody Authentication auth) {
         String data = userService.loginUser(auth);
-        if (data == "Login Success") {
+        if (data != "Auth Failed") {
             return ResponseEntity.ok().body(data);
         } else {
             return ResponseEntity.status(500).body(data);

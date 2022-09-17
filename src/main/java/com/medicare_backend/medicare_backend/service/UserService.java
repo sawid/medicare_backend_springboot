@@ -6,8 +6,9 @@ import com.medicare_backend.medicare_backend.repository.UserRepository;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class UserService {
     private UserRepository userRepository;
 
     private AuthenticationService authservice;
+
+    // Method User
 
     public String registerUser(User user) {
         String returnString = "";
@@ -49,7 +52,20 @@ public class UserService {
                 String userPassword = userQuery.get(0).getPasswordId();
                 byte[] passwordToByte = authservice.hexToByte(userPassword);
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
-                    returnString = "Auth Success";
+
+                    JwtGenerator generator = new JwtGenerator();
+
+                    Map<String, String> claims = new HashMap<>();
+
+                    claims.put("name", userQuery.get(0).getName());
+
+                    claims.put("email", userQuery.get(0).getEmailId());
+
+                    claims.put("phone", userQuery.get(0).getPhoneNumber());
+
+                    String token = generator.generateJwt(claims);
+
+                    returnString = token;
                 }
                 else {
                     returnString = "Auth Failed";
@@ -80,4 +96,5 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    // Method Function
 }
