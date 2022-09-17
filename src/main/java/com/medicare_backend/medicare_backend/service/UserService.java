@@ -1,5 +1,6 @@
 package com.medicare_backend.medicare_backend.service;
 
+import com.medicare_backend.medicare_backend.entity.Authentication;
 import com.medicare_backend.medicare_backend.entity.User;
 import com.medicare_backend.medicare_backend.repository.UserRepository;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
@@ -20,20 +21,38 @@ public class UserService {
 
     private AuthenticationService authservice;
 
-
-    public void registerUser(User user) {
+    public String registerUser(User user) {
+        String returnString = "";
         try {
-            byte[] hash = authservice.getEncryptedPassword(user.getPasswordId(), "salt".getBytes());
-            // System.out.println(Arrays.toString(hash));
-            // System.out.println(authservice.bytesToHex(hash));
-            user.setPasswordId(authservice.bytesToHex(hash));
-            byte[] passwordToByte = authservice.hexToByte("C81BDC96AFBB8AD447C176B2CD1DBFE1568C11EE8B6205DE29B27F336B3AE2DE8B122880A4FFB1C3A85FE9F391EE762DD0A990A73F10DAF44EC693A33EE8B7C3");
-            System.out.println(authservice.authenticate("FolkSawit@gmail.com", passwordToByte, "salt".getBytes()));
-            System.out.println(authservice.authenticate("FolkSawit@gmail.com", passwordToByte, "salty".getBytes()));
-            userRepository.save(user);
+            List<User> userIsMatch = userRepository.findByFirstName(user.getFirstName());
+            if (userIsMatch != null && userIsMatch.isEmpty()) {
+                System.out.println(userIsMatch);
+                byte[] hash = authservice.getEncryptedPassword(user.getPasswordId(), "salt".getBytes());
+                // System.out.println(Arrays.toString(hash));
+                // System.out.println(authservice.bytesToHex(hash));
+                user.setPasswordId(authservice.bytesToHex(hash));
+                userRepository.save(user);
+                returnString = "Register Success";
+            } else {
+                returnString = "Already User";
+            }
+            
         } catch (Exception e) {
             System.out.println(e);
         }
+        return returnString;
+    }
+
+    public String loginUser(Authentication auth) {
+        try {
+            byte[] passwordToByte = authservice.hexToByte("C81BDC96AFBB8AD447C176B2CD1DBFE1568C11EE8B6205DE29B27F336B3AE2DE8B122880A4FFB1C3A85FE9F391EE762DD0A990A73F10DAF44EC693A33EE8B7C3");
+            System.out.println(authservice.authenticate("FolkSawit@gmail.com", passwordToByte, "salt".getBytes()));
+            System.out.println(authservice.authenticate("FolkSawit@gmail.com", passwordToByte, "salty".getBytes()));
+        return "token";
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return "token";
     }
 
     public List<User> getListUser() {
