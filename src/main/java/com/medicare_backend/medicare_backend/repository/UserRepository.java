@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findByFirstNameContaining(@Param("first_name") String isbn);
+    List<User> findByNameContaining(@Param("name") String isbn);
 
-    List<User> findByFirstName(String firstName);
+    List<User> findByName(String name);
 }

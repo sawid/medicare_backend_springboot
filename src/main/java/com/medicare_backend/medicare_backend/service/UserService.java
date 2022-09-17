@@ -24,7 +24,7 @@ public class UserService {
     public String registerUser(User user) {
         String returnString = "";
         try {
-            List<User> userIsMatch = userRepository.findByFirstName(user.getFirstName());
+            List<User> userIsMatch = userRepository.findByName(user.getName());
             if (userIsMatch != null && userIsMatch.isEmpty()) {
                 System.out.println(userIsMatch);
                 byte[] hash = authservice.getEncryptedPassword(user.getPasswordId(), "salt".getBytes());
