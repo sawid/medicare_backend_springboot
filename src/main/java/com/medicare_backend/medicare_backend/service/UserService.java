@@ -53,19 +53,10 @@ public class UserService {
                 byte[] passwordToByte = authservice.hexToByte(userPassword);
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
 
-                    JwtGenerator generator = new JwtGenerator();
 
-                    Map<String, String> claims = new HashMap<>();
 
-                    claims.put("name", userQuery.get(0).getName());
-
-                    claims.put("email", userQuery.get(0).getEmailId());
-
-                    claims.put("phone", userQuery.get(0).getPhoneNumber());
-
-                    String token = generator.generateJwt(claims);
-
-                    returnString = token;
+                   
+                    returnString = "token";
                 }
                 else {
                     returnString = "Auth Failed";

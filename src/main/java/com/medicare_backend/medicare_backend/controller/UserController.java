@@ -1,9 +1,13 @@
 package com.medicare_backend.medicare_backend.controller;
 
+
 import com.medicare_backend.medicare_backend.service.UserService;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.medicare_backend.medicare_backend.entity.Authentication;
 import com.medicare_backend.medicare_backend.entity.User;
+import com.medicare_backend.medicare_backend.request.AddTask;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+
 
     @GetMapping("/users")
     public ResponseEntity<?> getListUser() {
@@ -58,6 +64,18 @@ public class UserController {
         }
         
     }
+
+    @PostMapping("/authtication/addtask")
+    public String userAddTask(@RequestBody AddTask task) {
+        try {
+           
+            return "Validate";
+        } catch (InvalidParameterException e) {
+            return "Token InValid";
+        }
+        
+    }
+
 
 }
 
