@@ -1,4 +1,4 @@
-package com.medicare_backend.medicare_backend.controller;
+package com.medicare_backend.medicare_backend.schema.response;
 
 import java.util.List;
 

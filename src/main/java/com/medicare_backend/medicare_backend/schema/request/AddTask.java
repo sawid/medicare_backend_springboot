@@ -1,4 +1,4 @@
-package com.medicare_backend.medicare_backend.request;
+package com.medicare_backend.medicare_backend.schema.request;
 
 public class AddTask {
     

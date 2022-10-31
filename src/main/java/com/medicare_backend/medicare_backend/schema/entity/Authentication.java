@@ -1,4 +1,4 @@
-package com.medicare_backend.medicare_backend.entity;
+package com.medicare_backend.medicare_backend.schema.entity;
 
 public class Authentication {
     private String username;

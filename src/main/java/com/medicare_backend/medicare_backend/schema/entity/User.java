@@ -1,4 +1,4 @@
-package com.medicare_backend.medicare_backend.entity;
+package com.medicare_backend.medicare_backend.schema.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
