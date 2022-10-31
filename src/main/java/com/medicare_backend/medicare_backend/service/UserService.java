@@ -22,6 +22,8 @@ public class UserService {
 
     private AuthenticationService authservice;
 
+    private TokenAuthenticationService tokenService;
+
     // Method User
 
     public String registerUser(User user) {
@@ -52,11 +54,10 @@ public class UserService {
                 String userPassword = userQuery.get(0).getPasswordId();
                 byte[] passwordToByte = authservice.hexToByte(userPassword);
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
-
-
-
-                   
-                    returnString = "token";
+                    System.out.println(userQuery.get(0).getName());
+                    String authToken = tokenService.generateJWTToken(userQuery.get(0).getName());
+                    returnString = authToken;
+                    return returnString;
                 }
                 else {
                     returnString = "Auth Failed";
@@ -68,9 +69,10 @@ public class UserService {
             
             return returnString;
         } catch (Exception e) {
+            System.out.println(e);
             // TODO: handle exception
         }
-        return "token";
+        return "Error";
     }
 
     public List<User> getListUser() {
@@ -85,6 +87,11 @@ public class UserService {
 
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
+    }
+
+    public String addTaskData(String authtoken) {
+        String atoken = authservice.verifyJWTToken(authtoken);
+        return atoken;
     }
 
     // Method Function

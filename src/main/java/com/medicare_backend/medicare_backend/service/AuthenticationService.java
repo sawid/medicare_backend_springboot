@@ -60,4 +60,8 @@ public class AuthenticationService {
         }
         return data;
     }
+
+    public String verifyJWTToken(String authtoken) {
+        return null;
+    }
 }
