@@ -10,10 +10,10 @@ public class Allergy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getId() {
+        public long getallergyId() {
         return allergyId;
     }
-    public void setId(long id) {
+    public void setallergyId(long id) {
         this.allergyId = id;
     }
 
@@ -24,7 +24,7 @@ public class Allergy {
         this.allergyName = allergyName;
     }
 
-    @Column(name = "allergyName", nullable = false)
+    @Column(name = "allergy_name", nullable = false)
     public String getAllergyName() {
         return this.allergyName;
     }

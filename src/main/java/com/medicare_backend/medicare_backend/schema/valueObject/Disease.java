@@ -10,10 +10,10 @@ public class Disease {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getId() {
+        public long getdiseaseId() {
         return diseaseId;
     }
-    public void setId(long id) {
+    public void setdiseaseId(long id) {
         this.diseaseId = id;
     }
 
@@ -24,7 +24,7 @@ public class Disease {
         this.diseaseName = diseaseName;
     }
 
-    @Column(name = "diseaseName", nullable = false)
+    @Column(name = "disease_name", nullable = false)
     public String getDiseaseName() {
         return this.diseaseName;
     }

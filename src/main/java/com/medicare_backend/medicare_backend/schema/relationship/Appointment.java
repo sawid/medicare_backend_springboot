@@ -20,10 +20,10 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getId() {
+        public long getappointmentId() {
         return appointmentId;
     }
-    public void setId(long id) {
+    public void setappointmentId(long id) {
         this.appointmentId = id;
     }
 
@@ -43,16 +43,7 @@ public class Appointment {
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
 
-    @Column(name = "appointmentId", nullable = false)
-    public long getAppointmentId() {
-        return this.appointmentId;
-    }
-
-    public void setAppointmentId(long appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    @Column(name = "appointmentPatientId", nullable = false)
+    @Column(name = "appointment_patient_id", nullable = false)
     public int getAppointmentPatientId() {
         return this.appointmentPatientId;
     }
@@ -61,7 +52,7 @@ public class Appointment {
         this.appointmentPatientId = appointmentPatientId;
     }
 
-    @Column(name = "appointmentDoctorId", nullable = false)
+    @Column(name = "appointment_doctor_id", nullable = false)
     public int getAppointmentDoctorId() {
         return this.appointmentDoctorId;
     }
@@ -70,7 +61,7 @@ public class Appointment {
         this.appointmentDoctorId = appointmentDoctorId;
     }
 
-    @Column(name = "appointmentDate", nullable = false)
+    @Column(name = "appointment_date", nullable = false)
     public LocalDate getAppointmentDate() {
         return this.appointmentDate;
     }
@@ -79,7 +70,7 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
     }
 
-    @Column(name = "appiontmentLocation", nullable = false)
+    @Column(name = "appiontment_location", nullable = false)
     public String getAppiontmentLocation() {
         return this.appiontmentLocation;
     }
@@ -88,7 +79,7 @@ public class Appointment {
         this.appiontmentLocation = appiontmentLocation;
     }
 
-    @Column(name = "appointmentScheduledId", nullable = false)
+    @Column(name = "appointment_scheduled_id", nullable = false)
     public int getAppointmentScheduledId() {
         return this.appointmentScheduledId;
     }
@@ -97,7 +88,7 @@ public class Appointment {
         this.appointmentScheduledId = appointmentScheduledId;
     }
 
-    @Column(name = "appiontmentTimeStart", nullable = false)
+    @Column(name = "appiontment_time_start", nullable = false)
     public LocalDateTime getAppiontmentTimeStart() {
         return this.appiontmentTimeStart;
     }
@@ -106,7 +97,7 @@ public class Appointment {
         this.appiontmentTimeStart = appiontmentTimeStart;
     }
 
-    @Column(name = "appiontmentTimeEnd", nullable = false)
+    @Column(name = "appiontment_time_end", nullable = false)
     public LocalDateTime getAppiontmentTimeEnd() {
         return this.appiontmentTimeEnd;
     }
