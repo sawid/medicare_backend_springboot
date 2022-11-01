@@ -18,6 +18,7 @@ public class Schedule {
     private LocalDateTime scheduleStart;
     private LocalDateTime scheduleEnd;
     private LocalDate scheduleDate;
+    private String scheduleLocation;
     
     public Schedule() {
 
@@ -69,8 +70,18 @@ public class Schedule {
         this.scheduleStart = scheduleStart;
     }
 
+    @Column(name = "schedule_location", nullable = false)
+    public String getScheduleLocation() {
+        return scheduleLocation;
+    }
+
+    public void setScheduleLocation(String scheduleLocation) {
+        this.scheduleLocation = scheduleLocation;
+    }
+
     @Override
     public String toString() {
         return "String of Schedule";
     }
+
 }
