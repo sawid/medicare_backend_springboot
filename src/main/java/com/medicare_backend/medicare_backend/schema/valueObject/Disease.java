@@ -24,6 +24,7 @@ public class Disease {
         this.diseaseName = diseaseName;
     }
 
+    @Column(name = "diseaseName", nullable = false)
     public String getDiseaseName() {
         return this.diseaseName;
     }

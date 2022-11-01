@@ -24,6 +24,7 @@ public class Allergy {
         this.allergyName = allergyName;
     }
 
+    @Column(name = "allergyName", nullable = false)
     public String getAllergyName() {
         return this.allergyName;
     }
