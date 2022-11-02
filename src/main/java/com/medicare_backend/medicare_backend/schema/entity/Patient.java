@@ -132,4 +132,13 @@ public class Patient {
         this.patientGender = patientGender;
     }
 
+    @Override
+    public String toString() {
+        return "Patient [patientHNId=" + patientHNId + ", patientFirstName=" + patientFirstName + ", patientMiddleName="
+                + patientMiddleName + ", patientLastName=" + patientLastName + ", patientNationalId="
+                + patientNationalId + ", patientPhoneNumber=" + patientPhoneNumber + ", patientBirthDate="
+                + patientBirthDate + ", patientLocation=" + patientLocation + ", patientBloodType=" + patientBloodType
+                + ", patientGender=" + patientGender + "]";
+    }
+
 }
