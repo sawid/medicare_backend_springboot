@@ -4,17 +4,31 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "takeschedule")
 public class TakeSchedule {
+    private long takeScheduleId;
     private long employeeId;
     private long scheduleId;
     private LocalDateTime takeScheduleDate;
 
     public TakeSchedule() {
         
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getTakeScheduleId() {
+        return takeScheduleId;
+    }
+
+    public void setTakeScheduleId(long takeScheduleId) {
+        this.takeScheduleId = takeScheduleId;
     }
 
     @Column(name = "employee_id", nullable = false)

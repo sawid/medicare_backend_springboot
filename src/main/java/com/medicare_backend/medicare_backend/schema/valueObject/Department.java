@@ -2,6 +2,9 @@ package com.medicare_backend.medicare_backend.schema.valueObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +18,8 @@ public class Department {
 
     }
 
-    @Column(name = "department_id", nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getDepartmentId() {
         return departmentId;
     }
