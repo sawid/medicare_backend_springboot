@@ -20,10 +20,10 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getappointmentId() {
+        public long getAppointmentId() {
         return appointmentId;
     }
-    public void setappointmentId(long id) {
+    public void setAppointmentId(long id) {
         this.appointmentId = id;
     }
 
@@ -105,4 +105,19 @@ public class Appointment {
     public void setAppiontmentTimeEnd(LocalDateTime appiontmentTimeEnd) {
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " appointmentId='" + getAppointmentId() + "'" +
+            ", appointmentPatientId='" + getAppointmentPatientId() + "'" +
+            ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
+            ", appointmentDate='" + getAppointmentDate() + "'" +
+            ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
+            ", appointmentScheduledId='" + getAppointmentScheduledId() + "'" +
+            ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
+            ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
+            "}";
+    }
+
 }

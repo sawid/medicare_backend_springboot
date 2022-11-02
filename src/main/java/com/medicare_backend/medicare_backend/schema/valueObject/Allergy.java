@@ -10,10 +10,10 @@ public class Allergy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getallergyId() {
+        public long getAllergyId() {
         return allergyId;
     }
-    public void setallergyId(long id) {
+    public void setAllergyId(long id) {
         this.allergyId = id;
     }
 
@@ -32,4 +32,13 @@ public class Allergy {
     public void setAllergyName(String allergyName) {
         this.allergyName = allergyName;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " allergyId='" + getAllergyId() + "'" +
+            ", allergyName='" + getAllergyName() + "'" +
+            "}";
+    }
+
 }
