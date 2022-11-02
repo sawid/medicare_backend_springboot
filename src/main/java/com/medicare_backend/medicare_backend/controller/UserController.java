@@ -31,6 +31,7 @@ public class UserController {
         String returnString = "";
         try {
             List<User> userIsMatch = userRepository.findByName(user.getName());
+            System.out.println(userIsMatch);
             if (userIsMatch != null && userIsMatch.isEmpty()) {
                 System.out.println(userIsMatch);
                 byte[] hash = authservice.getEncryptedPassword(user.getPasswordId(), "salt".getBytes());
