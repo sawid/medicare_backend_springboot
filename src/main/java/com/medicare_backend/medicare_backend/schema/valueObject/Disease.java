@@ -10,10 +10,10 @@ public class Disease {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getdiseaseId() {
+        public long getDiseaseId() {
         return diseaseId;
     }
-    public void setdiseaseId(long id) {
+    public void setDiseaseId(long id) {
         this.diseaseId = id;
     }
 
@@ -32,4 +32,13 @@ public class Disease {
     public void setDiseaseName(String diseaseName) {
         this.diseaseName = diseaseName;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " diseaseId='" + getDiseaseId() + "'" +
+            ", diseaseName='" + getDiseaseName() + "'" +
+            "}";
+    }
+
 }
