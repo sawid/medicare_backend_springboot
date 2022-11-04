@@ -14,7 +14,7 @@ public class Appointment {
     private int appointmentDoctorId;
     private LocalDate appointmentDate;
     private String appiontmentLocation;
-    private int appointmentScheduledId;
+    private int appointmentScheduleId;
     private LocalDateTime appiontmentTimeStart;
     private LocalDateTime appiontmentTimeEnd;
 
@@ -32,13 +32,13 @@ public class Appointment {
 
     public Appointment(int appointmentPatientId, int appointmentDoctorId, 
                     LocalDate appointmentDate, String appiontmentLocation, 
-                    int appointmentScheduledId, LocalDateTime appiontmentTimeStart, 
+                    int appointmentScheduleId, LocalDateTime appiontmentTimeStart, 
                     LocalDateTime appiontmentTimeEnd) {
         this.appointmentPatientId = appointmentPatientId;
         this.appointmentDoctorId = appointmentDoctorId;
         this.appointmentDate = appointmentDate;
         this.appiontmentLocation = appiontmentLocation;
-        this.appointmentScheduledId = appointmentScheduledId;
+        this.appointmentScheduleId = appointmentScheduleId;
         this.appiontmentTimeStart = appiontmentTimeStart;
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
@@ -79,13 +79,13 @@ public class Appointment {
         this.appiontmentLocation = appiontmentLocation;
     }
 
-    @Column(name = "appointment_scheduled_id", nullable = false)
-    public int getAppointmentScheduledId() {
-        return this.appointmentScheduledId;
+    @Column(name = "appointment_schedule_id", nullable = false)
+    public int getAppointmentScheduleId() {
+        return this.appointmentScheduleId;
     }
 
-    public void setAppointmentScheduledId(int appointmentScheduledId) {
-        this.appointmentScheduledId = appointmentScheduledId;
+    public void setAppointmentScheduledId(int appointmentScheduleId) {
+        this.appointmentScheduleId = appointmentScheduleId;
     }
 
     @Column(name = "appiontment_time_start", nullable = false)
@@ -114,7 +114,7 @@ public class Appointment {
             ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
             ", appointmentDate='" + getAppointmentDate() + "'" +
             ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
-            ", appointmentScheduledId='" + getAppointmentScheduledId() + "'" +
+            ", appointmentScheduleId='" + getAppointmentScheduleId() + "'" +
             ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
             ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
             "}";
