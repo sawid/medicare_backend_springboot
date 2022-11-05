@@ -30,9 +30,12 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int appointmentPatientId, int appointmentDoctorId, 
-                    LocalDate appointmentDate, String appiontmentLocation, 
-                    int appointmentScheduleId, LocalDateTime appiontmentTimeStart, 
+    public Appointment(int appointmentPatientId, 
+                    int appointmentDoctorId, 
+                    LocalDate appointmentDate, 
+                    String appiontmentLocation, 
+                    int appointmentScheduleId, 
+                    LocalDateTime appiontmentTimeStart, 
                     LocalDateTime appiontmentTimeEnd) {
         this.appointmentPatientId = appointmentPatientId;
         this.appointmentDoctorId = appointmentDoctorId;
@@ -84,7 +87,7 @@ public class Appointment {
         return this.appointmentScheduleId;
     }
 
-    public void setAppointmentScheduledId(int appointmentScheduleId) {
+    public void setAppointmentScheduleId(int appointmentScheduleId) {
         this.appointmentScheduleId = appointmentScheduleId;
     }
 
@@ -105,6 +108,7 @@ public class Appointment {
     public void setAppiontmentTimeEnd(LocalDateTime appiontmentTimeEnd) {
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
+
 
     @Override
     public String toString() {
