@@ -1,8 +1,9 @@
 package com.medicare_backend.medicare_backend.schema.relationship;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 
 public class PatientAllergy {
+    private long Id;
     private int allergyId;
     private int patientHNId;
 
@@ -12,6 +13,15 @@ public class PatientAllergy {
     public PatientAllergy(int allergyId, int patientHNId) {
         this.allergyId = allergyId;
         this.patientHNId = patientHNId;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getId() {
+        return Id;
+    }
+    public void setId(long Id) {
+        this.Id = Id;
     }
 
     @Column(name = "allergyId")

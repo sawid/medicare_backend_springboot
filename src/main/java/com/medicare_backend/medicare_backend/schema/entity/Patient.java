@@ -1,35 +1,44 @@
 package com.medicare_backend.medicare_backend.schema.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Patient")
+@Table(name = "patient")
 public class Patient {
-    private int patientHNId;
+    private long patientHNId;
     private String patientFirstName;
     private String patientMiddleName;
     private String patientLastName;
     private String patientNationalId;
     private String patientPhoneNumber;
-    private LocalTime patientBirthDate;
+    private LocalDate patientBirthDate;
     private String patientLocation;
     private int patientBloodType;
     private int patientGender;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+        public long getpatientHNId() {
+        return patientHNId;
+    }
+    public void setpatientHNId(long id) {
+        this.patientHNId = id;
+    }
+
     public Patient() {
     }
 
-    public Patient(int patientHNId, String patientFirstName, String patientMiddleName, String patientLastName,
-            String patientNationalId, String patientPhoneNumber, LocalTime patientBirthDate, String patientLocation,
-            int patientBloodType, int patientGender) {
-        this.patientHNId = patientHNId;
+    public Patient( String patientFirstName, 
+                    String patientMiddleName, 
+                    String patientLastName, 
+                    String patientNationalId, 
+                    String patientPhoneNumber, 
+                    LocalDate patientBirthDate, 
+                    String patientLocation, 
+                    int patientBloodType, 
+                    int patientGender) {
         this.patientFirstName = patientFirstName;
         this.patientMiddleName = patientMiddleName;
         this.patientLastName = patientLastName;
@@ -41,104 +50,85 @@ public class Patient {
         this.patientGender = patientGender;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getPatientHNId() {
-        return this.patientHNId;
-    }
-
-    public int setPatientHNId() {
-        return this.patientHNId;
-    }
-
-    @Column(name = "patientFirstName", nullable = false)
+    @Column(name = "patient_first_name", nullable = false)
     public String getPatientFirstName() {
-        return patientFirstName;
+        return this.patientFirstName;
     }
 
     public void setPatientFirstName(String patientFirstName) {
         this.patientFirstName = patientFirstName;
     }
 
-    @Column(name = "patientMiddleName")
+    @Column(name = "patient_middle_name", nullable = false)
     public String getPatientMiddleName() {
-        return patientMiddleName;
+        return this.patientMiddleName;
     }
 
     public void setPatientMiddleName(String patientMiddleName) {
         this.patientMiddleName = patientMiddleName;
     }
 
-    @Column(name = "patientLastName", nullable = false)
+    @Column(name = "patient_last_name", nullable = false)
     public String getPatientLastName() {
-        return patientLastName;
+        return this.patientLastName;
     }
 
     public void setPatientLastName(String patientLastName) {
         this.patientLastName = patientLastName;
     }
 
-    @Column(name = "patientNationalId", nullable = false)
+    @Column(name = "patient_national_id", nullable = false)
     public String getPatientNationalId() {
-        return patientNationalId;
+        return this.patientNationalId;
     }
 
     public void setPatientNationalId(String patientNationalId) {
         this.patientNationalId = patientNationalId;
     }
 
-    @Column(name = "patientPhoneNumber", nullable = false)
+    @Column(name = "patient_phone_number", nullable = false)
     public String getPatientPhoneNumber() {
-        return patientPhoneNumber;
+        return this.patientPhoneNumber;
     }
 
     public void setPatientPhoneNumber(String patientPhoneNumber) {
         this.patientPhoneNumber = patientPhoneNumber;
     }
 
-    @Column(name = "patientBirthDate", nullable = false)
-    public LocalTime getPatientBirthDate() {
-        return patientBirthDate;
+    @Column(name = "patient_birth_date", nullable = false)
+    public LocalDate getPatientBirthDate() {
+        return this.patientBirthDate;
     }
 
-    public void setPatientBirthDate(LocalTime patientBirthDate) {
+    public void setPatientBirthDate(LocalDate patientBirthDate) {
         this.patientBirthDate = patientBirthDate;
     }
 
-    @Column(name = "patientLocation", nullable = false)
+    @Column(name = "patient_location", nullable = false)
     public String getPatientLocation() {
-        return patientLocation;
+        return this.patientLocation;
     }
 
     public void setPatientLocation(String patientLocation) {
         this.patientLocation = patientLocation;
     }
 
-    @Column(name = "patientBloodType", nullable = false)
+    @Column(name = "patient_blood_type", nullable = false)
     public int getPatientBloodType() {
-        return patientBloodType;
+        return this.patientBloodType;
     }
 
     public void setPatientBloodType(int patientBloodType) {
         this.patientBloodType = patientBloodType;
     }
 
-    @Column(name = "patientGender", nullable = false)
+    @Column(name = "patient_gender", nullable = false)
     public int getPatientGender() {
-        return patientGender;
+        return this.patientGender;
     }
 
     public void setPatientGender(int patientGender) {
         this.patientGender = patientGender;
-    }
-
-    @Override
-    public String toString() {
-        return "Patient [patientHNId=" + patientHNId + ", patientFirstName=" + patientFirstName + ", patientMiddleName="
-                + patientMiddleName + ", patientLastName=" + patientLastName + ", patientNationalId="
-                + patientNationalId + ", patientPhoneNumber=" + patientPhoneNumber + ", patientBirthDate="
-                + patientBirthDate + ", patientLocation=" + patientLocation + ", patientBloodType=" + patientBloodType
-                + ", patientGender=" + patientGender + "]";
     }
 
 }

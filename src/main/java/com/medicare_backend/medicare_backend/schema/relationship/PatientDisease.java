@@ -1,12 +1,11 @@
 package com.medicare_backend.medicare_backend.schema.relationship;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "PatientDisease")
 public class PatientDisease {
+    private long Id;
     private int patientHNId;
     private int diseaseId;
 
@@ -16,6 +15,15 @@ public class PatientDisease {
     public PatientDisease(int patientHNId, int diseaseId) {
         this.patientHNId = patientHNId;
         this.diseaseId = diseaseId;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getId() {
+        return Id;
+    }
+    public void setId(long Id) {
+        this.Id = Id;
     }
 
     @Column(name = "patientHNId", nullable = false)
