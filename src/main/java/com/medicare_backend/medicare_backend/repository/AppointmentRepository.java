@@ -10,6 +10,6 @@ import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
 
-    List<Appointment> findAppointmentByappointmentScheduleId(int appointmentScheduleId);
+    List<Appointment> findAppointmentByappointmentScheduleId(long appointmentScheduleId);
     
 }
