@@ -10,11 +10,11 @@ import javax.persistence.*;
 public class Appointment {
 
     private long appointmentId;
-    private int appointmentPatientId;
-    private int appointmentDoctorId;
+    private long appointmentPatientId;
+    private long appointmentDoctorId;
     private LocalDate appointmentDate;
     private String appiontmentLocation;
-    private int appointmentScheduleId;
+    private long appointmentScheduleId;
     private LocalDateTime appiontmentTimeStart;
     private LocalDateTime appiontmentTimeEnd;
 
@@ -30,11 +30,11 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int appointmentPatientId, 
-                    int appointmentDoctorId, 
+    public Appointment(long appointmentPatientId, 
+                    long appointmentDoctorId, 
                     LocalDate appointmentDate, 
                     String appiontmentLocation, 
-                    int appointmentScheduleId, 
+                    long appointmentScheduleId, 
                     LocalDateTime appiontmentTimeStart, 
                     LocalDateTime appiontmentTimeEnd) {
         this.appointmentPatientId = appointmentPatientId;
@@ -47,20 +47,20 @@ public class Appointment {
     }
 
     @Column(name = "appointment_patient_id", nullable = false)
-    public int getAppointmentPatientId() {
+    public long getAppointmentPatientId() {
         return this.appointmentPatientId;
     }
 
-    public void setAppointmentPatientId(int appointmentPatientId) {
+    public void setAppointmentPatientId(long appointmentPatientId) {
         this.appointmentPatientId = appointmentPatientId;
     }
 
     @Column(name = "appointment_doctor_id", nullable = false)
-    public int getAppointmentDoctorId() {
+    public long getAppointmentDoctorId() {
         return this.appointmentDoctorId;
     }
 
-    public void setAppointmentDoctorId(int appointmentDoctorId) {
+    public void setAppointmentDoctorId(long appointmentDoctorId) {
         this.appointmentDoctorId = appointmentDoctorId;
     }
 
@@ -83,11 +83,11 @@ public class Appointment {
     }
 
     @Column(name = "appointment_schedule_id", nullable = false)
-    public int getAppointmentScheduleId() {
+    public long getAppointmentScheduleId() {
         return this.appointmentScheduleId;
     }
 
-    public void setAppointmentScheduleId(int appointmentScheduleId) {
+    public void setAppointmentScheduleId(long appointmentScheduleId) {
         this.appointmentScheduleId = appointmentScheduleId;
     }
 

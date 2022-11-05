@@ -35,7 +35,7 @@ public class AppointmentService {
     }
 
     //Get Appointment by ScheduleId
-    public List<Appointment> getAppointmentByScheduleId(int appointmentScheduleId) {
+    public List<Appointment> getAppointmentByScheduleId(long appointmentScheduleId) {
         return appointmentRepository.findAppointmentByappointmentScheduleId(appointmentScheduleId);
     }
 }
