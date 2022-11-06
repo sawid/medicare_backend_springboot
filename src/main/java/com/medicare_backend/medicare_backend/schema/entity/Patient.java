@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -13,6 +15,7 @@ public class Patient {
     private String patientLastName;
     private String patientNationalId;
     private String patientPhoneNumber;
+    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate patientBirthDate;
     private String patientLocation;
     private int patientBloodType;
@@ -20,9 +23,10 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getpatientHNId() {
+    public long getpatientHNId() {
         return patientHNId;
     }
+
     public void setpatientHNId(long id) {
         this.patientHNId = id;
     }
@@ -30,15 +34,15 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient( String patientFirstName, 
-                    String patientMiddleName, 
-                    String patientLastName, 
-                    String patientNationalId, 
-                    String patientPhoneNumber, 
-                    LocalDate patientBirthDate, 
-                    String patientLocation, 
-                    int patientBloodType, 
-                    int patientGender) {
+    public Patient(String patientFirstName,
+            String patientMiddleName,
+            String patientLastName,
+            String patientNationalId,
+            String patientPhoneNumber,
+            LocalDate patientBirthDate,
+            String patientLocation,
+            int patientBloodType,
+            int patientGender) {
         this.patientFirstName = patientFirstName;
         this.patientMiddleName = patientMiddleName;
         this.patientLastName = patientLastName;
@@ -59,7 +63,7 @@ public class Patient {
         this.patientFirstName = patientFirstName;
     }
 
-    @Column(name = "patient_middle_name", nullable = false)
+    @Column(name = "patient_middle_name")
     public String getPatientMiddleName() {
         return this.patientMiddleName;
     }
@@ -129,6 +133,15 @@ public class Patient {
 
     public void setPatientGender(int patientGender) {
         this.patientGender = patientGender;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient [patientHNId=" + patientHNId + ", patientFirstName=" + patientFirstName + ", patientMiddleName="
+                + patientMiddleName + ", patientLastName=" + patientLastName + ", patientNationalId="
+                + patientNationalId + ", patientPhoneNumber=" + patientPhoneNumber + ", patientBirthDate="
+                + patientBirthDate + ", patientLocation=" + patientLocation + ", patientBloodType=" + patientBloodType
+                + ", patientGender=" + patientGender + "]";
     }
 
 }
