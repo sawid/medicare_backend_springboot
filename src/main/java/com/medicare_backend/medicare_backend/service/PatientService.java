@@ -14,7 +14,7 @@ public class PatientService {
     private PatientRepository patientRepository;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository){
+    public PatientService(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
     }
 
@@ -22,7 +22,21 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> getPatientById(Long patientHNId) {
-        return patientRepository.findById(patientHNId);
+    public Optional<Patient> getPatientById(String patientHNId) {
+        return patientRepository.findBypatientHNId(patientHNId);
+    }
+
+    public String createPatient(Patient patient) {
+        patientRepository.save(patient);
+        return "suscess";
+    }
+
+    public Patient updatePatient(String id, Patient patient) {
+        Patient _patient = patientRepository.findBypatientHNId(id)
+                .orElseThrow(() -> new Handler("Patient not exit with id" + id));
+        _patient.setPatientFirstName(patient.getPatientFirstName());
+
+        return _patient;
+
     }
 }

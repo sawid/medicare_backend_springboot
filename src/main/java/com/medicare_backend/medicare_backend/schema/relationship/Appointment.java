@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Appointment {
 
     private long appointmentId;
-    private long appointmentPatientId;
+    private String appointmentPatientId;
     private long appointmentDoctorId;
     private LocalDate appointmentDate;
     private String appiontmentLocation;
@@ -20,9 +20,10 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getAppointmentId() {
+    public long getAppointmentId() {
         return appointmentId;
     }
+
     public void setAppointmentId(long id) {
         this.appointmentId = id;
     }
@@ -30,13 +31,13 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(long appointmentPatientId, 
-                    long appointmentDoctorId, 
-                    LocalDate appointmentDate, 
-                    String appiontmentLocation, 
-                    long appointmentScheduleId, 
-                    LocalDateTime appiontmentTimeStart, 
-                    LocalDateTime appiontmentTimeEnd) {
+    public Appointment(String appointmentPatientId,
+            long appointmentDoctorId,
+            LocalDate appointmentDate,
+            String appiontmentLocation,
+            long appointmentScheduleId,
+            LocalDateTime appiontmentTimeStart,
+            LocalDateTime appiontmentTimeEnd) {
         this.appointmentPatientId = appointmentPatientId;
         this.appointmentDoctorId = appointmentDoctorId;
         this.appointmentDate = appointmentDate;
@@ -47,11 +48,11 @@ public class Appointment {
     }
 
     @Column(name = "appointment_patient_id", nullable = false)
-    public long getAppointmentPatientId() {
+    public String getAppointmentPatientId() {
         return this.appointmentPatientId;
     }
 
-    public void setAppointmentPatientId(long appointmentPatientId) {
+    public void setAppointmentPatientId(String appointmentPatientId) {
         this.appointmentPatientId = appointmentPatientId;
     }
 
@@ -109,19 +110,18 @@ public class Appointment {
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " appointmentId='" + getAppointmentId() + "'" +
-            ", appointmentPatientId='" + getAppointmentPatientId() + "'" +
-            ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
-            ", appointmentDate='" + getAppointmentDate() + "'" +
-            ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
-            ", appointmentScheduleId='" + getAppointmentScheduleId() + "'" +
-            ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
-            ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
-            "}";
+                " appointmentId='" + getAppointmentId() + "'" +
+                ", appointmentPatientId='" + getAppointmentPatientId() + "'" +
+                ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
+                ", appointmentDate='" + getAppointmentDate() + "'" +
+                ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
+                ", appointmentScheduleId='" + getAppointmentScheduleId() + "'" +
+                ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
+                ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
+                "}";
     }
 
 }
