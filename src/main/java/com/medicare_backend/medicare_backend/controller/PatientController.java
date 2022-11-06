@@ -33,8 +33,8 @@ public class PatientController {
         }
     }
 
-    @GetMapping(path = "/patients/findbyId/{id}") // mockup
-    public ResponseEntity<?> getAppointmentById(@PathVariable("id") Long patientHNId) {
+    @GetMapping(path = "/patients/findbyId/{id}")
+    public ResponseEntity<?> getPatientmentById(@PathVariable("id") String patientHNId) {
         Optional<Patient> data = patientService.getPatientById(patientHNId);
         if (data.isPresent()) {
             return ResponseEntity.ok().body(data);
@@ -43,10 +43,28 @@ public class PatientController {
         }
     }
 
-    @ExceptionHandler(Exception.class)
     @PostMapping(path = "/addpatients")
-    public Patient createPatient(@RequestBody Patient patient) {
-        return patientRepository.save(patient);
+    public ResponseEntity<?> createPatient(@RequestBody Patient patient) {
+        try {
+            patientService.createPatient(patient);
+            return ResponseEntity.ok().body(patient);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(500).body(patient);
+        }
+    }
+
+    @PutMapping(path = "/updatePatient/{id}")
+    public ResponseEntity<Patient> updatePatient(@PathVariable String id, @RequestBody Patient patient) {
+        try {
+            Patient _patient = patientService.updatePatient(id, patient);
+            Patient updatePatient = patientRepository.save(_patient);
+            return ResponseEntity.ok().body(updatePatient);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(500).body(patient);
+        }
 
     }
+
 }

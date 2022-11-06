@@ -7,16 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ControllerAdvice
-public class Handler {
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class Handler extends RuntimeException {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handle(Exception ex,
-            HttpServletRequest request, HttpServletResponse response) {
-        if (ex instanceof NullPointerException) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    private static final long serialVersionUID = 1L;
+
+    public Handler(String message) {
+        super(message);
     }
+
 }
