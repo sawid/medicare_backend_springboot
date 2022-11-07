@@ -10,19 +10,20 @@ import javax.persistence.*;
 public class Appointment {
 
     private long appointmentId;
-    private int appointmentPatientId;
-    private int appointmentDoctorId;
+    private String appointmentPatientId;
+    private long appointmentDoctorId;
     private LocalDate appointmentDate;
     private String appiontmentLocation;
-    private int appointmentScheduleId;
+    private long appointmentScheduleId;
     private LocalDateTime appiontmentTimeStart;
     private LocalDateTime appiontmentTimeEnd;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getAppointmentId() {
+    public long getAppointmentId() {
         return appointmentId;
     }
+
     public void setAppointmentId(long id) {
         this.appointmentId = id;
     }
@@ -30,13 +31,13 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int appointmentPatientId, 
-                    int appointmentDoctorId, 
-                    LocalDate appointmentDate, 
-                    String appiontmentLocation, 
-                    int appointmentScheduleId, 
-                    LocalDateTime appiontmentTimeStart, 
-                    LocalDateTime appiontmentTimeEnd) {
+    public Appointment(String appointmentPatientId,
+            long appointmentDoctorId,
+            LocalDate appointmentDate,
+            String appiontmentLocation,
+            long appointmentScheduleId,
+            LocalDateTime appiontmentTimeStart,
+            LocalDateTime appiontmentTimeEnd) {
         this.appointmentPatientId = appointmentPatientId;
         this.appointmentDoctorId = appointmentDoctorId;
         this.appointmentDate = appointmentDate;
@@ -47,20 +48,20 @@ public class Appointment {
     }
 
     @Column(name = "appointment_patient_id", nullable = false)
-    public int getAppointmentPatientId() {
+    public String getAppointmentPatientId() {
         return this.appointmentPatientId;
     }
 
-    public void setAppointmentPatientId(int appointmentPatientId) {
+    public void setAppointmentPatientId(String appointmentPatientId) {
         this.appointmentPatientId = appointmentPatientId;
     }
 
     @Column(name = "appointment_doctor_id", nullable = false)
-    public int getAppointmentDoctorId() {
+    public long getAppointmentDoctorId() {
         return this.appointmentDoctorId;
     }
 
-    public void setAppointmentDoctorId(int appointmentDoctorId) {
+    public void setAppointmentDoctorId(long appointmentDoctorId) {
         this.appointmentDoctorId = appointmentDoctorId;
     }
 
@@ -83,11 +84,11 @@ public class Appointment {
     }
 
     @Column(name = "appointment_schedule_id", nullable = false)
-    public int getAppointmentScheduleId() {
+    public long getAppointmentScheduleId() {
         return this.appointmentScheduleId;
     }
 
-    public void setAppointmentScheduleId(int appointmentScheduleId) {
+    public void setAppointmentScheduleId(long appointmentScheduleId) {
         this.appointmentScheduleId = appointmentScheduleId;
     }
 
@@ -109,19 +110,18 @@ public class Appointment {
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " appointmentId='" + getAppointmentId() + "'" +
-            ", appointmentPatientId='" + getAppointmentPatientId() + "'" +
-            ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
-            ", appointmentDate='" + getAppointmentDate() + "'" +
-            ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
-            ", appointmentScheduleId='" + getAppointmentScheduleId() + "'" +
-            ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
-            ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
-            "}";
+                " appointmentId='" + getAppointmentId() + "'" +
+                ", appointmentPatientId='" + getAppointmentPatientId() + "'" +
+                ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
+                ", appointmentDate='" + getAppointmentDate() + "'" +
+                ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
+                ", appointmentScheduleId='" + getAppointmentScheduleId() + "'" +
+                ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
+                ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
+                "}";
     }
 
 }
