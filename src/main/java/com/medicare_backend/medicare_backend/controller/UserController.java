@@ -58,6 +58,8 @@ public class UserController {
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
                     System.out.println(userQuery.get(0).getName());
                     String authToken = tokenService.generateJWTToken(userQuery.get(0).getName());
+                    String decodedjwt = tokenService.verifyJWTToken(authToken);
+                    System.out.println(decodedjwt);
                     returnString = authToken;
                     return returnString;
                 }
