@@ -55,8 +55,8 @@ public class TokenAuthenticationService {
         } catch (Exception e) {
             System.out.println(e);
             // TODO: handle exception
+            return "error";
         }
-        return "";
     }
 
 }

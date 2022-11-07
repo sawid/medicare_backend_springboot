@@ -1,5 +1,7 @@
 package com.medicare_backend.medicare_backend.schema.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,79 +9,130 @@ import javax.persistence.*;
 public class User {
     
     private long id;
-    private String name;
-    private String emailId;
-    private String passwordId;
-    private String phoneNumber;
-    private String identificationNumber;
- 
-    public User() {
-  
-    }
- 
-    public User(String name, String emailId, String passwordId, String phoneNumber, String identificationNumber) {
-         this.name = name;
-         this.emailId = emailId;
-         this.passwordId = passwordId;
-         this.phoneNumber = phoneNumber;
-         this.identificationNumber = identificationNumber;
-    }
- 
+    private String patientHNId;
+    private String patientFirstName;
+    private String patientMiddleName;
+    private String patientLastName;
+    private String patientNationalId;
+    private String patientPhoneNumber;
+    private LocalDateTime patientBirthDate;
+    private String patientLocation;
+    private Long patientBloodType;
+    private Long patientGender;
+    private String patientPassword;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getId() {
-        return id;
+    public long getId() {
+        return this.id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
- 
-    @Column(name = "name", nullable = false)
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
- 
-    @Column(name = "email_address", nullable = false)
-    public String getEmailId() {
-        return emailId;
-    }
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
+
+    @Column(name = "patientHNId", nullable = false)
+    public String getPatientHNId() {
+        return this.patientHNId;
     }
 
-    @Column(name = "password_id", nullable = false)
-    public String getPasswordId() {
-        return passwordId;
+    public void setPatientHNId(String patientHNId) {
+        this.patientHNId = patientHNId;
     }
 
-    public void setPasswordId(String passwordId) {
-        this.passwordId = passwordId;
+    @Column(name = "patientFirstName", nullable = false)
+    public String getPatientFirstName() {
+        return this.patientFirstName;
     }
 
-    @Column(name = "phoneNumber", nullable = false)
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public void setPatientFirstName(String patientFirstName) {
+        this.patientFirstName = patientFirstName;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    @Column(name = "patientMiddleName")
+    public String getPatientMiddleName() {
+        return this.patientMiddleName;
     }
 
-    @Column(name = "identificationNumber", nullable = false)
-    public String getIdentificationNumber() {
-        return identificationNumber;
+    public void setPatientMiddleName(String patientMiddleName) {
+        this.patientMiddleName = patientMiddleName;
     }
 
-    public void setIdentificationNumber(String identificationNumber) {
-        this.identificationNumber = identificationNumber;
+    @Column(name = "patientLastName", nullable = false)
+    public String getPatientLastName() {
+        return this.patientLastName;
+    }
+
+    public void setPatientLastName(String patientLastName) {
+        this.patientLastName = patientLastName;
+    }
+
+    @Column(name = "patientNationalId", nullable = false)
+    public String getPatientNationalId() {
+        return this.patientNationalId;
+    }
+
+    public void setPatientNationalId(String patientNationalId) {
+        this.patientNationalId = patientNationalId;
+    }
+
+    @Column(name = "patientPhoneNumber", nullable = false)
+    public String getPatientPhoneNumber() {
+        return this.patientPhoneNumber;
+    }
+
+    public void setPatientPhoneNumber(String patientPhoneNumber) {
+        this.patientPhoneNumber = patientPhoneNumber;
+    }
+
+    @Column(name = "patientBirthDate", nullable = false)
+    public LocalDateTime getPatientBirthDate() {
+        return this.patientBirthDate;
+    }
+
+    public void setPatientBirthDate(LocalDateTime patientBirthDate) {
+        this.patientBirthDate = patientBirthDate;
+    }
+
+    @Column(name = "patientLocation", nullable = false)
+    public String getPatientLocation() {
+        return this.patientLocation;
+    }
+
+    public void setPatientLocation(String patientLocation) {
+        this.patientLocation = patientLocation;
+    }
+
+    @Column(name = "patientBloodType", nullable = false)
+    public Long getPatientBloodType() {
+        return this.patientBloodType;
+    }
+
+    public void setPatientBloodType(Long patientBloodType) {
+        this.patientBloodType = patientBloodType;
+    }
+
+    @Column(name = "patientGender", nullable = false)
+    public Long getPatientGender() {
+        return this.patientGender;
+    }
+
+    public void setPatientGender(Long patientGender) {
+        this.patientGender = patientGender;
+    }
+
+    @Column(name = "patientPassword", nullable = false)
+    public String getPatientPassword() {
+        return patientPassword;
+    }
+
+    public void setPatientPassword(String patientPassword) {
+        this.patientPassword = patientPassword;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", name=" + name + ", emailId=" + emailId
+        return "User [id=" + id + ", name=" + patientFirstName + ", emailId=" + patientHNId
        + "]";
     }
 
