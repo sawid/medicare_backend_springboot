@@ -4,6 +4,7 @@ package com.medicare_backend.medicare_backend.route;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.medicare_backend.medicare_backend.controller.UserController;
 import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.schema.request.AddTask;
 
@@ -29,23 +30,23 @@ public class UserRoute {
     
 
 
-    @GetMapping("/users")
-    public ResponseEntity<?> getListUser() {
-        List<User> data = userService.getListUser();
-        if (!(data != null && data.isEmpty())) {
-            return ResponseEntity.ok().body(data);
-        } else {
-            return ResponseEntity.status(500).body("User List Not Found");
-        }
-    }
+    // @GetMapping("/users")
+    // public ResponseEntity<?> getListUser() {
+    //     List<User> data = userService.getListUser();
+    //     if (!(data != null && data.isEmpty())) {
+    //         return ResponseEntity.ok().body(data);
+    //     } else {
+    //         return ResponseEntity.status(500).body("User List Not Found");
+    //     }
+    // }
 
-    @GetMapping("/users/findUserById/{id}")
-    public Optional<User> getUserByOneUser(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
-    }
+    // @GetMapping("/users/findUserById/{id}")
+    // public Optional<User> getUserByOneUser(@PathVariable("id") Long id) {
+    //     return userService.getUserById(id);
+    // }
 
-    @PostMapping("/users")
-    public ResponseEntity<?> registerNewUser(@RequestBody User user) {
+    @PostMapping("/users/register")
+    public ResponseEntity<?> registerNewUser(@RequestBody Patient user) {
         String data = userService.registerUser(user);
         if (data == "Register Success") {
             return ResponseEntity.ok().body(data);
@@ -66,16 +67,16 @@ public class UserRoute {
         
     }
 
-    @PostMapping("/authtication/addtask")
-    public String userAddTask(@RequestHeader("authtoken") String authtoken, @RequestBody AddTask task) {
-        try {
-            String dataLogin = userService.addTaskData(authtoken);
-            return dataLogin;
-        } catch (InvalidParameterException e) {
-            return "Token InValid";
-        }
+    // @PostMapping("/authtication/addtask")
+    // public String userAddTask(@RequestHeader("authtoken") String authtoken, @RequestBody AddTask task) {
+    //     try {
+    //         String dataLogin = userService.addTaskData(authtoken);
+    //         return dataLogin;
+    //     } catch (InvalidParameterException e) {
+    //         return "Token InValid";
+    //     }
         
-    }
+    // }
 
 
 }

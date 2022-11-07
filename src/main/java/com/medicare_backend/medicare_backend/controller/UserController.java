@@ -1,7 +1,9 @@
 package com.medicare_backend.medicare_backend.controller;
 
+import com.medicare_backend.medicare_backend.repository.PatientRepository;
 import com.medicare_backend.medicare_backend.repository.UserRepository;
 import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
@@ -18,8 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserController {
     
+    // @Autowired
+    // private UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    private PatientRepository patientRepository;
 
     private AuthenticationService authservice;
 
@@ -27,16 +32,16 @@ public class UserController {
 
     // Method User
 
-    public String registerUser(User user) {
+    public String registerUser(Patient user) {
         String returnString = "";
         try {
-            List<User> userIsMatch = userRepository.findByName(user.getName());
+            List<Patient> userIsMatch = patientRepository.findByPatientNationalId(user.getPatientNationalId());
             System.out.println(userIsMatch);
             if (userIsMatch != null && userIsMatch.isEmpty()) {
                 System.out.println(userIsMatch);
-                byte[] hash = authservice.getEncryptedPassword(user.getPasswordId(), "salt".getBytes());
-                user.setPasswordId(authservice.bytesToHex(hash));
-                userRepository.save(user);
+                byte[] hash = authservice.getEncryptedPassword(user.getPatientPassword(), "salt".getBytes());
+                user.setPatientPassword(authservice.bytesToHex(hash));
+                patientRepository.save(user);
                 returnString = "Register Success";
             } else {
                 returnString = "Already User";
@@ -51,15 +56,15 @@ public class UserController {
     public String loginUser(Authentication auth) {
         String returnString = "";
         try {
-            List<User> userQuery = userRepository.findByIdentificationNumber(auth.getUsername());
+            List<Patient> userQuery = patientRepository.findByPatientNationalId(auth.getUsername());
             if (!(userQuery != null && userQuery.isEmpty())) {
-                String userPassword = userQuery.get(0).getPasswordId();
+                String userPassword = userQuery.get(0).getPatientPassword();
                 byte[] passwordToByte = authservice.hexToByte(userPassword);
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
-                    System.out.println(userQuery.get(0).getName());
-                    String authToken = tokenService.generateJWTToken(userQuery.get(0).getName());
-                    String decodedjwt = tokenService.verifyJWTToken(authToken);
-                    System.out.println(decodedjwt);
+                    System.out.println(userQuery.get(0).getpatientHNId());
+                    String authToken = tokenService.generateJWTToken(userQuery.get(0).getpatientHNId());
+                    // String decodedjwt = tokenService.verifyJWTToken(authToken);
+                    // System.out.println(decodedjwt);
                     returnString = authToken;
                     return returnString;
                 }
@@ -79,24 +84,24 @@ public class UserController {
         return "Error";
     }
 
-    public List<User> getListUser() {
-        List<User> user = new ArrayList<User>();
-        try {
-            user = userRepository.findAll();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return user;
-    }
+    // public List<User> getListUser() {
+    //     List<User> user = new ArrayList<User>();
+    //     try {
+    //         user = userRepository.findAll();
+    //     } catch (Exception e) {
+    //         System.out.println(e);
+    //     }
+    //     return user;
+    // }
 
-    public Optional<User> getUserById(Long userId) {
-        return userRepository.findById(userId);
-    }
+    // public Optional<User> getUserById(Long userId) {
+    //     return userRepository.findById(userId);
+    // }
 
-    public String addTaskData(String authtoken) {
-        String atoken = authservice.verifyJWTToken(authtoken);
-        return atoken;
-    }
+    // public String addTaskData(String authtoken) {
+    //     String atoken = authservice.verifyJWTToken(authtoken);
+    //     return atoken;
+    // }
 
     // Method Function
 }
