@@ -3,42 +3,54 @@ package com.medicare_backend.medicare_backend.schema.entity;
 import java.time.LocalDate;
 
 import javax.persistence.*;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.medicare_backend.medicare_backend.service.CustomIdGenerate;
 
 @Entity
 @Table(name = "patient")
 public class Patient {
-    private long patientHNId;
+
+    private String patientHNId;
     private String patientFirstName;
     private String patientMiddleName;
     private String patientLastName;
     private String patientNationalId;
     private String patientPhoneNumber;
+    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate patientBirthDate;
     private String patientLocation;
     private int patientBloodType;
     private int patientGender;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public long getpatientHNId() {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_seq")
+    @GenericGenerator(name = "patient_seq", strategy = "com.medicare_backend.medicare_backend.service.CustomIdGenerate", parameters = {
+            @Parameter(name = CustomIdGenerate.INCREMENT_PARAM, value = "50"),
+            @Parameter(name = CustomIdGenerate.VALUE_PREFIX_PARAMETER, value = ""),
+            @Parameter(name = CustomIdGenerate.NUMBER_FORMAT_PARAMETER, value = "%07d")
+    })
+    public String getpatientHNId() {
         return patientHNId;
     }
-    public void setpatientHNId(long id) {
+
+    public void setpatientHNId(String id) {
         this.patientHNId = id;
     }
 
     public Patient() {
     }
 
-    public Patient( String patientFirstName, 
-                    String patientMiddleName, 
-                    String patientLastName, 
-                    String patientNationalId, 
-                    String patientPhoneNumber, 
-                    LocalDate patientBirthDate, 
-                    String patientLocation, 
-                    int patientBloodType, 
-                    int patientGender) {
+    public Patient(String patientFirstName,
+            String patientMiddleName,
+            String patientLastName,
+            String patientNationalId,
+            String patientPhoneNumber,
+            LocalDate patientBirthDate,
+            String patientLocation,
+            int patientBloodType,
+            int patientGender) {
         this.patientFirstName = patientFirstName;
         this.patientMiddleName = patientMiddleName;
         this.patientLastName = patientLastName;
@@ -59,7 +71,7 @@ public class Patient {
         this.patientFirstName = patientFirstName;
     }
 
-    @Column(name = "patient_middle_name", nullable = false)
+    @Column(name = "patient_middle_name")
     public String getPatientMiddleName() {
         return this.patientMiddleName;
     }
@@ -129,6 +141,15 @@ public class Patient {
 
     public void setPatientGender(int patientGender) {
         this.patientGender = patientGender;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient [patientHNId=" + patientHNId + ", patientFirstName=" + patientFirstName + ", patientMiddleName="
+                + patientMiddleName + ", patientLastName=" + patientLastName + ", patientNationalId="
+                + patientNationalId + ", patientPhoneNumber=" + patientPhoneNumber + ", patientBirthDate="
+                + patientBirthDate + ", patientLocation=" + patientLocation + ", patientBloodType=" + patientBloodType
+                + ", patientGender=" + patientGender + "]";
     }
 
 }
