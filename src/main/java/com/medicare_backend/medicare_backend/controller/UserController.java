@@ -2,7 +2,7 @@ package com.medicare_backend.medicare_backend.controller;
 
 import com.medicare_backend.medicare_backend.repository.PatientRepository;
 import com.medicare_backend.medicare_backend.repository.UserRepository;
-import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
@@ -62,10 +62,10 @@ public class UserController {
         
     }
 
-    public InternalPayload loginUser(Authentication auth) {
+    public InternalPayload loginUser(AuthenticationPatient auth) {
         try {
             
-            List<Patient> userQuery = patientRepository.findByPatientNationalId(auth.getUsername());
+            List<Patient> userQuery = patientRepository.findByPatientNationalId(auth.getNationalCardId());
             if (!(userQuery != null && userQuery.isEmpty())) {
                 String userPassword = userQuery.get(0).getPatientPassword();
                 byte[] passwordToByte = authservice.hexToByte(userPassword);

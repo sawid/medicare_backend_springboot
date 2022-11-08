@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
-import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
@@ -60,9 +60,9 @@ public class EmployeeController {
         }
     }
 
-    public InternalPayload loginEmployee(Authentication auth) {
+    public InternalPayload loginEmployee(AuthenticationPatient auth) {
         try {
-            List<Employee> userQuery = employeeRepository.findByEmployeeNationalId(auth.getUsername());
+            List<Employee> userQuery = employeeRepository.findByEmployeeNationalId(auth.getNationalCardId());
             if (!(userQuery != null && userQuery.isEmpty())) {
                 String userPassword = userQuery.get(0).getEmployeePassword();
                 byte[] passwordToByte = authservice.hexToByte(userPassword);

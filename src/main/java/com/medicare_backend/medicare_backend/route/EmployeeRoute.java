@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medicare_backend.medicare_backend.controller.EmployeeController;
-import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 
@@ -31,7 +31,7 @@ public class EmployeeRoute {
     }
 
     @PostMapping("/employee/login")
-    public ResponseEntity<?> loginToEmployee(@RequestBody Authentication auth) {
+    public ResponseEntity<?> loginToEmployee(@RequestBody AuthenticationPatient auth) {
         InternalPayload data = employeeController.loginEmployee(auth);
         if (data.getStatusCode() == "0") {
             return ResponseEntity.ok().body(data);

@@ -3,7 +3,7 @@ package com.medicare_backend.medicare_backend.route;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.medicare_backend.medicare_backend.controller.UserController;
-import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.schema.request.AddTask;
@@ -62,7 +62,7 @@ public class UserRoute {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<?> loginToUser(@RequestBody Authentication auth) {
+    public ResponseEntity<?> loginToUser(@RequestBody AuthenticationPatient auth) {
         InternalPayload data = userService.loginUser(auth);
         if (data.getStatusCode() == "0") {
             return ResponseEntity.ok().body(data);
