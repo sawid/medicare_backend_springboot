@@ -73,7 +73,13 @@ public class EmployeeController {
                     // System.out.println(decodedjwt);
                     Map<String,String> payload = new HashMap<String,String>();
                     payload.put("authtoken", authToken);
-                    payload.put("employeeName", userQuery.get(0).getEmployeeFirstName());
+                    payload.put("employeeFirstName", userQuery.get(0).getEmployeeFirstName());
+                    payload.put("employeeMiddleName", userQuery.get(0).getEmployeeMiddleName());
+                    payload.put("employeeLastName", userQuery.get(0).getEmployeeLastName());
+                    payload.put("employeeNationalId", userQuery.get(0).getEmployeeNationalId());
+                    payload.put("employeePhoneNumber", userQuery.get(0).getEmployeePhoneNumber());
+                    payload.put("employeeRole", "TempRole");
+                    payload.put("employeeDepartment", "TempDepartment");
                     InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
                     return returnPayload;
                 }

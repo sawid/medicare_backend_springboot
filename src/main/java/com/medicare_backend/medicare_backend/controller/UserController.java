@@ -9,6 +9,7 @@ import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,25 @@ public class UserController {
 
                     Map<String,String> payload = new HashMap<String,String>();
                     payload.put("authtoken", authToken);
-                    payload.put("patientName", userQuery.get(0).getPatientFirstName());
+                    payload.put("patientHNId", Long.toString(userQuery.get(0).getpatientHNId()));
+                    payload.put("patientFirstName", userQuery.get(0).getPatientFirstName());
+                    payload.put("patientMiddleName", userQuery.get(0).getPatientMiddleName());
+                    payload.put("patientLastName", userQuery.get(0).getPatientLastName());
+                    payload.put("patientNationalId", userQuery.get(0).getPatientNationalId());
+                    payload.put("patientPhoneNumber", userQuery.get(0).getPatientPhoneNumber());
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+                    String formattedString = (userQuery.get(0).getPatientBirthDate()).format(formatter);
+                    payload.put("patientBirthDate",formattedString);
+                    payload.put("patientLocation", userQuery.get(0).getPatientLocation());
+                    payload.put("patientBloodType", "Temp Blood Type");
+                    String patientGender = "";
+                    if (userQuery.get(0).getPatientGender() == 1) {
+                        patientGender = "male";
+                    }
+                    else {
+                        patientGender = "female";
+                    }
+                    payload.put("patientGender", patientGender);
                     InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
                     // String decodedjwt = tokenService.verifyJWTToken(authToken);
                     // System.out.println(decodedjwt);
