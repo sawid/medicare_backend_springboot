@@ -7,6 +7,7 @@ import com.medicare_backend.medicare_backend.schema.entity.Authentication;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.schema.request.AddTask;
+import com.medicare_backend.medicare_backend.service.InternalPayload;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -47,22 +48,22 @@ public class UserRoute {
 
     @PostMapping("/users/register")
     public ResponseEntity<?> registerNewUser(@RequestBody Patient user) {
-        String data = userService.registerUser(user);
-        if (data == "Register Success") {
-            return ResponseEntity.ok().body(data);
+        InternalPayload data = userService.registerUser(user);
+        if (data.getStatusCode() == "0") {
+            return ResponseEntity.ok().body(data.getStatusText());
         } else {
-            return ResponseEntity.status(500).body(data);
+            return ResponseEntity.status(500).body(data.getStatusText());
         }
         
     }
 
     @PostMapping("/users/login")
     public ResponseEntity<?> loginToUser(@RequestBody Authentication auth) {
-        String data = userService.loginUser(auth);
-        if (data != "Auth Failed") {
-            return ResponseEntity.ok().body(data);
+        InternalPayload data = userService.loginUser(auth);
+        if (data.getStatusCode() == "0") {
+            return ResponseEntity.ok().body(data.getPayload());
         } else {
-            return ResponseEntity.status(500).body(data);
+            return ResponseEntity.status(500).body(data.getStatusText());
         }
         
     }

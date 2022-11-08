@@ -6,6 +6,7 @@ import com.medicare_backend.medicare_backend.schema.entity.Authentication;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
+import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
 import java.util.ArrayList;
@@ -32,8 +33,9 @@ public class UserController {
 
     // Method User
 
-    public String registerUser(Patient user) {
-        String returnString = "";
+    public InternalPayload registerUser(Patient user) {
+        InternalPayload returnPayload = new InternalPayload("0", "Okay");
+        
         try {
             List<Patient> userIsMatch = patientRepository.findByPatientNationalId(user.getPatientNationalId());
             System.out.println(userIsMatch);
@@ -42,20 +44,28 @@ public class UserController {
                 byte[] hash = authservice.getEncryptedPassword(user.getPatientPassword(), "salt".getBytes());
                 user.setPatientPassword(authservice.bytesToHex(hash));
                 patientRepository.save(user);
-                returnString = "Register Success";
+                returnPayload.setStatusCode("0");
+                returnPayload.setStatusText("Register Success");
+                return returnPayload;
             } else {
-                returnString = "Already User";
+                returnPayload.setStatusCode("1");
+                returnPayload.setStatusText("Already User");
+                return returnPayload;
             }
             
         } catch (Exception e) {
             System.out.println(e);
+            returnPayload.setStatusCode("1");
+            returnPayload.setStatusText("Error On System");
+            return returnPayload;
         }
-        return returnString;
+        
     }
 
-    public String loginUser(Authentication auth) {
+    public InternalPayload loginUser(Authentication auth) {
         String returnString = "";
         try {
+            
             List<Patient> userQuery = patientRepository.findByPatientNationalId(auth.getUsername());
             if (!(userQuery != null && userQuery.isEmpty())) {
                 String userPassword = userQuery.get(0).getPatientPassword();
@@ -63,25 +73,33 @@ public class UserController {
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
                     System.out.println(userQuery.get(0).getpatientHNId());
                     String authToken = tokenService.generateJWTToken(userQuery.get(0).getpatientHNId());
+
+                    Map<String,String> payload = new HashMap<String,String>();
+                    payload.put("authtoken", authToken);
+                    payload.put("patientname", userQuery.get(0).getPatientFirstName());
+                    InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
                     // String decodedjwt = tokenService.verifyJWTToken(authToken);
                     // System.out.println(decodedjwt);
-                    returnString = authToken;
-                    return returnString;
+                    return returnPayload;
                 }
                 else {
-                    returnString = "Auth Failed";
+                    InternalPayload returnPayload = new InternalPayload("1", "Auth Failed");
+                    return returnPayload;
                 }
             }
             else {
-                returnString = "User Not Found";
+                InternalPayload returnPayload = new InternalPayload("1", "User Not Found");
+                return returnPayload;
             }
             
-            return returnString;
+            
         } catch (Exception e) {
             System.out.println(e);
+            InternalPayload returnPayload = new InternalPayload("1", "Server Error");
+            return returnPayload;
             // TODO: handle exception
         }
-        return "Error";
+        
     }
 
     // public List<User> getListUser() {
