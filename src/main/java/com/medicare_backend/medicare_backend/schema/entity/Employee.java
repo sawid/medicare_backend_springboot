@@ -10,28 +10,31 @@ public class Employee {
     private String employeeFirstName;
     private String employeeMiddleName;
     private String employeeLastName;
+    private String employeeNationalId;
     private boolean employeeIsAdmin;
     private String employeePhoneNumber;
     private long employeeRole;
     private long employeeDepartment;
+    private String employeePassword;
 
     public Employee() {
 
     }
 
     public Employee(long employeeId, String employeeFirstName, String employeeMiddleName,
-            String employeeLastName, boolean employeeIsAdmin, String employeePhoneNumber,
-            long employeeRole, long employeeDepartment) {
+            String employeeLastName, String employeeNationalId, boolean employeeIsAdmin, String employeePhoneNumber,
+            long employeeRole, long employeeDepartment, String employeePassword) {
 
         this.employeeId = employeeId;
         this.employeeFirstName = employeeFirstName;
         this.employeeMiddleName = employeeMiddleName;
         this.employeeLastName = employeeLastName;
+        this.employeeNationalId = employeeNationalId;
         this.employeeIsAdmin = employeeIsAdmin;
         this.employeePhoneNumber = employeePhoneNumber;
         this.employeeRole = employeeRole;
         this.employeeDepartment = employeeDepartment;
-
+        this.employeePassword = employeePassword;
     }
 
     @Id
@@ -71,6 +74,15 @@ public class Employee {
         this.employeeLastName = employeeLastName;
     }
 
+    @Column(name = "employeeNationalId", nullable = false)
+    public String getEmployeeNationalId() {
+        return employeeNationalId;
+    }
+
+    public void setEmployeeNationalId(String employeeNationalId) {
+        this.employeeNationalId = employeeNationalId;
+    }
+
     @Column(name = "employeeIsAdmin", nullable = false)
     public boolean getEmployeeIsAdmin() {
         return this.employeeIsAdmin;
@@ -106,4 +118,14 @@ public class Employee {
     public void setEmployeeDepartment(long employeeDepartment){
         this.employeeDepartment = employeeDepartment;
     }
+
+    @Column(name = "employeePassword", nullable = false)
+    public String getEmployeePassword() {
+        return employeePassword;
+    }
+
+    public void setEmployeePassword(String employeePassword) {
+        this.employeePassword = employeePassword;
+    }
+
 }

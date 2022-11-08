@@ -3,9 +3,11 @@ package com.medicare_backend.medicare_backend.route;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.medicare_backend.medicare_backend.controller.UserController;
-import com.medicare_backend.medicare_backend.schema.entity.Authentication;
+import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
+import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.schema.request.AddTask;
+import com.medicare_backend.medicare_backend.service.InternalPayload;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -29,53 +31,61 @@ public class UserRoute {
     
 
 
-    @GetMapping("/users")
-    public ResponseEntity<?> getListUser() {
-        List<User> data = userService.getListUser();
-        if (!(data != null && data.isEmpty())) {
+    // @GetMapping("/users")
+    // public ResponseEntity<?> getListUser() {
+    //     List<User> data = userService.getListUser();
+    //     if (!(data != null && data.isEmpty())) {
+    //         return ResponseEntity.ok().body(data);
+    //     } else {
+    //         return ResponseEntity.status(500).body("User List Not Found");
+    //     }
+    // }
+
+    // @GetMapping("/users/findUserById/{id}")
+    // public Optional<User> getUserByOneUser(@PathVariable("id") Long id) {
+    //     return userService.getUserById(id);
+    // }
+
+    @PostMapping("/users/register")
+    public ResponseEntity<?> registerNewUser(@RequestBody Patient user) {
+        InternalPayload data = userService.registerUser(user);
+        if (data.getStatusCode() == "0") {
             return ResponseEntity.ok().body(data);
-        } else {
-            return ResponseEntity.status(500).body("User List Not Found");
         }
-    }
-
-    @GetMapping("/users/findUserById/{id}")
-    public Optional<User> getUserByOneUser(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
-    }
-
-    @PostMapping("/users")
-    public ResponseEntity<?> registerNewUser(@RequestBody User user) {
-        String data = userService.registerUser(user);
-        if (data == "Register Success") {
-            return ResponseEntity.ok().body(data);
-        } else {
+        else if (data.getStatusCode() == "1") {
+            return ResponseEntity.status(400).body(data);
+        } 
+        else {
             return ResponseEntity.status(500).body(data);
         }
         
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<?> loginToUser(@RequestBody Authentication auth) {
-        String data = userService.loginUser(auth);
-        if (data != "Auth Failed") {
+    public ResponseEntity<?> loginToUser(@RequestBody AuthenticationPatient auth) {
+        InternalPayload data = userService.loginUser(auth);
+        if (data.getStatusCode() == "0") {
             return ResponseEntity.ok().body(data);
-        } else {
+        } 
+        else if (data.getStatusCode() == "1") {
+            return ResponseEntity.status(400).body(data);
+        }
+        else {
             return ResponseEntity.status(500).body(data);
         }
         
     }
 
-    @PostMapping("/authtication/addtask")
-    public String userAddTask(@RequestHeader("authtoken") String authtoken, @RequestBody AddTask task) {
-        try {
-            String dataLogin = userService.addTaskData(authtoken);
-            return dataLogin;
-        } catch (InvalidParameterException e) {
-            return "Token InValid";
-        }
+    // @PostMapping("/authtication/addtask")
+    // public String userAddTask(@RequestHeader("authtoken") String authtoken, @RequestBody AddTask task) {
+    //     try {
+    //         String dataLogin = userService.addTaskData(authtoken);
+    //         return dataLogin;
+    //     } catch (InvalidParameterException e) {
+    //         return "Token InValid";
+    //     }
         
-    }
+    // }
 
 
 }

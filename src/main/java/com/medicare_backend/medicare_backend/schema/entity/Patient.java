@@ -23,6 +23,7 @@ public class Patient {
     private String patientLocation;
     private int patientBloodType;
     private int patientGender;
+    private String patientPassword;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_seq")
@@ -50,7 +51,8 @@ public class Patient {
             LocalDate patientBirthDate,
             String patientLocation,
             int patientBloodType,
-            int patientGender) {
+            int patientGender,
+            String patientPassword) {
         this.patientFirstName = patientFirstName;
         this.patientMiddleName = patientMiddleName;
         this.patientLastName = patientLastName;
@@ -60,6 +62,7 @@ public class Patient {
         this.patientLocation = patientLocation;
         this.patientBloodType = patientBloodType;
         this.patientGender = patientGender;
+        this.patientPassword = patientPassword;
     }
 
     @Column(name = "patient_first_name", nullable = false)
@@ -141,6 +144,15 @@ public class Patient {
 
     public void setPatientGender(int patientGender) {
         this.patientGender = patientGender;
+    }
+
+    @Column(name = "patient_password", nullable = false)
+    public String getPatientPassword() {
+        return patientPassword;
+    }
+
+    public void setPatientPassword(String patientPassword) {
+        this.patientPassword = patientPassword;
     }
 
     @Override
