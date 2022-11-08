@@ -19,7 +19,7 @@ public class EmployeeRoute {
     private EmployeeController employeeController;
     
     @PostMapping("/employee/register")
-    public ResponseEntity<?> registerNewUser(@RequestHeader("authtoken") String authtoken, @RequestBody Employee user) {
+    public ResponseEntity<?> registerEmployee(@RequestHeader("authtoken") String authtoken, @RequestBody Employee user) {
         String data = employeeController.registerEmployee(authtoken, user);
         if (data == "Register Success") {
             return ResponseEntity.ok().body(data);
