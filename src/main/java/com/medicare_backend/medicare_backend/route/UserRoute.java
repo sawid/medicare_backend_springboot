@@ -50,9 +50,13 @@ public class UserRoute {
     public ResponseEntity<?> registerNewUser(@RequestBody Patient user) {
         InternalPayload data = userService.registerUser(user);
         if (data.getStatusCode() == "0") {
-            return ResponseEntity.ok().body(data.getStatusText());
-        } else {
-            return ResponseEntity.status(500).body(data.getStatusText());
+            return ResponseEntity.ok().body(data);
+        }
+        else if (data.getStatusCode() == "1") {
+            return ResponseEntity.status(400).body(data);
+        } 
+        else {
+            return ResponseEntity.status(500).body(data);
         }
         
     }
@@ -61,9 +65,13 @@ public class UserRoute {
     public ResponseEntity<?> loginToUser(@RequestBody Authentication auth) {
         InternalPayload data = userService.loginUser(auth);
         if (data.getStatusCode() == "0") {
-            return ResponseEntity.ok().body(data.getPayload());
-        } else {
-            return ResponseEntity.status(500).body(data.getStatusText());
+            return ResponseEntity.ok().body(data);
+        } 
+        else if (data.getStatusCode() == "1") {
+            return ResponseEntity.status(400).body(data);
+        }
+        else {
+            return ResponseEntity.status(500).body(data);
         }
         
     }

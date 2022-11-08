@@ -1,6 +1,7 @@
 package com.medicare_backend.medicare_backend.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +10,10 @@ public class InternalPayload {
     private ArrayList<Object> payload = new ArrayList<>();
 
     public InternalPayload (String statusCode, String statusText) {
+        Map<String, String> tempPayload = new HashMap<String, String>();
         payload.add(statusCode);
         payload.add(statusText);
+        payload.add(tempPayload);
     }
 
     public InternalPayload (String statusCode, String statusText, Map<String,String>  payload) {

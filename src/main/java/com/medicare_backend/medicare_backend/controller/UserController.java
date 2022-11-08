@@ -34,7 +34,7 @@ public class UserController {
     // Method User
 
     public InternalPayload registerUser(Patient user) {
-        InternalPayload returnPayload = new InternalPayload("0", "Okay");
+        
         
         try {
             List<Patient> userIsMatch = patientRepository.findByPatientNationalId(user.getPatientNationalId());
@@ -44,26 +44,25 @@ public class UserController {
                 byte[] hash = authservice.getEncryptedPassword(user.getPatientPassword(), "salt".getBytes());
                 user.setPatientPassword(authservice.bytesToHex(hash));
                 patientRepository.save(user);
-                returnPayload.setStatusCode("0");
-                returnPayload.setStatusText("Register Success");
+                
+                InternalPayload returnPayload = new InternalPayload("0", "Register Success");
                 return returnPayload;
             } else {
-                returnPayload.setStatusCode("1");
-                returnPayload.setStatusText("Already User");
+                
+                InternalPayload returnPayload = new InternalPayload("1", "Already User");
                 return returnPayload;
             }
             
         } catch (Exception e) {
             System.out.println(e);
-            returnPayload.setStatusCode("1");
-            returnPayload.setStatusText("Error On System");
+                
+                InternalPayload returnPayload = new InternalPayload("2", "Error On System");
             return returnPayload;
         }
         
     }
 
     public InternalPayload loginUser(Authentication auth) {
-        String returnString = "";
         try {
             
             List<Patient> userQuery = patientRepository.findByPatientNationalId(auth.getUsername());
@@ -95,7 +94,7 @@ public class UserController {
             
         } catch (Exception e) {
             System.out.println(e);
-            InternalPayload returnPayload = new InternalPayload("1", "Server Error");
+            InternalPayload returnPayload = new InternalPayload("2", "Server Error");
             return returnPayload;
             // TODO: handle exception
         }

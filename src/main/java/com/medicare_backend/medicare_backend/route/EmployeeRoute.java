@@ -23,9 +23,9 @@ public class EmployeeRoute {
     public ResponseEntity<?> registerEmployee(@RequestHeader("authtoken") String authtoken, @RequestBody Employee user) {
         InternalPayload data = employeeController.registerEmployee(authtoken, user);
         if (data.getStatusCode() == "0") {
-            return ResponseEntity.ok().body(data.getStatusText());
+            return ResponseEntity.ok().body(data);
         } else {
-            return ResponseEntity.status(500).body(data.getStatusText());
+            return ResponseEntity.status(500).body(data);
         }
         
     }
@@ -34,9 +34,9 @@ public class EmployeeRoute {
     public ResponseEntity<?> loginToEmployee(@RequestBody Authentication auth) {
         InternalPayload data = employeeController.loginEmployee(auth);
         if (data.getStatusCode() == "0") {
-            return ResponseEntity.ok().body(data.getPayload());
+            return ResponseEntity.ok().body(data);
         } else {
-            return ResponseEntity.status(500).body(data.getStatusText());
+            return ResponseEntity.status(500).body(data);
         }
         
     }
