@@ -76,7 +76,7 @@ public class UserController {
 
                     Map<String,String> payload = new HashMap<String,String>();
                     payload.put("authtoken", authToken);
-                    payload.put("patientname", userQuery.get(0).getPatientFirstName());
+                    payload.put("patientName", userQuery.get(0).getPatientFirstName());
                     InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
                     // String decodedjwt = tokenService.verifyJWTToken(authToken);
                     // System.out.println(decodedjwt);

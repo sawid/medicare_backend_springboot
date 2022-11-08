@@ -1,6 +1,8 @@
 package com.medicare_backend.medicare_backend.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.schema.entity.Authentication;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
+import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
 @Service
@@ -21,19 +24,22 @@ public class EmployeeController {
 
     private TokenAuthenticationService tokenService;
 
-    public String registerEmployee(String authtoken, Employee employee) {
+    public InternalPayload registerEmployee(String authtoken, Employee employee) {
         try {
             String authEmployeeID = tokenService.verifyJWTToken(authtoken);
             if (authEmployeeID == "error") {
-                return "Auth Time Out";
+                InternalPayload returnPayload = new InternalPayload("1", "Auth Time Out");
+                return returnPayload;
             }
             // System.out.println(authEmployeeID);
             List<Employee> adminIsMatch = employeeRepository.findByEmployeeNationalId(authEmployeeID);
             if (adminIsMatch != null && adminIsMatch.isEmpty()) {
-                return "Auth Employee not found";
+                InternalPayload returnPayload = new InternalPayload("1", "Auth Employee not found");
+                return returnPayload;
             }
             if (adminIsMatch.get(0).getEmployeeIsAdmin() != true) {
-                return "No Permission";
+                InternalPayload returnPayload = new InternalPayload("1", "No Permission");
+                return returnPayload;
             }
             List<Employee> employeeIsMatch = employeeRepository.findByEmployeeNationalId(employee.getEmployeeNationalId());
             if (employeeIsMatch != null && employeeIsMatch.isEmpty()) {
@@ -41,18 +47,20 @@ public class EmployeeController {
                 byte[] hash = authservice.getEncryptedPassword(employee.getEmployeePassword(), "salt".getBytes());
                 employee.setEmployeePassword(authservice.bytesToHex(hash));
                 employeeRepository.save(employee);
-                return "Register Success";
+                InternalPayload returnPayload = new InternalPayload("0", "Register Success");
+                return returnPayload;
             } else {
-                return "Already User";
+                InternalPayload returnPayload = new InternalPayload("1", "Already Exist Employee");
+                return returnPayload;
             }
         } catch (Exception e) {
             System.out.println(e);
-            return "Register Error";
+            InternalPayload returnPayload = new InternalPayload("1", "Server Error");
+            return returnPayload;
         }
     }
 
-    public String loginEmployee(Authentication auth) {
-        String returnString = "";
+    public InternalPayload loginEmployee(Authentication auth) {
         try {
             List<Employee> userQuery = employeeRepository.findByEmployeeNationalId(auth.getUsername());
             if (!(userQuery != null && userQuery.isEmpty())) {
@@ -63,23 +71,30 @@ public class EmployeeController {
                     String authToken = tokenService.generateJWTToken(userQuery.get(0).getEmployeeNationalId());
                     // String decodedjwt = tokenService.verifyJWTToken(authToken);
                     // System.out.println(decodedjwt);
-                    returnString = authToken;
-                    return returnString;
+                    Map<String,String> payload = new HashMap<String,String>();
+                    payload.put("authtoken", authToken);
+                    payload.put("employeeName", userQuery.get(0).getEmployeeFirstName());
+                    InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
+                    return returnPayload;
                 }
                 else {
-                    returnString = "Auth Failed";
+                    InternalPayload returnPayload = new InternalPayload("1", "Auth Failed");
+                    return returnPayload;
                 }
             }
             else {
-                returnString = "Employee Not Found";
+                InternalPayload returnPayload = new InternalPayload("1", "Employee Not Found");
+                return returnPayload;
             }
             
-            return returnString;
+
         } catch (Exception e) {
             System.out.println(e);
+            InternalPayload returnPayload = new InternalPayload("1", "Server Error");
+            return returnPayload;
             // TODO: handle exception
         }
-        return "Error";
+
     }
 
 }
