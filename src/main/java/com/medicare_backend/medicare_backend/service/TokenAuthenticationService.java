@@ -31,7 +31,7 @@ public class TokenAuthenticationService {
             final Date expirationDate = new Date(createdDate.getTime() + 100 * 1000);
             String jwtToken = JWT.create()
                     .withSubject("User Details")
-                    .withClaim("email", requestUser)
+                    .withClaim("authId", requestUser)
                     .withIssuedAt(new Date())
                     .withIssuer("codependa")
                     .withExpiresAt(expirationDate)
@@ -51,7 +51,7 @@ public class TokenAuthenticationService {
                     .withIssuer("codependa")
                     .build();
             DecodedJWT jwt = verifier.verify(tokenString);
-            return jwt.getClaim("email").asString();
+            return jwt.getClaim("authId").asString();
         } catch (Exception e) {
             System.out.println(e);
             // TODO: handle exception
