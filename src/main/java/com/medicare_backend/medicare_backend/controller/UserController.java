@@ -71,7 +71,7 @@ public class UserController {
                 byte[] passwordToByte = authservice.hexToByte(userPassword);
                 if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
                     System.out.println(userQuery.get(0).getpatientHNId());
-                    String authToken = tokenService.generateJWTToken(userQuery.get(0).getpatientHNId());
+                    String authToken = tokenService.generateJWTToken(userQuery.get(0).getPatientNationalId());
 
                     Map<String,String> payload = new HashMap<String,String>();
                     payload.put("authtoken", authToken);

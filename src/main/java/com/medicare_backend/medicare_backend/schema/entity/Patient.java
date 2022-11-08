@@ -12,7 +12,7 @@ import com.medicare_backend.medicare_backend.service.CustomIdGenerate;
 @Table(name = "patient")
 public class Patient {
 
-    private String patientHNId;
+    private Long patientHNId;
     private String patientFirstName;
     private String patientMiddleName;
     private String patientLastName;
@@ -26,17 +26,12 @@ public class Patient {
     private String patientPassword;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_seq")
-    @GenericGenerator(name = "patient_seq", strategy = "com.medicare_backend.medicare_backend.service.CustomIdGenerate", parameters = {
-            @Parameter(name = CustomIdGenerate.INCREMENT_PARAM, value = "50"),
-            @Parameter(name = CustomIdGenerate.VALUE_PREFIX_PARAMETER, value = ""),
-            @Parameter(name = CustomIdGenerate.NUMBER_FORMAT_PARAMETER, value = "%07d")
-    })
-    public String getpatientHNId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getpatientHNId() {
         return patientHNId;
     }
 
-    public void setpatientHNId(String id) {
+    public void setpatientHNId(Long id) {
         this.patientHNId = id;
     }
 
