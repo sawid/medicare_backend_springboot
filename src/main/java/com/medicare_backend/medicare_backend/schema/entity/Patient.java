@@ -12,7 +12,7 @@ import com.medicare_backend.medicare_backend.service.CustomIdGenerate;
 @Table(name = "patient")
 public class Patient {
 
-    private Long patientHNId;
+    private long patientHNId;
     private String patientFirstName;
     private String patientMiddleName;
     private String patientLastName;
@@ -27,7 +27,7 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getpatientHNId() {
+    public long getpatientHNId() {
         return patientHNId;
     }
 

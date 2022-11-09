@@ -22,8 +22,8 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> getPatientById(String patientHNId) {
-        return patientRepository.findBypatientHNId(patientHNId);
+    public Optional<Patient> getPatientById(long l) {
+        return patientRepository.findBypatientHNId(l);
     }
 
     public String createPatient(Patient patient) {
@@ -31,7 +31,7 @@ public class PatientService {
         return "suscess";
     }
 
-    public Patient updatePatient(String id, Patient patient) {
+    public Patient updatePatient(long id, Patient patient) {
         Patient _patient = patientRepository.findBypatientHNId(id)
                 .orElseThrow(() -> new Handler("Patient not exit with id" + id));
         _patient.setPatientFirstName(patient.getPatientFirstName());

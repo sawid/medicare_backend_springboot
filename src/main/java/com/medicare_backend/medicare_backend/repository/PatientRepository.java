@@ -11,7 +11,7 @@ import com.medicare_backend.medicare_backend.schema.entity.Patient;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    Optional<Patient> findBypatientHNId(String patientHNId);
+    Optional<Patient> findBypatientHNId(long l);
 
     List<Patient> findByPatientNationalId(String patientNationalId);
     
