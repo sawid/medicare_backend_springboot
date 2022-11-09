@@ -27,43 +27,27 @@ public class AppointmentService {
     //Get all Appointment
     public List<Appointment> getAppointment() {
         List<Appointment> appointments = new ArrayList<>();
-        try {
             appointments = appointmentRepository.findAll();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
         return appointments;
     }
 
     //Get Appointment by Id
     public Optional<Appointment> getAppointmentById(Long appointmentId) {
         Optional<Appointment> appointment = Optional.empty();
-        try {
             appointment = appointmentRepository.findById(appointmentId);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
         return appointment;
     }
 
     //Create new Appointment
     public String createNewAppointment(Appointment appointment) {
-        try{
         appointmentRepository.save(appointment);
-        } catch(Exception e){
-            System.out.println(e);
-        }
         return "Create Success";
     }
 
     //Get Appointment by ScheduleId
     public List<Appointment> getAppointmentByScheduleId(long appointmentScheduleId) {
         List<Appointment> appointments = new ArrayList<>();
-        try {
             appointments = appointmentRepository.findAppointmentByappointmentScheduleId(appointmentScheduleId);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
         return appointments;
     }
 
@@ -77,7 +61,6 @@ public class AppointmentService {
                                             long appointmentDoctorId) {
         List<Appointment> appointments = getAppointmentByScheduleId(scheduleId);
         List<Long> patientHNId = new ArrayList<>();
-        try {
             if(appointments == null || appointments.isEmpty()){
                 return patientHNId;
             }
@@ -112,9 +95,6 @@ public class AppointmentService {
                     }    
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
         return patientHNId;
         
     }

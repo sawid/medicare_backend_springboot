@@ -29,28 +29,19 @@ public class ScheduleService {
     //Get all Schedule
     public List<Schedule> getSchedule() {
         List<Schedule> schedules = new ArrayList<>();
-        try {
             schedules = scheduleRepository.findAll();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
         return schedules;
     }
 
     //Get schedule by Id
     public Optional<Schedule> getScheduleById(Long scheduleId) {
         Optional<Schedule> schedule = Optional.empty();
-        try{
             schedule = scheduleRepository.findById(scheduleId);
-        } catch (Exception e){
-            System.out.println(e);
-        }
         return schedule;
     }
 
     //Post create new schedule //not check busy Schedule yet
     public String createNewSchedule(Schedule schedule) {
-        try{
         //check isscheduletaken by Location Date and Starttime
         // Optional<Schedule> scheduleOptionalLocation = scheduleRepository.findScheduleByscheduleLocation(schedule.getScheduleLocation());
         // Optional<Schedule> scheduleOptionalDate = scheduleRepository.findScheduleByscheduleDate(schedule.getScheduleDate());
@@ -59,9 +50,6 @@ public class ScheduleService {
         //     return "ERROR";
         // }
         scheduleRepository.save(schedule);
-        } catch (Exception e){
-            System.out.println(e);
-        }
         return "Create Success";
     }
 
@@ -77,7 +65,6 @@ public class ScheduleService {
             .orElseThrow(() -> new IllegalStateException(
                 "Schedule with ID : " + scheduleId + " dose not exist"
             ));
-        try {
             if(scheduleCapacity != 0 && !Objects.equals(schedule.getScheduleCapacity(), scheduleCapacity)){
                 schedule.setScheduleCapacity(scheduleCapacity);
             }
@@ -93,9 +80,5 @@ public class ScheduleService {
             if(scheduleLocation != null && scheduleLocation.length() > 0 && !Objects.equals(schedule.getScheduleLocation(), scheduleLocation)){
                 schedule.setScheduleLocation(scheduleLocation);
             }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
     }
 }
