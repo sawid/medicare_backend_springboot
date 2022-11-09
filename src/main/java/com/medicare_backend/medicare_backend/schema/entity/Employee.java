@@ -21,11 +21,10 @@ public class Employee {
 
     }
 
-    public Employee(long employeeId, String employeeFirstName, String employeeMiddleName,
+    public Employee(String employeeFirstName, String employeeMiddleName,
             String employeeLastName, String employeeNationalId, boolean employeeIsAdmin, String employeePhoneNumber,
             long employeeRole, long employeeDepartment, String employeePassword) {
 
-        this.employeeId = employeeId;
         this.employeeFirstName = employeeFirstName;
         this.employeeMiddleName = employeeMiddleName;
         this.employeeLastName = employeeLastName;

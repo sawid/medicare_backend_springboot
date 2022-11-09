@@ -19,9 +19,24 @@ public class Schedule {
     private LocalDateTime scheduleEnd;
     private LocalDate scheduleDate;
     private String scheduleLocation;
+    private boolean scheduleStatus;
     
     public Schedule() {
 
+    }
+
+    public Schedule(int scheduleCapacity, 
+                    LocalDateTime scheduleStart, 
+                    LocalDateTime scheduleEnd, 
+                    LocalDate scheduleDate, 
+                    String scheduleLocation, 
+                    boolean scheduleStatus) {
+        this.scheduleCapacity = scheduleCapacity;
+        this.scheduleStart = scheduleStart;
+        this.scheduleEnd = scheduleEnd;
+        this.scheduleDate = scheduleDate;
+        this.scheduleLocation = scheduleLocation;
+        this.scheduleStatus = scheduleStatus;
     }
 
     @Id
@@ -77,6 +92,14 @@ public class Schedule {
 
     public void setScheduleLocation(String scheduleLocation) {
         this.scheduleLocation = scheduleLocation;
+    }
+
+    public boolean getScheduleStatus() {
+        return this.scheduleStatus;
+    }
+
+    public void setScheduleStatus(boolean scheduleStatus) {
+        this.scheduleStatus = scheduleStatus;
     }
 
     @Override

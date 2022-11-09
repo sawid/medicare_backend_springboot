@@ -34,7 +34,7 @@ public class PatientController {
     }
 
     @GetMapping(path = "/patients/findbyId/{id}")
-    public ResponseEntity<?> getPatientmentById(@PathVariable("id") String patientHNId) {
+    public ResponseEntity<?> getPatientmentById(@PathVariable("id") long patientHNId) {
         Optional<Patient> data = patientService.getPatientById(patientHNId);
         if (data.isPresent()) {
             return ResponseEntity.ok().body(data);
@@ -55,7 +55,7 @@ public class PatientController {
     }
 
     @PutMapping(path = "/updatePatient/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable String id, @RequestBody Patient patient) {
+    public ResponseEntity<Patient> updatePatient(@PathVariable long id, @RequestBody Patient patient) {
         try {
             Patient _patient = patientService.updatePatient(id, patient);
             Patient updatePatient = patientRepository.save(_patient);

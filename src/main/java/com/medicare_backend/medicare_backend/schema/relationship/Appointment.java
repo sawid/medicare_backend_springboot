@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Appointment {
 
     private long appointmentId;
-    private String appointmentPatientId;
+    private long appointmentPatientId;
     private long appointmentDoctorId;
     private LocalDate appointmentDate;
     private String appiontmentLocation;
@@ -31,7 +31,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(String appointmentPatientId,
+    public Appointment(long appointmentPatientId,
             long appointmentDoctorId,
             LocalDate appointmentDate,
             String appiontmentLocation,
@@ -48,11 +48,11 @@ public class Appointment {
     }
 
     @Column(name = "appointment_patient_id", nullable = false)
-    public String getAppointmentPatientId() {
+    public long getAppointmentPatientId() {
         return this.appointmentPatientId;
     }
 
-    public void setAppointmentPatientId(String appointmentPatientId) {
+    public void setAppointmentPatientId(long appointmentPatientId) {
         this.appointmentPatientId = appointmentPatientId;
     }
 
