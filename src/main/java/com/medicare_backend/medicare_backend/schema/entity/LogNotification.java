@@ -20,13 +20,13 @@ public class LogNotification {
     }
 
     public LogNotification(long logNotificationType, String logNotificationTitle,
-            String logNotificationBody, long logNotificationAppointmentID) {
+            String logNotificationBody, long logNotificationAppointmentID,LocalDateTime logNotificationDateCreated) {
 
         this.logNotificationType = logNotificationType;
         this.logNotificationTitle = logNotificationTitle;
         this.logNotificationBody = logNotificationBody;
         this.logNotificationAppointmentID = logNotificationAppointmentID;
-
+        this.logNotificationDateCreated = logNotificationDateCreated;
     }
 
     @Id
@@ -80,7 +80,7 @@ public class LogNotification {
         return logNotificationDateCreated;
     }
 
-    public void setScheduleEnd(LocalDateTime logNotificationDateCreated) {
+    public void setLogNotificationDateCreated(LocalDateTime logNotificationDateCreated) {
         this.logNotificationDateCreated = logNotificationDateCreated;
     }
 }
