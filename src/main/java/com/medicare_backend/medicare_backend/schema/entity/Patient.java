@@ -28,16 +28,6 @@ public class Patient {
     private String patientAllergy;
     private String patientDisease;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getpatientHNId() {
-        return patientHNId;
-    }
-
-    public void setpatientHNId(Long id) {
-        this.patientHNId = id;
-    }
-
     public Patient() {
     }
 
@@ -67,6 +57,16 @@ public class Patient {
         this.patientMedicine = patientMedicine;
         this.patientAllergy = patientAllergy;
         this.patientDisease = patientDisease;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getpatientHNId() {
+        return patientHNId;
+    }
+
+    public void setpatientHNId(Long id) {
+        this.patientHNId = id;
     }
 
     @Column(name = "patient_first_name", nullable = false)
