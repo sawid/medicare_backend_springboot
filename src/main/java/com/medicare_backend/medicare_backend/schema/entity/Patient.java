@@ -22,8 +22,11 @@ public class Patient {
     private LocalDate patientBirthDate;
     private String patientLocation;
     private int patientBloodType;
-    private int patientGender;
+    private int patientProfileIndex;
     private String patientPassword;
+    private String patientMedicine;
+    private String patientAllergy;
+    private String patientDisease;
 
     public Patient() {
     }
@@ -36,8 +39,11 @@ public class Patient {
             LocalDate patientBirthDate,
             String patientLocation,
             int patientBloodType,
-            int patientGender,
-            String patientPassword) {
+            int patientProfileIndex,
+            String patientPassword,
+            String patientMedicine,
+            String patientAllergy,
+            String patientDisease) {
         this.patientFirstName = patientFirstName;
         this.patientMiddleName = patientMiddleName;
         this.patientLastName = patientLastName;
@@ -46,8 +52,11 @@ public class Patient {
         this.patientBirthDate = patientBirthDate;
         this.patientLocation = patientLocation;
         this.patientBloodType = patientBloodType;
-        this.patientGender = patientGender;
+        this.patientProfileIndex = patientProfileIndex;
         this.patientPassword = patientPassword;
+        this.patientMedicine = patientMedicine;
+        this.patientAllergy = patientAllergy;
+        this.patientDisease = patientDisease;
     }
 
     @Id
@@ -134,11 +143,11 @@ public class Patient {
 
     @Column(name = "patient_gender", nullable = false)
     public int getPatientGender() {
-        return this.patientGender;
+        return this.patientProfileIndex;
     }
 
-    public void setPatientGender(int patientGender) {
-        this.patientGender = patientGender;
+    public void setPatientGender(int patientProfileIndex) {
+        this.patientProfileIndex = patientProfileIndex;
     }
 
     @Column(name = "patient_password", nullable = false)
@@ -150,13 +159,40 @@ public class Patient {
         this.patientPassword = patientPassword;
     }
 
+    @Column(name = "patient_medicaine", nullable = false)
+    public String getPatientMedicine() {
+        return patientMedicine;
+    }
+
+    public void setPatientMedicine(String patientMedicine) {
+        this.patientMedicine = patientMedicine;
+    }
+
+    @Column(name = "patient_allergy", nullable = false)
+    public String getPatientAllergy() {
+        return patientAllergy;
+    }
+
+    public void setPatientAllergy(String patientAllergy) {
+        this.patientAllergy = patientAllergy;
+    }
+
+    @Column(name = "patient_disease", nullable = false)
+    public String getPatientDisease() {
+        return patientDisease;
+    }
+
+    public void setPatientDisease(String patientDisease) {
+        this.patientDisease = patientDisease;
+    }
+
     @Override
     public String toString() {
         return "Patient [patientHNId=" + patientHNId + ", patientFirstName=" + patientFirstName + ", patientMiddleName="
                 + patientMiddleName + ", patientLastName=" + patientLastName + ", patientNationalId="
                 + patientNationalId + ", patientPhoneNumber=" + patientPhoneNumber + ", patientBirthDate="
                 + patientBirthDate + ", patientLocation=" + patientLocation + ", patientBloodType=" + patientBloodType
-                + ", patientGender=" + patientGender + "]";
+                + ", patientGender=" + patientProfileIndex + "]";
     }
 
 }
