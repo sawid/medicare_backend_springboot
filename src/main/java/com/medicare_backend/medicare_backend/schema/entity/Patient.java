@@ -25,16 +25,6 @@ public class Patient {
     private int patientGender;
     private String patientPassword;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getpatientHNId() {
-        return patientHNId;
-    }
-
-    public void setpatientHNId(Long id) {
-        this.patientHNId = id;
-    }
-
     public Patient() {
     }
 
@@ -58,6 +48,16 @@ public class Patient {
         this.patientBloodType = patientBloodType;
         this.patientGender = patientGender;
         this.patientPassword = patientPassword;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getpatientHNId() {
+        return patientHNId;
+    }
+
+    public void setpatientHNId(Long id) {
+        this.patientHNId = id;
     }
 
     @Column(name = "patient_first_name", nullable = false)
