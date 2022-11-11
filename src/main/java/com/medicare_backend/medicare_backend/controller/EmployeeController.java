@@ -41,7 +41,8 @@ public class EmployeeController {
                 InternalPayload returnPayload = new InternalPayload("1", "No Permission");
                 return returnPayload;
             }
-            List<Employee> employeeIsMatch = employeeRepository.findByEmployeeNationalId(employee.getEmployeeNationalId());
+            List<Employee> employeeIsMatch = employeeRepository
+                    .findByEmployeeNationalId(employee.getEmployeeNationalId());
             if (employeeIsMatch != null && employeeIsMatch.isEmpty()) {
                 System.out.println(employeeIsMatch);
                 byte[] hash = authservice.getEncryptedPassword(employee.getEmployeePassword(), "salt".getBytes());
@@ -66,33 +67,31 @@ public class EmployeeController {
             if (!(userQuery != null && userQuery.isEmpty())) {
                 String userPassword = userQuery.get(0).getEmployeePassword();
                 byte[] passwordToByte = authservice.hexToByte(userPassword);
-                if(authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
+                if (authservice.authenticate(auth.getPassword(), passwordToByte, "salt".getBytes())) {
                     System.out.println(userQuery.get(0).getEmployeeNationalId());
                     String authToken = tokenService.generateJWTToken(userQuery.get(0).getEmployeeNationalId());
-                    // String decodedjwt = tokenService.verifyJWTToken(authToken);
-                    // System.out.println(decodedjwt);
-                    Map<String,String> payload = new HashMap<String,String>();
+                    String decodedjwt = tokenService.verifyJWTToken(authToken);
+                    System.out.println(decodedjwt);
+                    Map<String, String> payload = new HashMap<String, String>();
                     payload.put("authtoken", authToken);
                     payload.put("employeeFirstName", userQuery.get(0).getEmployeeFirstName());
-                    payload.put("employeeMiddleName", userQuery.get(0).getEmployeeMiddleName());
-                    payload.put("employeeLastName", userQuery.get(0).getEmployeeLastName());
+                    // payload.put("employeeMiddleName", userQuery.get(0).getEmployeeMiddleName());
+                    // payload.put("employeeLastName", userQuery.get(0).getEmployeeLastName());
                     payload.put("employeeNationalId", userQuery.get(0).getEmployeeNationalId());
-                    payload.put("employeePhoneNumber", userQuery.get(0).getEmployeePhoneNumber());
+                    // payload.put("employeePhoneNumber",
+                    // userQuery.get(0).getEmployeePhoneNumber(//));
                     payload.put("employeeRole", "TempRole");
-                    payload.put("employeeDepartment", "TempDepartment");
+                    // payload.put("employeeDepartment", "TempDepartment");
                     InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
                     return returnPayload;
-                }
-                else {
+                } else {
                     InternalPayload returnPayload = new InternalPayload("1", "Auth Failed");
                     return returnPayload;
                 }
-            }
-            else {
+            } else {
                 InternalPayload returnPayload = new InternalPayload("1", "Employee Not Found");
                 return returnPayload;
             }
-            
 
         } catch (Exception e) {
             System.out.println(e);

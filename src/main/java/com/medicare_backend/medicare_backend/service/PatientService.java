@@ -34,7 +34,31 @@ public class PatientService {
     public Patient updatePatient(long id, Patient patient) {
         Patient _patient = patientRepository.findBypatientHNId(id)
                 .orElseThrow(() -> new Handler("Patient not exit with id" + id));
-        _patient.setPatientFirstName(patient.getPatientFirstName());
+        if (patient.getPatientFirstName() != null)
+            _patient.setPatientFirstName(patient.getPatientFirstName());
+        if (patient.getPatientMiddleName() != null)
+            _patient.setPatientMiddleName(patient.getPatientMiddleName());
+        if (patient.getPatientLastName() != null)
+            _patient.setPatientLastName(patient.getPatientLastName());
+        if (patient.getPatientNationalId() != null)
+            _patient.setPatientNationalId(patient.getPatientNationalId());
+        if (patient.getPatientPhoneNumber() != null)
+            _patient.setPatientPhoneNumber(patient.getPatientPhoneNumber());
+        if (patient.getPatientBirthDate() != null)
+            _patient.setPatientBirthDate(patient.getPatientBirthDate());
+        if (patient.getPatientLocation() != null)
+            _patient.setPatientLocation(patient.getPatientLocation());
+        if (patient.getPatientBloodType() != null)
+            _patient.setPatientBloodType(patient.getPatientBloodType());
+        if (patient.getPatientProfileIndex() != null)
+            _patient.setPatientProfileIndex(patient.getPatientProfileIndex());
+        if (patient.getPatientMedicine() != null)
+            _patient.setPatientMedicine(patient.getPatientMedicine());
+        _patient.setPatientAllergy(patient.getPatientAllergy());
+        if (patient.getPatientDisease() != null)
+            _patient.setPatientDisease(patient.getPatientDisease());
+        if (patient.getPatientPassword() != null)
+            _patient.setPatientPassword(patient.getPatientPassword());
 
         return _patient;
 

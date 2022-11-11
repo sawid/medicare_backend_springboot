@@ -1,6 +1,5 @@
 package com.medicare_backend.medicare_backend.route;
 
-
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.medicare_backend.medicare_backend.controller.UserController;
 import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
@@ -28,22 +27,20 @@ public class UserRoute {
 
     @Autowired
     private UserController userService;
-    
-
 
     // @GetMapping("/users")
     // public ResponseEntity<?> getListUser() {
-    //     List<User> data = userService.getListUser();
-    //     if (!(data != null && data.isEmpty())) {
-    //         return ResponseEntity.ok().body(data);
-    //     } else {
-    //         return ResponseEntity.status(500).body("User List Not Found");
-    //     }
+    // List<User> data = userService.getListUser();
+    // if (!(data != null && data.isEmpty())) {
+    // return ResponseEntity.ok().body(data);
+    // } else {
+    // return ResponseEntity.status(500).body("User List Not Found");
+    // }
     // }
 
     // @GetMapping("/users/findUserById/{id}")
     // public Optional<User> getUserByOneUser(@PathVariable("id") Long id) {
-    //     return userService.getUserById(id);
+    // return userService.getUserById(id);
     // }
 
     @PostMapping("/users/register")
@@ -51,14 +48,12 @@ public class UserRoute {
         InternalPayload data = userService.registerUser(user);
         if (data.getStatusCode() == "0") {
             return ResponseEntity.ok().body(data);
-        }
-        else if (data.getStatusCode() == "1") {
+        } else if (data.getStatusCode() == "1") {
             return ResponseEntity.status(400).body(data);
-        } 
-        else {
+        } else {
             return ResponseEntity.status(500).body(data);
         }
-        
+
     }
 
     @PostMapping("/users/login")
@@ -66,27 +61,12 @@ public class UserRoute {
         InternalPayload data = userService.loginUser(auth);
         if (data.getStatusCode() == "0") {
             return ResponseEntity.ok().body(data);
-        } 
-        else if (data.getStatusCode() == "1") {
+        } else if (data.getStatusCode() == "1") {
             return ResponseEntity.status(400).body(data);
-        }
-        else {
+        } else {
             return ResponseEntity.status(500).body(data);
         }
-        
+
     }
 
-    // @PostMapping("/authtication/addtask")
-    // public String userAddTask(@RequestHeader("authtoken") String authtoken, @RequestBody AddTask task) {
-    //     try {
-    //         String dataLogin = userService.addTaskData(authtoken);
-    //         return dataLogin;
-    //     } catch (InvalidParameterException e) {
-    //         return "Token InValid";
-    //     }
-        
-    // }
-
-
 }
-
