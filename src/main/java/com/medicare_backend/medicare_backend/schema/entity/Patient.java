@@ -18,26 +18,25 @@ public class Patient {
     private String patientLastName;
     private String patientNationalId;
     private String patientPhoneNumber;
-    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate patientBirthDate;
     private String patientLocation;
-    private int patientBloodType;
-    private int patientGender;
+    private Integer patientBloodType = 999;
+    private Integer patientProfileIndex = 999;
+    // *****//
+    private String patientMedicine;
+    private String patientAllergy;
+    private String patientDisease;
+    // *****//
     private String patientPassword;
 
     public Patient() {
     }
 
-    public Patient(String patientFirstName,
-            String patientMiddleName,
-            String patientLastName,
-            String patientNationalId,
-            String patientPhoneNumber,
-            LocalDate patientBirthDate,
-            String patientLocation,
-            int patientBloodType,
-            int patientGender,
-            String patientPassword) {
+    public Patient(long patientHNId, String patientFirstName, String patientMiddleName, String patientLastName,
+            String patientNationalId, String patientPhoneNumber, LocalDate patientBirthDate, String patientLocation,
+            int patientBloodType, int patientProfileIndex, String patientMedicine, String patientAllergy,
+            String patientDisease, String patientPassword) {
+        this.patientHNId = patientHNId;
         this.patientFirstName = patientFirstName;
         this.patientMiddleName = patientMiddleName;
         this.patientLastName = patientLastName;
@@ -46,7 +45,10 @@ public class Patient {
         this.patientBirthDate = patientBirthDate;
         this.patientLocation = patientLocation;
         this.patientBloodType = patientBloodType;
-        this.patientGender = patientGender;
+        this.patientProfileIndex = patientProfileIndex;
+        this.patientMedicine = patientMedicine;
+        this.patientAllergy = patientAllergy;
+        this.patientDisease = patientDisease;
         this.patientPassword = patientPassword;
     }
 
@@ -124,7 +126,7 @@ public class Patient {
     }
 
     @Column(name = "patient_blood_type", nullable = false)
-    public int getPatientBloodType() {
+    public Integer getPatientBloodType() {
         return this.patientBloodType;
     }
 
@@ -132,13 +134,40 @@ public class Patient {
         this.patientBloodType = patientBloodType;
     }
 
-    @Column(name = "patient_gender", nullable = false)
-    public int getPatientGender() {
-        return this.patientGender;
+    @Column(name = "patient_profile_index", nullable = false)
+    public Integer getPatientProfileIndex() {
+        return patientProfileIndex;
     }
 
-    public void setPatientGender(int patientGender) {
-        this.patientGender = patientGender;
+    public void setPatientProfileIndex(int patientProfileIndex) {
+        this.patientProfileIndex = patientProfileIndex;
+    }
+
+    @Column(name = "patient_medicine")
+    public String getPatientMedicine() {
+        return patientMedicine;
+    }
+
+    public void setPatientMedicine(String patientMedicine) {
+        this.patientMedicine = patientMedicine;
+    }
+
+    @Column(name = "patient_allergy")
+    public String getPatientAllergy() {
+        return patientAllergy;
+    }
+
+    public void setPatientAllergy(String patientAllergy) {
+        this.patientAllergy = patientAllergy;
+    }
+
+    @Column(name = "patient_disease")
+    public String getPatientDisease() {
+        return patientDisease;
+    }
+
+    public void setPatientDisease(String patientDisease) {
+        this.patientDisease = patientDisease;
     }
 
     @Column(name = "patient_password", nullable = false)
@@ -148,15 +177,6 @@ public class Patient {
 
     public void setPatientPassword(String patientPassword) {
         this.patientPassword = patientPassword;
-    }
-
-    @Override
-    public String toString() {
-        return "Patient [patientHNId=" + patientHNId + ", patientFirstName=" + patientFirstName + ", patientMiddleName="
-                + patientMiddleName + ", patientLastName=" + patientLastName + ", patientNationalId="
-                + patientNationalId + ", patientPhoneNumber=" + patientPhoneNumber + ", patientBirthDate="
-                + patientBirthDate + ", patientLocation=" + patientLocation + ", patientBloodType=" + patientBloodType
-                + ", patientGender=" + patientGender + "]";
     }
 
 }

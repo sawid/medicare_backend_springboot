@@ -14,25 +14,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 public class ScheduleController {
-    
+
     private ScheduleService scheduleService;
     private AppointmentService appointmentService;
 
     @Autowired
-    public ScheduleController(  ScheduleService scheduleService,
-                                AppointmentService appointmentService){
+    public ScheduleController(ScheduleService scheduleService,
+            AppointmentService appointmentService) {
         this.scheduleService = scheduleService;
         this.appointmentService = appointmentService;
     }
 
     @GetMapping(path = "/schedules")
-    public ResponseEntity<?> getSchedule(){
-        try{
+    public ResponseEntity<?> getSchedule() {
+        try {
             List<Schedule> data = scheduleService.getSchedule();
-            if(!(data != null && data.isEmpty())){
+            if (!(data != null && data.isEmpty())) {
                 return ResponseEntity.ok().body(data);
             } else {
                 return ResponseEntity.status(500).body("Schedule List Not Found");
@@ -44,12 +43,12 @@ public class ScheduleController {
     }
 
     @GetMapping(path = "/schedules/findbyId/{id}")
-    public ResponseEntity<?> getScheduleById(@PathVariable("id") Long scheduleId){
-        try{
+    public ResponseEntity<?> getScheduleById(@PathVariable("id") Long scheduleId) {
+        try {
             Optional<Schedule> data = scheduleService.getScheduleById(scheduleId);
-            if(data.isPresent()){
+            if (data.isPresent()) {
                 return ResponseEntity.ok().body(data);
-            }else{
+            } else {
                 return ResponseEntity.status(500).body("Schedule with Id : " + scheduleId + " Not Found");
             }
         } catch (Exception e) {
@@ -60,7 +59,7 @@ public class ScheduleController {
 
     @PostMapping(path = "/schedules/createNewSchedule")
     public ResponseEntity<?> createNewSchedule(@RequestBody Schedule schedule) {
-        try{
+        try {
             String data = scheduleService.createNewSchedule(schedule);
             if (data == "Create Success") {
                 return ResponseEntity.ok().body(data);
@@ -73,28 +72,30 @@ public class ScheduleController {
         }
     }
 
-    @PutMapping(path = "/schedules/update") //not finish //not check busy schedule/application yet
-    public ResponseEntity<?> updateSchedule(@RequestBody UpdateSchedule schedule ){
-        try{
-            //update appointment , return list of patientHNId of edited appointment <-- can empty
+    @PutMapping(path = "/schedules/update") // not finish //not check busy schedule/application yet
+    public ResponseEntity<?> updateSchedule(@RequestBody UpdateSchedule schedule) {
+        try {
+            // update appointment , return list of patientHNId of edited appointment <-- can
+            // empty
             List<Long> patientHNId = appointmentService
-                    .updateApponimentFromSchedule(  schedule.getScheduleId(),
-                                                    schedule.getScheduleStart(),
-                                                    schedule.getScheduleEnd(),
-                                                    schedule.getScheduleDate(),
-                                                    schedule.getScheduleLocation(),
-                                                    schedule.getAppointmentDoctorId() );
-                                                
-            //update schedule
-            scheduleService.updateSchedule( schedule.getScheduleId(),
-                                            schedule.getScheduleCapacity(),
-                                            schedule.getScheduleStart(),
-                                            schedule.getScheduleEnd(),
-                                            schedule.getScheduleDate(),
-                                            schedule.getScheduleLocation());
-            if(patientHNId.isEmpty()){ // if list of patientHNId of edited appointment is empty
-                return ResponseEntity.ok().body("Schedule with ID: " + schedule.getScheduleId() + " has update successfully");
-            } 
+                    .updateApponimentFromSchedule(schedule.getScheduleId(),
+                            schedule.getScheduleStart(),
+                            schedule.getScheduleEnd(),
+                            schedule.getScheduleDate(),
+                            schedule.getScheduleLocation(),
+                            schedule.getAppointmentDoctorId());
+
+            // update schedule
+            scheduleService.updateSchedule(schedule.getScheduleId(),
+                    schedule.getScheduleCapacity(),
+                    schedule.getScheduleStart(),
+                    schedule.getScheduleEnd(),
+                    schedule.getScheduleDate(),
+                    schedule.getScheduleLocation());
+            if (patientHNId.isEmpty()) { // if list of patientHNId of edited appointment is empty
+                return ResponseEntity.ok()
+                        .body("Schedule with ID: " + schedule.getScheduleId() + " has update successfully");
+            }
             return ResponseEntity.ok().body(patientHNId);
         } catch (Exception e) {
             System.out.println(e);

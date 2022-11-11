@@ -55,7 +55,7 @@ public class PatientController {
     }
 
     @PutMapping(path = "/updatePatient/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable long id, @RequestBody Patient patient) {
+    public ResponseEntity<?> updatePatient(@PathVariable long id, @RequestBody Patient patient) {
         try {
             Patient _patient = patientService.updatePatient(id, patient);
             Patient updatePatient = patientRepository.save(_patient);
