@@ -29,7 +29,7 @@ public class AppointmentController {
 
     @GetMapping(path = "/appointments")
     public ResponseEntity<?> getAppointment() {
-        try{
+        try {
             List<Appointment> data = appointmentService.getAppointment();
             if (!(data != null && data.isEmpty())) {
                 return ResponseEntity.ok().body(data);
@@ -47,7 +47,7 @@ public class AppointmentController {
         try {
             Optional<Appointment> data = appointmentService.getAppointmentById(appointmentId);
             if (data.isPresent()) {
-            return ResponseEntity.ok().body(data);
+                return ResponseEntity.ok().body(data);
             } else {
                 return ResponseEntity.status(500).body("Appointment with Id : " + appointmentId + " Not Found");
             }
@@ -60,7 +60,8 @@ public class AppointmentController {
     @GetMapping(path = "/appointments/findbyappointmentScheduleId/{id}") // finish
     public ResponseEntity<?> getPatientByScheduleId(@PathVariable("id") long appointmentScheduleId) {
         try {
-            List<Appointment> dataAp = appointmentService.getAppointmentByScheduleId(appointmentScheduleId); // List of appointment
+            List<Appointment> dataAp = appointmentService.getAppointmentByScheduleId(appointmentScheduleId); // List of
+                                                                                                             // appointment
             List<JSONObject> data = new ArrayList<>(); // List of JSONdata
             if (dataAp != null && !dataAp.isEmpty()) {
                 for (Appointment a : dataAp) {
@@ -98,4 +99,5 @@ public class AppointmentController {
             return ResponseEntity.status(500).body("server error");
         }
     }
+
 }

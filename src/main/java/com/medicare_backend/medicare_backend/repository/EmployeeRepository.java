@@ -10,9 +10,10 @@ import com.medicare_backend.medicare_backend.schema.entity.Patient;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    
+
     List<Employee> findByEmployeeNationalId(String employeeNationalId);
 
-    List<Employee> findByEmployeeFirstNameAndEmployeeLastName(String employeeFirstName, String employeeLastName);
-    
+    // List<Employee> findByEmployeeFirstNameAndEmployeeLastName(String
+    // employeeFirstName, String employeeLastName);
+
 }

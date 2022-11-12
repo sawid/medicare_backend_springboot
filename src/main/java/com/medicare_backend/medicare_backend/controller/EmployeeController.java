@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
 import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
+import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
@@ -22,6 +24,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     private AuthenticationService authservice;
 
@@ -136,5 +141,9 @@ public class EmployeeController {
         if (employee.getEmployeePassword() != null)
             _employee.setEmployeePassword(employee.getEmployeePassword());
         return _employee;
+    }
+
+    public List<Appointment> getAppointmentbyEmployeeId(long id) {
+        return appointmentRepository.findAppointmentByappointmentDoctorId(id);
     }
 }
