@@ -6,6 +6,7 @@ import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.User;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
+import com.medicare_backend.medicare_backend.service.FirebaseMessagingService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
@@ -27,6 +28,9 @@ public class UserController {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private FirebaseMessagingService firebaseService;
 
     private AuthenticationService authservice;
 
@@ -98,6 +102,9 @@ public class UserController {
                     InternalPayload returnPayload = new InternalPayload("0", "Okay", payload);
                     // String decodedjwt = tokenService.verifyJWTToken(authToken);
                     // System.out.println(decodedjwt);
+                    firebaseService.sendNotification("Notification title", "Notification Text", "dvnUckYKNE1XhJHMsq2eL5:APA91bHPm3pIUHLgZnUrMxzAClyWjKxQC-csThOzsSvPTd03nCLky2TNfTaHcmIdRJUIRf3PTOi4gl6G2l-eRxwAGmsnRqTZ9bEMuJ2ASxiS5696bfJUW-rn7z07_LSd9cxqvIdVptyN");
+                    // Test Messaging
+
                     return returnPayload;
                 }
                 else {
