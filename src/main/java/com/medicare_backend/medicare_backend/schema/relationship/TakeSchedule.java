@@ -21,6 +21,13 @@ public class TakeSchedule {
         
     }
 
+    public TakeSchedule(long employeeId, long scheduleId) {
+        this.employeeId = employeeId;
+        this.scheduleId = scheduleId;
+        this.takeScheduleDate = LocalDateTime.now();
+    }
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getTakeScheduleId() {

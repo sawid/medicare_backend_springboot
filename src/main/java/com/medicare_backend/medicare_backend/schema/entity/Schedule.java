@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "schedule")
 public class Schedule {
+
     private long scheduleId;
     private int scheduleCapacity;
     private LocalDateTime scheduleStart;
@@ -20,74 +21,74 @@ public class Schedule {
     private LocalDate scheduleDate;
     private String scheduleLocation;
     private boolean scheduleStatus;
-    
-    public Schedule() {
+    private int scheduleType;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+        public long getScheduleId() {
+        return scheduleId;
+    }
+    public void setScheduleId(long id) {
+        this.scheduleId = id;
+    }
+
+    public Schedule() {
     }
 
     public Schedule(int scheduleCapacity, 
                     LocalDateTime scheduleStart, 
                     LocalDateTime scheduleEnd, 
                     LocalDate scheduleDate, 
-                    String scheduleLocation, 
-                    boolean scheduleStatus) {
+                    String scheduleLocation,
+                    int scheduleType) {
         this.scheduleCapacity = scheduleCapacity;
         this.scheduleStart = scheduleStart;
         this.scheduleEnd = scheduleEnd;
         this.scheduleDate = scheduleDate;
         this.scheduleLocation = scheduleLocation;
-        this.scheduleStatus = scheduleStatus;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getScheduleId() {
-        return this.scheduleId;
-    }
-
-    public void setScheduleId(long scheduleId) {
-        this.scheduleId = scheduleId;
+        this.scheduleStatus = true;
+        this.scheduleType = scheduleType;
     }
 
     @Column(name = "schedule_capacity", nullable = false)
     public int getScheduleCapacity() {
-        return scheduleCapacity;
+        return this.scheduleCapacity;
     }
 
     public void setScheduleCapacity(int scheduleCapacity) {
         this.scheduleCapacity = scheduleCapacity;
     }
 
-    @Column(name = "schedule_date", nullable = false)
-    public LocalDate getScheduleDate() {
-        return scheduleDate;
-    }
-
-    public void setScheduleDate(LocalDate scheduleDate) {
-        this.scheduleDate = scheduleDate;
-    }
-
-    @Column(name = "schedule_end", nullable = false)
-    public LocalDateTime getScheduleEnd() {
-        return scheduleEnd;
-    }
-
-    public void setScheduleEnd(LocalDateTime scheduleEnd) {
-        this.scheduleEnd = scheduleEnd;
-    }
-
     @Column(name = "schedule_start", nullable = false)
     public LocalDateTime getScheduleStart() {
-        return scheduleStart;
+        return this.scheduleStart;
     }
 
     public void setScheduleStart(LocalDateTime scheduleStart) {
         this.scheduleStart = scheduleStart;
     }
 
+    @Column(name = "schedule_end", nullable = false)
+    public LocalDateTime getScheduleEnd() {
+        return this.scheduleEnd;
+    }
+
+    public void setScheduleEnd(LocalDateTime scheduleEnd) {
+        this.scheduleEnd = scheduleEnd;
+    }
+
+    @Column(name = "schedule_date", nullable = false)
+    public LocalDate getScheduleDate() {
+        return this.scheduleDate;
+    }
+
+    public void setScheduleDate(LocalDate scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+
     @Column(name = "schedule_location", nullable = false)
     public String getScheduleLocation() {
-        return scheduleLocation;
+        return this.scheduleLocation;
     }
 
     public void setScheduleLocation(String scheduleLocation) {
@@ -102,9 +103,12 @@ public class Schedule {
         this.scheduleStatus = scheduleStatus;
     }
 
-    @Override
-    public String toString() {
-        return "String of Schedule";
+    public int getScheduleType() {
+        return this.scheduleType;
+    }
+
+    public void setScheduleType(int scheduleType) {
+        this.scheduleType = scheduleType;
     }
 
 }

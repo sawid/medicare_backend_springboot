@@ -17,13 +17,13 @@ public class Appointment {
     private long appointmentScheduleId;
     private LocalDateTime appiontmentTimeStart;
     private LocalDateTime appiontmentTimeEnd;
+    private boolean appointmentStatus;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getAppointmentId() {
+        public long getAppointmentId() {
         return appointmentId;
     }
-
     public void setAppointmentId(long id) {
         this.appointmentId = id;
     }
@@ -31,13 +31,13 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(long appointmentPatientId,
-            long appointmentDoctorId,
-            LocalDate appointmentDate,
-            String appiontmentLocation,
-            long appointmentScheduleId,
-            LocalDateTime appiontmentTimeStart,
-            LocalDateTime appiontmentTimeEnd) {
+    public Appointment(long appointmentPatientId, 
+                    long appointmentDoctorId, 
+                    LocalDate appointmentDate, 
+                    String appiontmentLocation, 
+                    long appointmentScheduleId, 
+                    LocalDateTime appiontmentTimeStart, 
+                    LocalDateTime appiontmentTimeEnd) {
         this.appointmentPatientId = appointmentPatientId;
         this.appointmentDoctorId = appointmentDoctorId;
         this.appointmentDate = appointmentDate;
@@ -45,6 +45,7 @@ public class Appointment {
         this.appointmentScheduleId = appointmentScheduleId;
         this.appiontmentTimeStart = appiontmentTimeStart;
         this.appiontmentTimeEnd = appiontmentTimeEnd;
+        this.appointmentStatus = true;
     }
 
     @Column(name = "appointment_patient_id", nullable = false)
@@ -110,18 +111,12 @@ public class Appointment {
         this.appiontmentTimeEnd = appiontmentTimeEnd;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                " appointmentId='" + getAppointmentId() + "'" +
-                ", appointmentPatientId='" + getAppointmentPatientId() + "'" +
-                ", appointmentDoctorId='" + getAppointmentDoctorId() + "'" +
-                ", appointmentDate='" + getAppointmentDate() + "'" +
-                ", appiontmentLocation='" + getAppiontmentLocation() + "'" +
-                ", appointmentScheduleId='" + getAppointmentScheduleId() + "'" +
-                ", appiontmentTimeStart='" + getAppiontmentTimeStart() + "'" +
-                ", appiontmentTimeEnd='" + getAppiontmentTimeEnd() + "'" +
-                "}";
+    public boolean getAppointmentStatus() {
+        return this.appointmentStatus;
+    }
+
+    public void setAppointmentStatus(boolean appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
     }
 
 }

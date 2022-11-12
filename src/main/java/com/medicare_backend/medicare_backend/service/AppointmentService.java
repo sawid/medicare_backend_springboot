@@ -13,29 +13,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
+import com.medicare_backend.medicare_backend.schema.entity.Schedule;
 import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
+import com.medicare_backend.medicare_backend.schema.request.AddAppointment;
 
 @Service
 public class AppointmentService {
     private AppointmentRepository appointmentRepository;
+    private CompareDatetime compareDatetime = new CompareDatetime();
 
     @Autowired
     public AppointmentService(AppointmentRepository appointmentRepository){
         this.appointmentRepository = appointmentRepository;
     }
 
-    //Get all Appointment
+    //Get all Appointment //for test
     public List<Appointment> getAppointment() {
-        List<Appointment> appointments = new ArrayList<>();
-            appointments = appointmentRepository.findAll();
-        return appointments;
+        return appointmentRepository.findAll();
     }
 
-    //Get Appointment by Id
+    //Get Appointment by Id //for test
     public Optional<Appointment> getAppointmentById(Long appointmentId) {
-        Optional<Appointment> appointment = Optional.empty();
-            appointment = appointmentRepository.findById(appointmentId);
-        return appointment;
+        return appointmentRepository.findById(appointmentId);
     }
 
     //Create new Appointment
@@ -44,11 +43,22 @@ public class AppointmentService {
         return "Create Success";
     }
 
+    //Create new Appointment
+    public String createNewAppointment(Optional<Schedule> schedule, AddAppointment addAppointment, long patientHNId, long employeeId) {
+        Appointment appointment = new Appointment(  patientHNId,
+                                                    employeeId,
+                                                    schedule.get().getScheduleDate(),
+                                                    schedule.get().getScheduleLocation(),
+                                                    addAppointment.getScheduleId(),
+                                                    schedule.get().getScheduleStart(),
+                                                    schedule.get().getScheduleEnd());
+        appointmentRepository.save(appointment);
+        return "Create Success";
+    }
+
     //Get Appointment by ScheduleId
     public List<Appointment> getAppointmentByScheduleId(long appointmentScheduleId) {
-        List<Appointment> appointments = new ArrayList<>();
-            appointments = appointmentRepository.findAppointmentByappointmentScheduleId(appointmentScheduleId);
-        return appointments;
+        return appointmentRepository.findAppointmentByappointmentScheduleId(appointmentScheduleId);
     }
 
     //Update Appointment from Schedule
@@ -58,7 +68,8 @@ public class AppointmentService {
                                             LocalDateTime appointmentTimeEnd,
                                             LocalDate appointmentDate, 
                                             String appointmentLocation, 
-                                            long appointmentDoctorId) {
+                                            long appointmentDoctorId, 
+                                            boolean scheduleStatus) {
         List<Appointment> appointments = getAppointmentByScheduleId(scheduleId);
         List<Long> patientHNId = new ArrayList<>();
             if(appointments == null || appointments.isEmpty()){
@@ -94,8 +105,31 @@ public class AppointmentService {
                         patientHNId.add(a.getAppointmentPatientId());
                     }    
                 }
+                if(a.getAppointmentStatus() != scheduleStatus){
+                    a.setAppointmentStatus(scheduleStatus);
+                    if(!patientHNId.contains(a.getAppointmentPatientId())){
+                        patientHNId.add(a.getAppointmentPatientId());
+                    }   
+                }
             }
-        return patientHNId;
-        
+        return patientHNId;  
     }
+
+    //check is patientbusy
+    public boolean isPatientBusy(LocalDateTime scheduleStart, LocalDateTime scheduleEnd, long appointmentPatientId, long IdofcurrentSchedule) {
+        List<Appointment> appointments = appointmentRepository.findAppointmentByappointmentPatientId(appointmentPatientId);
+        for(Appointment appointment : appointments){
+            //appointment status need to be true and in future to check
+            if( appointment.getAppointmentStatus() && 
+                appointment.getAppointmentDate().isAfter(LocalDate.now()) && 
+                appointment.getAppointmentScheduleId() != IdofcurrentSchedule)
+            {
+                if(compareDatetime.isOverlap(scheduleStart, scheduleEnd, appointment.getAppiontmentTimeStart(), appointment.getAppiontmentTimeEnd())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

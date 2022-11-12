@@ -31,6 +31,10 @@ public class PatientService {
         return "suscess";
     }
 
+    public Optional<Patient> getPatientBypatientNationalId(String patientNationalId) {
+        return patientRepository.findPatientBypatientNationalId(patientNationalId);
+    }
+
     public Patient updatePatient(long id, Patient patient) {
         Patient _patient = patientRepository.findBypatientHNId(id)
                 .orElseThrow(() -> new Handler("Patient not exit with id" + id));

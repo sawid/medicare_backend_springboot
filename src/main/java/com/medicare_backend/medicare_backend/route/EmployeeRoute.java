@@ -14,7 +14,6 @@ import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +72,7 @@ public class EmployeeRoute {
     public ResponseEntity<?> getEmployeeByID(@PathVariable("id") long employeeid) {
         Optional<Employee> data = employeeController.getEmployeeById(employeeid);
         data.get().setEmployeePassword("maibokeiei");
-        if (!(data != null && data.isEmpty())) {
+        if (!(data != null && !data.isPresent())) {
             return ResponseEntity.ok().body(data);
         } else {
             return ResponseEntity.status(500).body("Patient List Not Found");
