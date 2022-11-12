@@ -14,6 +14,7 @@ import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
+import com.medicare_backend.medicare_backend.service.Handler;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
@@ -118,7 +119,7 @@ public class EmployeeController {
     }
 
     public Employee updatEmployee(long id, Employee employee) {
-        Employee _employee = employeeRepository.findById(id).orElseThrow();
+        Employee _employee = employeeRepository.findById(id).orElseThrow(() -> new Handler("Employee not exit with id" + id));
         if (employee.getEmployeeFirstName() != null)
             _employee.setEmployeeFirstName(employee.getEmployeeFirstName());
         if (employee.getEmployeeMiddleName() != null)

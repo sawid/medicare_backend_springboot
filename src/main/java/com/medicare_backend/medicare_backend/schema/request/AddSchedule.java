@@ -3,23 +3,14 @@ package com.medicare_backend.medicare_backend.schema.request;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class UpdateSchedule {
-    private long scheduleId;
+public class AddSchedule {
     private int scheduleCapacity;
     private LocalDateTime scheduleStart;
     private LocalDateTime scheduleEnd;
     private LocalDate scheduleDate;
     private String scheduleLocation;
-    private boolean scheduleStatus;
-    private long appointmentDoctorId;
-
-    public long getScheduleId() {
-        return this.scheduleId;
-    }
-
-    public void setScheduleId(long scheduleId) {
-        this.scheduleId = scheduleId;
-    }
+    private long employeeId;
+    private int scheduleType;
 
     public int getScheduleCapacity() {
         return this.scheduleCapacity;
@@ -61,23 +52,20 @@ public class UpdateSchedule {
         this.scheduleLocation = scheduleLocation;
     }
 
-    public long getAppointmentDoctorId() {
-        return this.appointmentDoctorId;
+    public long getEmployeeId() {
+        return this.employeeId;
     }
 
-    public void setAppointmentDoctorId(long appointmentDoctorId) {
-        this.appointmentDoctorId = appointmentDoctorId;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public boolean isScheduleStatus() {
-        return this.scheduleStatus;
+    public int getScheduleType() {
+        return this.scheduleType;
     }
 
-    public boolean getScheduleStatus() {
-        return this.scheduleStatus;
-    }
+    public void setScheduleType(int scheduleType) {
+        this.scheduleType = scheduleType;
+    }    
 
-    public void setScheduleStatus(boolean scheduleStatus) {
-        this.scheduleStatus = scheduleStatus;
-    }
 }
