@@ -3,13 +3,16 @@ package com.medicare_backend.medicare_backend.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
+import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
@@ -102,4 +105,36 @@ public class EmployeeController {
 
     }
 
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    public List<Employee> getEmployee() {
+        return employeeRepository.findAll();
+    }
+
+    public Optional<Employee> getEmployeeById(long employId) {
+        return employeeRepository.findById(employId);
+    }
+
+    public Employee updatEmployee(long id, Employee employee) {
+        Employee _employee = employeeRepository.findById(id).orElseThrow();
+        if (employee.getEmployeeFirstName() != null)
+            _employee.setEmployeeFirstName(employee.getEmployeeFirstName());
+        if (employee.getEmployeeMiddleName() != null)
+            _employee.setEmployeeMiddleName(employee.getEmployeeMiddleName());
+        if (employee.getEmployeeLastName() != null)
+            _employee.setEmployeeLastName(employee.getEmployeeLastName());
+        if (employee.getEmployeeNationalId() != null)
+            _employee.setEmployeeNationalId(employee.getEmployeeNationalId());
+        if (employee.getEmployeeIsAdmin() != false)
+            _employee.setEmployeeIsAdmin(employee.getEmployeeIsAdmin());
+        if (employee.getEmployeePhoneNumber() != null)
+            _employee.setEmployeePhoneNumber(employee.getEmployeePhoneNumber());
+        _employee.setEmployeeRole(employee.getEmployeeRole());
+        _employee.setEmployeeDepartment(employee.getEmployeeDepartment());
+        if (employee.getEmployeePassword() != null)
+            _employee.setEmployeePassword(employee.getEmployeePassword());
+        return _employee;
+    }
 }

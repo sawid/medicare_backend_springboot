@@ -26,6 +26,9 @@ public class PatientController {
     @GetMapping(path = "/patients")
     public ResponseEntity<?> getPatient() {
         List<Patient> data = patientService.getPatient();
+        for (Patient _patient : data) {
+            _patient.setPatientPassword("mai bok eiei");
+        }
         if (!(data != null && data.isEmpty())) {
             return ResponseEntity.ok().body(data);
         } else {
@@ -33,9 +36,12 @@ public class PatientController {
         }
     }
 
-    @GetMapping(path = "/patients/findbyId/{id}")
+    @GetMapping(path = "/patientsinfo/findbyId/{id}")
     public ResponseEntity<?> getPatientmentById(@PathVariable("id") long patientHNId) {
         Optional<Patient> data = patientService.getPatientById(patientHNId);
+
+        data.get().setPatientPassword("mai bok eiei");
+
         if (data.isPresent()) {
             return ResponseEntity.ok().body(data);
         } else {
