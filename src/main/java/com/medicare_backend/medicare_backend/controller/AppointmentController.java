@@ -143,6 +143,11 @@ public class AppointmentController {
             //get takeSchedule for doctorId & check is takeSchedule exist
             Optional<TakeSchedule> takeSchedule = takeScheduleService.getTakeScheduleByScheduleId(addAppointment.getScheduleId());
 
+            //check date to make appointment is not in range 3 day
+            if (appointmentService.isWithinRange(schedule.get().getScheduleDate())) {
+                return ResponseEntity.status(400).body("Can't Appointment before 3 day");
+            }
+
             //create new appointment //checked
             String data = appointmentService.createNewAppointment(schedule, addAppointment, patient.get().getpatientHNId(), takeSchedule.get().getEmployeeId());
             if (data == "Create Success") {
