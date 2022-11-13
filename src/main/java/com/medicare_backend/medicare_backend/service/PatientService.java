@@ -23,7 +23,7 @@ public class PatientService {
     }
 
     public Optional<Patient> getPatientById(long l) {
-        return patientRepository.findBypatientHNId(l);
+        return patientRepository.findById(l);
     }
 
     public String createPatient(Patient patient) {

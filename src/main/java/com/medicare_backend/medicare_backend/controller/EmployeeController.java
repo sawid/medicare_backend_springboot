@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
 import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
+import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
+import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.Handler;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
@@ -23,6 +26,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    private AppointmentService appointmentService;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     private AuthenticationService authservice;
 
@@ -119,7 +125,8 @@ public class EmployeeController {
     }
 
     public Employee updatEmployee(long id, Employee employee) {
-        Employee _employee = employeeRepository.findById(id).orElseThrow(() -> new Handler("Employee not exit with id" + id));
+        Employee _employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new Handler("Employee not exit with id" + id));
         if (employee.getEmployeeFirstName() != null)
             _employee.setEmployeeFirstName(employee.getEmployeeFirstName());
         if (employee.getEmployeeMiddleName() != null)
@@ -138,4 +145,5 @@ public class EmployeeController {
             _employee.setEmployeePassword(employee.getEmployeePassword());
         return _employee;
     }
+
 }
