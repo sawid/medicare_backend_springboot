@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
 import com.medicare_backend.medicare_backend.controller.EmployeeController;
 import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
@@ -17,14 +18,20 @@ import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
+import com.medicare_backend.medicare_backend.schema.entity.Patient;
+import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.PatientService;
+import com.medicare_backend.medicare_backend.service.PatientService;
 
+import java.lang.StackWalker.Option;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONObject;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +39,13 @@ import org.springframework.http.ResponseEntity;
 @RestController
 public class EmployeeRoute {
 
+    private PatientService patientService;
     @Autowired
     private EmployeeController employeeController;
-
     @Autowired
     private AppointmentRepository appointmentRepository;
-
     @Autowired
     private PatientRepository patientRepository;
-
-    private PatientService patientService;
 
     @PostMapping("/employee/register")
     public ResponseEntity<?> registerEmployee(@RequestHeader("authtoken") String authtoken,
@@ -102,6 +106,37 @@ public class EmployeeRoute {
             Employee _employee = employeeController.updatEmployee(employeeId, employee);
             Employee updatEmployee = employeeController.saveEmployee(_employee);
             return ResponseEntity.ok().body(updatEmployee);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(employee);
+        }
+    }
+
+    @GetMapping(path = "/employee/findappointment/{id}")
+    public ResponseEntity<?> employeeAppointment(@PathVariable("id") long employeeId, @RequestBody Employee employee) {
+        try {
+            List<Appointment> _appointment = employeeController.getAppointmentbyEmployeeId(employeeId);
+            List<JSONObject> data = new ArrayList<>();
+            Integer patientCount = 0;
+            if (_appointment != null && !_appointment.isEmpty()) {
+                for (Appointment _data : _appointment) {
+                    Optional<Patient> patient = patientService.getPatientById(_data.getAppointmentPatientId());
+                    JSONObject object = new JSONObject();
+                    object.put("appointmentDate", _data.getAppointmentDate());
+                    object.put("appointmentTimeStart", _data.getAppiontmentTimeStart());
+                    object.put("appointmentTimeEnd", _data.getAppiontmentTimeEnd());
+                    object.put("patientFirstName", patient.get().getPatientFirstName());
+                    object.put("patientMiddleName", patient.get().getPatientMiddleName());
+                    object.put("patientLastName", patient.get().getPatientLastName());
+                    data.add(object);
+                    patientCount++;
+                }
+                JSONObject _patientcount = new JSONObject();
+                _patientcount.put("patientcount", _patientcount);
+                data.add(_patientcount);
+                return ResponseEntity.ok().body(data);
+            } else {
+                return ResponseEntity.status(500).body("Appointmentid not found");
+            }
         } catch (Exception e) {
             return ResponseEntity.status(500).body(employee);
         }

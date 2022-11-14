@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
+import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
 import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
@@ -146,4 +147,7 @@ public class EmployeeController {
         return _employee;
     }
 
+    public List<Appointment> getAppointmentbyEmployeeId(long id) {
+        return appointmentRepository.findAppointmentByappointmentDoctorId(id);
+    }
 }
