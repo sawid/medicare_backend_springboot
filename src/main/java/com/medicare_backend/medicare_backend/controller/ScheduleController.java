@@ -85,7 +85,7 @@ public class ScheduleController {
             Optional<Employee> employee = employeeService.getEmployeeById(addSchedule.getEmployeeId());
             if (!employee.isPresent()) {
                 return ResponseEntity.status(400)
-                        .body("Employee with ID : " + addSchedule.getEmployeeId() + " not exits");
+                        .body("Employee with ID : " + addSchedule.getEmployeeId() + " dose not exits");
             }
 
             // check is employee busy
@@ -173,7 +173,7 @@ public class ScheduleController {
                 Optional<Employee> employee = employeeService.getEmployeeById(updateSchedule.getAppointmentDoctorId());
                 if (!employee.isPresent()) {
                     return ResponseEntity.status(400)
-                            .body("Employee with ID : " + updateSchedule.getAppointmentDoctorId() + " not exits");
+                            .body("Employee with ID : " + updateSchedule.getAppointmentDoctorId() + " dose not exits");
                 }
             }
 

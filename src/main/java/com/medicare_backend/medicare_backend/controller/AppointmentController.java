@@ -107,7 +107,7 @@ public class AppointmentController {
                 return ResponseEntity.ok().body(data);
             } else {
                 // if schedule have no petient
-                return ResponseEntity.status(400)
+                return ResponseEntity.status(200)
                         .body("Schedule with ID : " + appointmentScheduleId + " doesn't have Patient");
             }
         } catch (Exception e) {
