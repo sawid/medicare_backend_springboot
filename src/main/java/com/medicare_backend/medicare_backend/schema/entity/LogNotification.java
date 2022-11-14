@@ -1,8 +1,11 @@
 package com.medicare_backend.medicare_backend.schema.entity;
 
+
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
+
+
 
 @Entity
 @Table(name = "logNotification")
@@ -13,6 +16,7 @@ public class LogNotification {
     private String logNotificationTitle;
     private String logNotificationBody;
     private long logNotificationAppointmentID;
+
     private LocalDateTime logNotificationDateCreated;
 
     public LogNotification() {
@@ -20,7 +24,7 @@ public class LogNotification {
     }
 
     public LogNotification(long logNotificationType, String logNotificationTitle,
-            String logNotificationBody, long logNotificationAppointmentID,LocalDateTime logNotificationDateCreated) {
+            String logNotificationBody, long logNotificationAppointmentID, LocalDateTime logNotificationDateCreated) {
 
         this.logNotificationType = logNotificationType;
         this.logNotificationTitle = logNotificationTitle;
@@ -74,6 +78,7 @@ public class LogNotification {
     public void setLogNotificationAppointmentID(long logNotificationAppointmentID) {
         this.logNotificationAppointmentID = logNotificationAppointmentID;
     }
+    
 
     @Column(name = "logNotification_DateCreated", nullable = false)
     public LocalDateTime getLogNotificationDateCreated() {
