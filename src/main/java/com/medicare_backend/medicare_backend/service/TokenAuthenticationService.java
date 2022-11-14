@@ -28,7 +28,7 @@ public class TokenAuthenticationService {
     public static String generateJWTToken(String requestUser) throws NoSuchAlgorithmException {
         try {
             final Date createdDate = new Date();
-            final Date expirationDate = new Date(createdDate.getTime() + 100 * 1000);
+            final Date expirationDate = new Date(createdDate.getTime() + 3000 * 1000);
             String jwtToken = JWT.create()
                     .withSubject("User Details")
                     .withClaim("authId", requestUser)
