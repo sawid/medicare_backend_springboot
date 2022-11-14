@@ -38,6 +38,10 @@ public class ScheduleService {
         return scheduleRepository.findById(scheduleId);
     }
 
+    public List<Schedule> getScheduleByType(int type) {
+        return scheduleRepository.findByScheduleType(type);
+    }
+
     // Post create new schedule
     public Schedule createNewSchedule(AddSchedule addSchedule) {
         Schedule schedule = new Schedule(addSchedule.getScheduleCapacity(),
@@ -116,4 +120,5 @@ public class ScheduleService {
         }
         return true;
     }
+
 }

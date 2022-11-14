@@ -1,5 +1,6 @@
 package com.medicare_backend.medicare_backend.controller;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,6 @@ import com.medicare_backend.medicare_backend.service.TakeScheduleService;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.EmployeeService;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -272,5 +272,29 @@ public class ScheduleController {
             System.out.println(e);
             return ResponseEntity.status(500).body("server error");
         }
+    }
+
+    @GetMapping(path = "/getScheduleBytpye/{id}")
+    public ResponseEntity<?> getScheduleBytpye(@PathVariable("id") int type) {
+        List<Schedule> data = scheduleService.getScheduleByType(type);
+        List<JSONObject> objects = new ArrayList<>();
+        for (Schedule s : data) {
+            List<Appointment> appointments = appointmentService.getAppointmentByScheduleId(s.getScheduleId());
+            JSONObject _object = new JSONObject();
+            int patient = 0;
+            _object.put("scheduleId", s.getScheduleId());
+            _object.put("scheduleType", s.getScheduleType());
+            _object.put("scheduleDate", s.getScheduleDate());
+            _object.put("scheduleStartTIme", s.getScheduleStart());
+            _object.put("scheduleFinishTime", s.getScheduleEnd());
+            for (Appointment a : appointments) {
+                patient++;
+            }
+            _object.put("patientCount", appointments.size());
+            objects.add(_object);
+        }
+
+        return ResponseEntity.ok().body(objects);
+
     }
 }
