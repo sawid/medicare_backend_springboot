@@ -18,6 +18,7 @@ import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.PatientService;
 import com.medicare_backend.medicare_backend.service.ScheduleService;
 import com.medicare_backend.medicare_backend.service.TakeScheduleService;
+import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
 @RestController
 public class AppointmentController {
@@ -26,6 +27,7 @@ public class AppointmentController {
     private PatientService patientService;
     private ScheduleService scheduleService;
     private TakeScheduleService takeScheduleService;
+    private TokenAuthenticationService tokenService;
 
     @Autowired
     public AppointmentController(AppointmentService appointmentService,
@@ -68,9 +70,15 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping(path = "/appointments/findPatientbyScheduleId/{id}") // not finish //not authen
-    public ResponseEntity<?> getPatientByScheduleId(@PathVariable("id") long appointmentScheduleId) {
+    @GetMapping(path = "/appointments/findPatientbyScheduleId/{id}") // finish
+    public ResponseEntity<?> getPatientByScheduleId(@RequestHeader("authtoken") String authtoken ,@PathVariable("id") long appointmentScheduleId) {
         try {
+            String authEmployeeID = tokenService.verifyJWTToken(authtoken);
+            if (authEmployeeID == "error") {
+                return ResponseEntity.status(400)
+                    .body("Auth Time Out");
+            }
+
             // check is schedule exist
             Optional<Schedule> schedule = scheduleService.getScheduleById(appointmentScheduleId);
             if (!schedule.isPresent()) {
@@ -108,9 +116,15 @@ public class AppointmentController {
         }
     }
 
-    @PostMapping(path = "/appointments/createNewAppointment") // not finish //not authen
-    public ResponseEntity<?> createNewAppointment(@RequestBody AddAppointment addAppointment) {
+    @PostMapping(path = "/appointments/createNewAppointment") // finish
+    public ResponseEntity<?> createNewAppointment(@RequestHeader("authtoken") String authtoken ,@RequestBody AddAppointment addAppointment) {
         try {
+            String authEmployeeID = tokenService.verifyJWTToken(authtoken);
+            if (authEmployeeID == "error") {
+                return ResponseEntity.status(400)
+                    .body("Auth Time Out");
+            }
+
             // get schedule & check is schedule exist //checked
             Optional<Schedule> schedule = scheduleService.getScheduleById(addAppointment.getScheduleId());
             if (!schedule.isPresent()) {

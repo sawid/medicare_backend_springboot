@@ -12,6 +12,7 @@ import com.medicare_backend.medicare_backend.schema.request.AddSchedule;
 import com.medicare_backend.medicare_backend.schema.request.UpdateSchedule;
 import com.medicare_backend.medicare_backend.service.ScheduleService;
 import com.medicare_backend.medicare_backend.service.TakeScheduleService;
+import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.EmployeeService;
 
@@ -28,6 +29,7 @@ public class ScheduleController {
     private AppointmentService appointmentService;
     private TakeScheduleService takeScheduleService;
     private EmployeeService employeeService;
+    private TokenAuthenticationService tokenService;
 
     @Autowired
     public ScheduleController(ScheduleService scheduleService,
@@ -70,9 +72,15 @@ public class ScheduleController {
         }
     }
 
-    @PostMapping(path = "/schedules/createNewSchedule") // not finish //not authen
-    public ResponseEntity<?> createNewSchedule(@RequestBody AddSchedule addSchedule) {
+    @PostMapping(path = "/schedules/createNewSchedule") // finish
+    public ResponseEntity<?> createNewSchedule(@RequestHeader("authtoken") String authtoken ,@RequestBody AddSchedule addSchedule) {
         try {
+            String authEmployeeID = tokenService.verifyJWTToken(authtoken);
+            if (authEmployeeID == "error") {
+                return ResponseEntity.status(400)
+                    .body("Auth Time Out");
+            }
+
             // check is employee present
             Optional<Employee> employee = employeeService.getEmployeeById(addSchedule.getEmployeeId());
             if (!employee.isPresent()) {
@@ -125,11 +133,16 @@ public class ScheduleController {
         }
     }
 
-    @PutMapping(path = "/schedules/update") // not finish //not authen
-    public ResponseEntity<?> updateSchedule(@RequestBody UpdateSchedule updateSchedule) {
+    @PutMapping(path = "/schedules/update") // finish
+    public ResponseEntity<?> updateSchedule(@RequestHeader("authtoken") String authtoken ,@RequestBody UpdateSchedule updateSchedule) {
         // if don't want to update schedule status -> sent true
         try {
-            boolean isBusy = false;
+            String authEmployeeID = tokenService.verifyJWTToken(authtoken);
+            if (authEmployeeID == "error") {
+                return ResponseEntity.status(400)
+                    .body("Auth Time Out");
+            }
+
             // get schedule & check is Schedule present
             Optional<Schedule> schedule = scheduleService.getScheduleById(updateSchedule.getScheduleId());
             if (!schedule.isPresent()) {
@@ -173,7 +186,8 @@ public class ScheduleController {
                 }
             }
 
-            // check is employee (if update start,end,date,employeeId)
+            boolean isBusy = false;
+            // check is employee busy (if update start,end,date,employeeId)
             if (updateSchedule.getScheduleDate() != null || updateSchedule.getScheduleStart() != null
                     || updateSchedule.getScheduleEnd() != null || updateSchedule.getAppointmentDoctorId() != 0) {
                 List<TakeSchedule> takeSchedules = new ArrayList<>();
