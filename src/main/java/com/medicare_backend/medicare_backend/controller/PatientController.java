@@ -14,8 +14,15 @@ import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.repository.PatientRepository;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
+import com.medicare_backend.medicare_backend.schema.entity.Schedule;
 import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
+import com.medicare_backend.medicare_backend.schema.relationship.TakeSchedule;
+import com.medicare_backend.medicare_backend.schema.request.AddAppointment;
+import com.medicare_backend.medicare_backend.schema.request.AddSchedule;
+import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.PatientService;
+import com.medicare_backend.medicare_backend.service.ScheduleService;
+import com.medicare_backend.medicare_backend.service.TakeScheduleService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -27,6 +34,13 @@ public class PatientController {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private AppointmentService appointmentService;
+    @Autowired
+    private ScheduleService scheduleService;
+    @Autowired
+    private TakeScheduleService takeScheduleService;
 
     @Autowired
     public PatientController(PatientService patientService) {
@@ -84,8 +98,8 @@ public class PatientController {
     }
 
     @GetMapping(path = "/getappointmentbyPatient/{id}")
-    public ResponseEntity<?> getAppointmentByEmployeeId(@PathVariable("id") long patientId) {
-        Integer patientCount = 0;
+    public ResponseEntity<?> getAppointmentByPatientId(@PathVariable("id") long patientId) {
+        // Integer patientCount = 0;
         try {
 
             List<Appointment> appointments = appointmentRepository
@@ -94,29 +108,75 @@ public class PatientController {
                 return ResponseEntity.status(500).body("Employee with ID : " + patientId +
                         "is not exiting");
             }
-            List<JSONObject> data = new ArrayList<>();
+            JSONObject _Object = new JSONObject();
             for (Appointment a : appointments) {
+                List<JSONObject> data = new ArrayList<>();
                 JSONObject object = new JSONObject();
                 Optional<Employee> employee = employeeRepository.findById(a.getAppointmentDoctorId());
                 object.put("appointmentDate", a.getAppointmentDate());
                 object.put("appointmentTimeStart", a.getAppiontmentTimeStart());
                 object.put("appointmentTimeEnd", a.getAppiontmentTimeEnd());
-                object.put("patientFirstName", employee.get().getEmployeeFirstName());
-                object.put("patientMiddleName", employee.get().getEmployeeMiddleName());
-                object.put("patientLastName", employee.get().getEmployeeLastName());
+                object.put("EmployeeFirstName", employee.get().getEmployeeFirstName());
+                object.put("EmployeeMiddleName", employee.get().getEmployeeMiddleName());
+                object.put("EmployeeLastName", employee.get().getEmployeeLastName());
+                object.put("EmployeeDepartment", employee.get().getEmployeeDepartment());
                 data.add(object);
-                patientCount++;
+                _Object.put(a.getAppointmentDate().toString(), data);
+                // patientCount++;
 
             }
-            JSONObject _object = new JSONObject();
-            _object.put("patient", patientCount);
-            data.add(_object);
-            return ResponseEntity.ok().body(data);
+            // JSONObject _object = new JSONObject();
+            // _object.put("patient", patientCount);
+            // data.add(_object);
+            return ResponseEntity.ok().body(_Object);
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.status(500).body(e);
 
         }
 
+    }
+
+    @PostMapping(path = "patient/createNewAppointment")
+    public ResponseEntity<?> createNewAppointment(@RequestBody AddAppointment addAppointment) {
+        try {
+            Optional<Schedule> schedule = scheduleService.getScheduleById(addAppointment.getScheduleId());
+            if (schedule.get().getScheduleType() == 1) {
+                return ResponseEntity.status(400).body("type is not allowed");
+            }
+            Optional<Patient> patient = patientService
+                    .getPatientBypatientNationalId(addAppointment.getPatientNationalId());
+            List<Appointment> appointments = appointmentService
+                    .getAppointmentByScheduleId(addAppointment.getScheduleId());
+            if (appointments.size() == schedule.get().getScheduleCapacity()) {
+                return ResponseEntity.status(400)
+                        .body("Schedule with ID : " + addAppointment.getScheduleId() + " is already full");
+            }
+            for (Appointment appointment : appointments) {
+                if (appointment.getAppointmentPatientId() == patient.get().getpatientHNId()) {
+                    return ResponseEntity.status(400).body("Patient with NationalId : "
+                            + addAppointment.getPatientNationalId() + " is already in schedule");
+                }
+            }
+            boolean isBusy = appointmentService.isPatientBusy(schedule.get().getScheduleStart(),
+                    schedule.get().getScheduleEnd(),
+                    patient.get().getpatientHNId(), 0);
+            if (isBusy) {
+                return ResponseEntity.status(400).body("Patient Busy");
+            }
+            Optional<TakeSchedule> takeSchedule = takeScheduleService
+                    .getTakeScheduleByScheduleId(addAppointment.getScheduleId());
+
+            // create new appointment //checked
+            String data = appointmentService.createNewAppointment(schedule, addAppointment,
+                    patient.get().getpatientHNId(), takeSchedule.get().getEmployeeId());
+            if (data == "Create Success") {
+                return ResponseEntity.ok().body(data);
+            }
+            return ResponseEntity.status(400).body(data);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(500).body("server error");
+        }
     }
 }
