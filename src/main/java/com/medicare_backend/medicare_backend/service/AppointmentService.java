@@ -37,6 +37,13 @@ public class AppointmentService {
         return appointmentRepository.findById(appointmentId);
     }
 
+    // Delete Appointment By PatientId
+    @Transactional
+    public String deleteAppointmentByPatientId(Long patientId) {
+        appointmentRepository.deleteByAppointmentPatientId(patientId);
+        return "Delete Success";
+    }
+
     // Create new Appointment
     public String createNewAppointment(Appointment appointment) {
         appointmentRepository.save(appointment);

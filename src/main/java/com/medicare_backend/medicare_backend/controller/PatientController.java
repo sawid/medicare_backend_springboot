@@ -19,6 +19,7 @@ import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.schema.relationship.TakeSchedule;
 import com.medicare_backend.medicare_backend.schema.request.AddAppointment;
 import com.medicare_backend.medicare_backend.schema.request.AddSchedule;
+import com.medicare_backend.medicare_backend.schema.request.PostPoneAppointment;
 import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.PatientService;
 import com.medicare_backend.medicare_backend.service.ScheduleService;
@@ -173,6 +174,61 @@ public class PatientController {
             if (data == "Create Success") {
                 return ResponseEntity.ok().body(data);
             }
+            return ResponseEntity.status(400).body(data);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(500).body("server error");
+        }
+    }
+
+    @PostMapping(path = "patient/postponeAppointment")
+    public ResponseEntity<?> postponeAppointment(@RequestBody PostPoneAppointment postponeAppointment) {
+        try {
+            Optional<Schedule> schedule = scheduleService.getScheduleById(postponeAppointment.getToScheduleId());
+            if (schedule.get().getScheduleType() == 1) {
+                return ResponseEntity.status(400).body("type is not allowed");
+            }
+            Optional<Patient> patient = patientService
+                    .getPatientBypatientNationalId(postponeAppointment.getPatientNationalId());
+            List<Appointment> appointments = appointmentService
+                    .getAppointmentByScheduleId(postponeAppointment.getToScheduleId());
+            if (appointments.size() == schedule.get().getScheduleCapacity()) {
+                return ResponseEntity.status(400)
+                        .body("Schedule with ID : " + postponeAppointment.getToScheduleId() + " is already full");
+            }
+            for (Appointment appointment : appointments) {
+                if (appointment.getAppointmentPatientId() == patient.get().getpatientHNId()) {
+                    return ResponseEntity.status(400).body("Patient with NationalId : "
+                            + postponeAppointment.getPatientNationalId() + " is already in schedule");
+                }
+            }
+
+            boolean isBusy = appointmentService.isPatientBusy(schedule.get().getScheduleStart(),
+                    schedule.get().getScheduleEnd(),
+                    patient.get().getpatientHNId(), 0);
+            if (isBusy) {
+                return ResponseEntity.status(400).body("Patient Busy");
+            }
+            
+            Optional<TakeSchedule> takeSchedule = takeScheduleService
+                    .getTakeScheduleByScheduleId(postponeAppointment.getToScheduleId());
+
+            AddAppointment addAppointment = new AddAppointment();
+            addAppointment.setPatientNationalId(postponeAppointment.getPatientNationalId());
+            addAppointment.setScheduleId(postponeAppointment.getToScheduleId());
+
+            // Move to new appointment //checked
+
+            String dateDelete = appointmentService.deleteAppointmentByPatientId(patient.get().getpatientHNId());
+            if (dateDelete != "Delete Success") {
+                return ResponseEntity.status(400).body("No Appointment in this Schedule");
+            }
+            String data = appointmentService.createNewAppointment(schedule, addAppointment,
+                    patient.get().getpatientHNId(), takeSchedule.get().getEmployeeId());
+            if (data == "Post Pone Appointment Success") {
+                return ResponseEntity.ok().body(data);
+            }
+
             return ResponseEntity.status(400).body(data);
         } catch (Exception e) {
             System.out.println(e);
