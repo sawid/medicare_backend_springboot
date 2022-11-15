@@ -188,14 +188,18 @@ public class PatientController {
             if (schedule.get().getScheduleType() == 1) {
                 return ResponseEntity.status(400).body("type is not allowed");
             }
+
             Optional<Patient> patient = patientService
                     .getPatientBypatientNationalId(postponeAppointment.getPatientNationalId());
+
             List<Appointment> appointments = appointmentService
                     .getAppointmentByScheduleId(postponeAppointment.getToScheduleId());
+
             if (appointments.size() == schedule.get().getScheduleCapacity()) {
                 return ResponseEntity.status(400)
                         .body("Schedule with ID : " + postponeAppointment.getToScheduleId() + " is already full");
             }
+            
             for (Appointment appointment : appointments) {
                 if (appointment.getAppointmentPatientId() == patient.get().getpatientHNId()) {
                     return ResponseEntity.status(400).body("Patient with NationalId : "
