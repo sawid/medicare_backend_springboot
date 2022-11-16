@@ -74,21 +74,24 @@ public class PatientController {
         }
     }
 
-    @PostMapping(path = "/addpatients")
-    public ResponseEntity<?> createPatient(@RequestBody Patient patient) {
-        try {
-            patientService.createPatient(patient);
-            return ResponseEntity.ok().body(patient);
-        } catch (Exception e) {
-            System.out.println(e);
-            return ResponseEntity.status(500).body(patient);
-        }
-    }
+    // @PostMapping(path = "/addpatients")
+    // public ResponseEntity<?> createPatient(@RequestBody Patient patient) {
+    // try {
+    // patientService.createPatient(patient);
+    // return ResponseEntity.ok().body(patient);
+    // } catch (Exception e) {
+    // System.out.println(e);
+    // return ResponseEntity.status(500).body(patient);
+    // }
+    // }
 
     @PutMapping(path = "/updatePatient/{id}")
     public ResponseEntity<?> updatePatient(@PathVariable long id, @RequestBody Patient patient) {
         try {
             Patient _patient = patientService.updatePatient(id, patient);
+            if (_patient == null) {
+                return ResponseEntity.status(400).body("patientid is not found");
+            }
             Patient updatePatient = patientRepository.save(_patient);
             return ResponseEntity.ok().body(updatePatient);
         } catch (Exception e) {
@@ -100,13 +103,13 @@ public class PatientController {
 
     @GetMapping(path = "/getappointmentbyPatient/{id}")
     public ResponseEntity<?> getAppointmentByPatientId(@PathVariable("id") long patientId) {
-        // Integer patientCount = 0;
+
         try {
 
             List<Appointment> appointments = appointmentRepository
                     .findAppointmentByappointmentPatientId(patientId);
             if (appointments == null || appointments.isEmpty()) {
-                return ResponseEntity.status(500).body("Employee with ID : " + patientId +
+                return ResponseEntity.status(400).body("Patient with ID : " + patientId +
                         "is not exiting");
             }
             JSONObject _Object = new JSONObject();
@@ -114,6 +117,10 @@ public class PatientController {
                 List<JSONObject> data = new ArrayList<>();
                 JSONObject object = new JSONObject();
                 Optional<Employee> employee = employeeRepository.findById(a.getAppointmentDoctorId());
+                if (employee == null || !employee.isPresent()) {
+                    return ResponseEntity.status(400).body("Employee with ID : " + patientId +
+                            "is not exiting");
+                }
                 object.put("appointmentDate", a.getAppointmentDate());
                 object.put("appointmentTimeStart", a.getAppiontmentTimeStart());
                 object.put("appointmentTimeEnd", a.getAppiontmentTimeEnd());
@@ -126,9 +133,6 @@ public class PatientController {
                 // patientCount++;
 
             }
-            // JSONObject _object = new JSONObject();
-            // _object.put("patient", patientCount);
-            // data.add(_object);
             return ResponseEntity.ok().body(_Object);
         } catch (Exception e) {
             System.out.println(e);
