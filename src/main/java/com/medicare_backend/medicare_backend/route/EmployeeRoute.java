@@ -18,6 +18,7 @@ import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.schema.relationship.TakeSchedule;
 import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
+import com.medicare_backend.medicare_backend.service.EmployeeService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.PatientService;
 import com.medicare_backend.medicare_backend.service.ScheduleService;
@@ -39,6 +40,8 @@ import org.springframework.http.ResponseEntity;
 public class EmployeeRoute {
 
     private PatientService patientService;
+    @Autowired
+    private EmployeeService employeeService;
     @Autowired
     private EmployeeController employeeController;
     @Autowired
@@ -102,10 +105,13 @@ public class EmployeeRoute {
         }
     }
 
-    @PutMapping(path = "/employeeinfo/findbyId/{id}")
+    @PutMapping(path = "/employee/update/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable("id") long employeeId, @RequestBody Employee employee) {
         try {
             Employee _employee = employeeController.updatEmployee(employeeId, employee);
+            if (_employee == null) {
+                return ResponseEntity.status(400).body("employeeid is not found");
+            }
             Employee updatEmployee = employeeController.saveEmployee(_employee);
             return ResponseEntity.ok().body(updatEmployee);
         } catch (Exception e) {
@@ -146,31 +152,38 @@ public class EmployeeRoute {
 
     @GetMapping(path = "/getappointmentbyEmployee/{id}")
     public ResponseEntity<?> getAppointmentByEmployeeId(@PathVariable("id") long employeeId) {
-        List<TakeSchedule> takeSchedule = takeScheduleRepository.findTakeScheduleByemployeeId(employeeId);
-        if (takeSchedule == null || takeSchedule.isEmpty()) {
-            return ResponseEntity.status(500).body("employee id " + employeeId + " is not exiting");
-        }
-        JSONObject _datajason = new JSONObject();
-        for (TakeSchedule data : takeSchedule) {
-            Optional<Schedule> schedule = scheduleRepository.findById(data.getScheduleId());
-            List<Appointment> appointments = appointmentRepository
-                    .findAppointmentByappointmentScheduleId(schedule.get().getScheduleId());
-            List<JSONObject> objects = new ArrayList<>();
-            JSONObject _object = new JSONObject();
-            int patient = 0;
-            _object.put("scheduleId", schedule.get().getScheduleId());
-            _object.put("scheduleType", schedule.get().getScheduleType());
-            _object.put("scheduleDate", schedule.get().getScheduleDate());
-            _object.put("scheduleStartTIme", schedule.get().getScheduleStart());
-            _object.put("scheduleFinishTime", schedule.get().getScheduleEnd());
-            for (Appointment a : appointments) {
-                patient++;
+        try {
+
+            List<TakeSchedule> takeSchedule = takeScheduleRepository.findTakeScheduleByemployeeId(employeeId);
+            if (takeSchedule == null || takeSchedule.isEmpty()) {
+                return ResponseEntity.status(400).body("TakeSchedule is  empty");
             }
-            _object.put("patientCount", appointments.size());
-            objects.add(_object);
-            _datajason.put(schedule.get().getScheduleDate().toString(), objects);
+            JSONObject _datajason = new JSONObject();
+            for (TakeSchedule data : takeSchedule) {
+                Optional<Schedule> schedule = scheduleRepository.findById(data.getScheduleId());
+                if (schedule == null || !schedule.isPresent()) {
+                    return ResponseEntity.status(400).body("scheduleid is not found");
+                }
+                List<Appointment> appointments = appointmentRepository
+                        .findAppointmentByappointmentScheduleId(schedule.get().getScheduleId());
+                if (appointments == null || appointments.isEmpty()) {
+                    return ResponseEntity.status(400).body("scheduleid is not found");
+                }
+                List<JSONObject> objects = new ArrayList<>();
+                JSONObject _object = new JSONObject();
+                _object.put("scheduleId", schedule.get().getScheduleId());
+                _object.put("scheduleType", schedule.get().getScheduleType());
+                _object.put("scheduleDate", schedule.get().getScheduleDate());
+                _object.put("scheduleStartTIme", schedule.get().getScheduleStart());
+                _object.put("scheduleFinishTime", schedule.get().getScheduleEnd());
+                _object.put("patientCount", appointments.size());
+                objects.add(_object);
+                _datajason.put(schedule.get().getScheduleDate().toString(), objects);
+            }
+            return ResponseEntity.ok().body(_datajason);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error");
         }
-        return ResponseEntity.ok().body(_datajason);
     }
 
 }
