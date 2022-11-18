@@ -94,6 +94,21 @@ public class EmployeeRoute {
         }
     }
 
+    @GetMapping(path = "/employee/getdoctor")
+    public ResponseEntity<?> getEmployeeDoctor() {
+        try {
+            List<Employee> data = employeeController.getEmployeeDoctor();
+            if (!(data != null && data.isEmpty())) {
+                return ResponseEntity.ok().body(data);
+            } else {
+                return ResponseEntity.status(400).body("Doctor List Not Found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server Error");
+        }
+
+    }
+
     @GetMapping(path = "/employeeinfo/findbyId/{id}")
     public ResponseEntity<?> getEmployeeByID(@PathVariable("id") long employeeid) {
         Optional<Employee> data = employeeController.getEmployeeById(employeeid);
