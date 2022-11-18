@@ -1,5 +1,7 @@
 package com.medicare_backend.medicare_backend.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,14 +9,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import com.medicare_backend.medicare_backend.repository.AppointmentRepository;
 import com.medicare_backend.medicare_backend.repository.EmployeeRepository;
 import com.medicare_backend.medicare_backend.schema.entity.AuthenticationPatient;
 import com.medicare_backend.medicare_backend.schema.entity.Employee;
-import com.medicare_backend.medicare_backend.schema.entity.Patient;
+import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
-import com.medicare_backend.medicare_backend.service.Handler;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
 
@@ -23,6 +24,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     private AuthenticationService authservice;
 
@@ -106,8 +109,9 @@ public class EmployeeController {
 
     }
 
-    public Employee saveEmployee(Employee employee) {
-        return employeeRepository.save(employee);
+    public Employee saveEmployee(Employee _employee) {
+        Employee employee = employeeRepository.save(_employee);
+        return employee;
     }
 
     public List<Employee> getEmployee() {
@@ -118,24 +122,41 @@ public class EmployeeController {
         return employeeRepository.findById(employId);
     }
 
+    public List<Employee> getEmployeeDoctor() {
+        return employeeRepository.findByEmployeeRole((long) 1);
+    }
+
     public Employee updatEmployee(long id, Employee employee) {
-        Employee _employee = employeeRepository.findById(id).orElseThrow(() -> new Handler("Employee not exit with id" + id));
-        if (employee.getEmployeeFirstName() != null)
-            _employee.setEmployeeFirstName(employee.getEmployeeFirstName());
-        if (employee.getEmployeeMiddleName() != null)
-            _employee.setEmployeeMiddleName(employee.getEmployeeMiddleName());
-        if (employee.getEmployeeLastName() != null)
-            _employee.setEmployeeLastName(employee.getEmployeeLastName());
-        if (employee.getEmployeeNationalId() != null)
-            _employee.setEmployeeNationalId(employee.getEmployeeNationalId());
-        if (employee.getEmployeeIsAdmin() != false)
-            _employee.setEmployeeIsAdmin(employee.getEmployeeIsAdmin());
-        if (employee.getEmployeePhoneNumber() != null)
-            _employee.setEmployeePhoneNumber(employee.getEmployeePhoneNumber());
-        _employee.setEmployeeRole(employee.getEmployeeRole());
-        _employee.setEmployeeDepartment(employee.getEmployeeDepartment());
-        if (employee.getEmployeePassword() != null)
-            _employee.setEmployeePassword(employee.getEmployeePassword());
-        return _employee;
+
+        try {
+            Employee _employee = employeeRepository.findById(id).orElseThrow(() -> new IllegalStateException(
+                    "Schedule with ID : " + employee.getEmployeeId() + " dose not exist"));
+            if (employee.getEmployeeFirstName() != null)
+                _employee.setEmployeeFirstName(employee.getEmployeeFirstName());
+            if (employee.getEmployeeMiddleName() != null)
+                _employee.setEmployeeMiddleName(employee.getEmployeeMiddleName());
+            if (employee.getEmployeeLastName() != null)
+                _employee.setEmployeeLastName(employee.getEmployeeLastName());
+            if (employee.getEmployeeNationalId() != null)
+                _employee.setEmployeeNationalId(employee.getEmployeeNationalId());
+            if (employee.getEmployeeIsAdmin() != false)
+                _employee.setEmployeeIsAdmin(employee.getEmployeeIsAdmin());
+            if (employee.getEmployeePhoneNumber() != null)
+                _employee.setEmployeePhoneNumber(employee.getEmployeePhoneNumber());
+            _employee.setEmployeeRole(employee.getEmployeeRole());
+            _employee.setEmployeeDepartment(employee.getEmployeeDepartment());
+            if (employee.getEmployeePassword() != null) {
+                byte[] hash = authservice.getEncryptedPassword(employee.getEmployeePassword(), "salt".getBytes());
+                _employee.setEmployeePassword(authservice.bytesToHex(hash));
+            }
+
+            return _employee;
+        } catch (Exception e) {
+            return employee;
+        }
+    }
+
+    public List<Appointment> getAppointmentbyEmployeeId(long id) {
+        return appointmentRepository.findAppointmentByappointmentDoctorId(id);
     }
 }
