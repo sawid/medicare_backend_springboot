@@ -122,6 +122,10 @@ public class EmployeeController {
         return employeeRepository.findById(employId);
     }
 
+    public List<Employee> getEmployeeDoctor() {
+        return employeeRepository.findByEmployeeRole((long) 1);
+    }
+
     public Employee updatEmployee(long id, Employee employee) {
 
         try {
