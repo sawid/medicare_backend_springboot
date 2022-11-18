@@ -8,6 +8,10 @@ public class GetEmployeeStrategyContext {
 
     private GetEmployeeStrategy getEmployeeStrategy;
 
+    public GetEmployeeStrategyContext() {
+        this.setStrategy(getEmployeeStrategy);
+    }
+
     public void setStrategy(GetEmployeeStrategy getEmployeeStrategy) {
         this.getEmployeeStrategy = getEmployeeStrategy;
     }

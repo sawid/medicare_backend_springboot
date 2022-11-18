@@ -12,6 +12,10 @@ public class GetNurseEmployee implements GetEmployeeStrategy {
     
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    public GetNurseEmployee(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
     
     @Override
     public List<Employee> getEmployee() {

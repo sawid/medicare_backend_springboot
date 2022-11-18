@@ -161,20 +161,19 @@ public class EmployeeController {
         return appointmentRepository.findAppointmentByappointmentDoctorId(id);
     }
 
-    GetEmployeeStrategyContext getEmployeeStrategyContext;
+    GetEmployeeStrategyContext getEmployeeStrategyContext = new GetEmployeeStrategyContext();
 
     public List<Employee> getEmployee(int strategyType) {
 
         try {
-            System.out.println("Invoke");
             if (strategyType == 1) {
-                getEmployeeStrategyContext.setStrategy(new GetAllEmployee());
+                getEmployeeStrategyContext.setStrategy(new GetAllEmployee(employeeRepository));
             }
             else if (strategyType == 2) {
-                getEmployeeStrategyContext.setStrategy(new GetDoctorEmployee());
+                getEmployeeStrategyContext.setStrategy(new GetDoctorEmployee(employeeRepository));
             }
             else if (strategyType == 3) {
-                getEmployeeStrategyContext.setStrategy(new GetNurseEmployee());
+                getEmployeeStrategyContext.setStrategy(new GetNurseEmployee(employeeRepository));
             }
             System.out.println(getEmployeeStrategyContext.executeGetEmployee());
             return getEmployeeStrategyContext.executeGetEmployee();
