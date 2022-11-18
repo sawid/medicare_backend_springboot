@@ -144,6 +144,7 @@ public class EmployeeRoute {
                 for (Appointment _data : _appointment) {
                     Optional<Patient> patient = patientService.getPatientById(_data.getAppointmentPatientId());
                     JSONObject object = new JSONObject();
+                    object.put("scheduleId", _data.getAppointmentScheduleId());
                     object.put("appointmentDate", _data.getAppointmentDate());
                     object.put("appointmentTimeStart", _data.getAppiontmentTimeStart());
                     object.put("appointmentTimeEnd", _data.getAppiontmentTimeEnd());
