@@ -83,14 +83,14 @@ public class EmployeeRoute {
 
     @GetMapping(path = "/employee")
     public ResponseEntity<?> getEmployee() {
-        List<Employee> data = employeeController.getEmployee();
+        List<Employee> data = employeeController.getEmployee(1);
         for (Employee _employee : data) {
             _employee.setEmployeePassword("maibokeiei");
         }
         if (!(data != null && data.isEmpty())) {
             return ResponseEntity.ok().body(data);
         } else {
-            return ResponseEntity.status(500).body("Patient List Not Found");
+            return ResponseEntity.status(500).body(data);
         }
     }
 
