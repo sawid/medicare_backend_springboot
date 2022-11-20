@@ -143,4 +143,12 @@ public class AppointmentService {
         return false;
     }
 
+    //check date is valid
+    public boolean isWithinRange(LocalDate scheduleDate) {
+        LocalDate now = LocalDate.now();
+        LocalDate start = scheduleDate;
+        LocalDate stop = start.minusDays(3);
+        return ( ! now.isBefore( stop ) ) && ( now.isBefore( start ) );
+     }
+
 }

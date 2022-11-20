@@ -83,15 +83,30 @@ public class EmployeeRoute {
 
     @GetMapping(path = "/employee")
     public ResponseEntity<?> getEmployee() {
-        List<Employee> data = employeeController.getEmployee();
+        List<Employee> data = employeeController.getEmployee(1);
         for (Employee _employee : data) {
             _employee.setEmployeePassword("maibokeiei");
         }
         if (!(data != null && data.isEmpty())) {
             return ResponseEntity.ok().body(data);
         } else {
-            return ResponseEntity.status(500).body("Patient List Not Found");
+            return ResponseEntity.status(500).body(data);
         }
+    }
+
+    @GetMapping(path = "/employee/getdoctor")
+    public ResponseEntity<?> getEmployeeDoctor() {
+        try {
+            List<Employee> data = employeeController.getEmployeeDoctor();
+            if (!(data != null && data.isEmpty())) {
+                return ResponseEntity.ok().body(data);
+            } else {
+                return ResponseEntity.status(400).body("Doctor List Not Found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server Error");
+        }
+
     }
 
     @GetMapping(path = "/employeeinfo/findbyId/{id}")
@@ -129,7 +144,6 @@ public class EmployeeRoute {
                 for (Appointment _data : _appointment) {
                     Optional<Patient> patient = patientService.getPatientById(_data.getAppointmentPatientId());
                     JSONObject object = new JSONObject();
-                    object.put("scheduleId", _data.getAppointmentScheduleId());
                     object.put("appointmentDate", _data.getAppointmentDate());
                     object.put("appointmentTimeStart", _data.getAppiontmentTimeStart());
                     object.put("appointmentTimeEnd", _data.getAppiontmentTimeEnd());
