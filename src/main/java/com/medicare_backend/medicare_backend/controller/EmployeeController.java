@@ -2,6 +2,7 @@ package com.medicare_backend.medicare_backend.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,10 @@ import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.service.AuthenticationService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.TokenAuthenticationService;
+import com.medicare_backend.medicare_backend.strategy.GetAllEmployee;
+import com.medicare_backend.medicare_backend.strategy.GetDoctorEmployee;
+import com.medicare_backend.medicare_backend.strategy.GetNurseEmployee;
+import com.medicare_backend.medicare_backend.strategyContext.GetEmployeeStrategyContext;
 
 @Service
 public class EmployeeController {
@@ -114,10 +119,6 @@ public class EmployeeController {
         return employee;
     }
 
-    public List<Employee> getEmployee() {
-        return employeeRepository.findAll();
-    }
-
     public Optional<Employee> getEmployeeById(long employId) {
         return employeeRepository.findById(employId);
     }
@@ -158,5 +159,32 @@ public class EmployeeController {
 
     public List<Appointment> getAppointmentbyEmployeeId(long id) {
         return appointmentRepository.findAppointmentByappointmentDoctorId(id);
+    }
+
+    GetEmployeeStrategyContext getEmployeeStrategyContext = new GetEmployeeStrategyContext();
+
+    public List<Employee> getEmployee(int strategyType) {
+
+        try {
+            if (strategyType == 1) {
+                getEmployeeStrategyContext.setStrategy(new GetAllEmployee(employeeRepository));
+            }
+            else if (strategyType == 2) {
+                getEmployeeStrategyContext.setStrategy(new GetDoctorEmployee(employeeRepository));
+            }
+            else if (strategyType == 3) {
+                getEmployeeStrategyContext.setStrategy(new GetNurseEmployee(employeeRepository));
+            }
+            System.out.println(getEmployeeStrategyContext.executeGetEmployee());
+            return getEmployeeStrategyContext.executeGetEmployee();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            List<Employee> tempList = new ArrayList<Employee>();
+            return tempList;
+        }
+        
+
+        
     }
 }
