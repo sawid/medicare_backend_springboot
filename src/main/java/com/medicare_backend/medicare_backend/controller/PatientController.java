@@ -121,6 +121,7 @@ public class PatientController {
                     return ResponseEntity.status(400).body("Employee with ID : " + patientId +
                             "is not exiting");
                 }
+                object.put("scheduleId", a.getAppointmentScheduleId());
                 object.put("appointmentDate", a.getAppointmentDate());
                 object.put("appointmentTimeStart", a.getAppiontmentTimeStart());
                 object.put("appointmentTimeEnd", a.getAppiontmentTimeEnd());
@@ -203,7 +204,7 @@ public class PatientController {
                 return ResponseEntity.status(400)
                         .body("Schedule with ID : " + postponeAppointment.getToScheduleId() + " is already full");
             }
-            
+
             for (Appointment appointment : appointments) {
                 if (appointment.getAppointmentPatientId() == patient.get().getpatientHNId()) {
                     return ResponseEntity.status(400).body("Patient with NationalId : "
@@ -217,7 +218,7 @@ public class PatientController {
             if (isBusy) {
                 return ResponseEntity.status(400).body("Patient Busy");
             }
-            
+
             Optional<TakeSchedule> takeSchedule = takeScheduleService
                     .getTakeScheduleByScheduleId(postponeAppointment.getToScheduleId());
 
