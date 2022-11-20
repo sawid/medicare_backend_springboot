@@ -73,12 +73,13 @@ public class ScheduleController {
     }
 
     @PostMapping(path = "/schedules/createNewSchedule") // finish
-    public ResponseEntity<?> createNewSchedule(@RequestHeader("authtoken") String authtoken ,@RequestBody AddSchedule addSchedule) {
+    public ResponseEntity<?> createNewSchedule(@RequestHeader("authtoken") String authtoken,
+            @RequestBody AddSchedule addSchedule) {
         try {
             String authEmployeeID = tokenService.verifyJWTToken(authtoken);
             if (authEmployeeID == "error") {
                 return ResponseEntity.status(400)
-                    .body("Auth Time Out");
+                        .body("Auth Time Out");
             }
 
             // check is employee present
@@ -134,13 +135,14 @@ public class ScheduleController {
     }
 
     @PutMapping(path = "/schedules/update") // finish
-    public ResponseEntity<?> updateSchedule(@RequestHeader("authtoken") String authtoken ,@RequestBody UpdateSchedule updateSchedule) {
+    public ResponseEntity<?> updateSchedule(@RequestHeader("authtoken") String authtoken,
+            @RequestBody UpdateSchedule updateSchedule) {
         // if don't want to update schedule status -> sent true
         try {
             String authEmployeeID = tokenService.verifyJWTToken(authtoken);
             if (authEmployeeID == "error") {
                 return ResponseEntity.status(400)
-                    .body("Auth Time Out");
+                        .body("Auth Time Out");
             }
 
             // get schedule & check is Schedule present
@@ -280,8 +282,13 @@ public class ScheduleController {
         List<JSONObject> objects = new ArrayList<>();
         for (Schedule s : data) {
             List<Appointment> appointments = appointmentService.getAppointmentByScheduleId(s.getScheduleId());
+            Optional<Employee> e = employeeService.getEmployeeById(s.getScheduleId());
             JSONObject _object = new JSONObject();
             int patient = 0;
+            _object.put("docterFirstName", e.get().getEmployeeFirstName());
+            _object.put("docterMiddleName", e.get().getEmployeeMiddleName());
+            _object.put("docterLastName", e.get().getEmployeeLastName());
+            _object.put("docterDepartMent", e.get().getEmployeeDepartment());
             _object.put("scheduleId", s.getScheduleId());
             _object.put("scheduleType", s.getScheduleType());
             _object.put("scheduleDate", s.getScheduleDate());
