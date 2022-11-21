@@ -98,6 +98,9 @@ public class EmployeeRoute {
     public ResponseEntity<?> getEmployeeDoctor() {
         try {
             List<Employee> data = employeeController.getEmployeeDoctor();
+            for (Employee _employee : data) {
+                _employee.setEmployeePassword("maibokeiei");
+            }
             if (!(data != null && data.isEmpty())) {
                 return ResponseEntity.ok().body(data);
             } else {
