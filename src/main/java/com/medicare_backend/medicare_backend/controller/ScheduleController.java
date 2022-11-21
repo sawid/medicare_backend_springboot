@@ -49,9 +49,11 @@ public class ScheduleController {
             List<JSONObject> objects = new ArrayList<>();
             for (Schedule s : data) {
                 List<Appointment> appointments = appointmentService.getAppointmentByScheduleId(s.getScheduleId());
-                Optional<Employee> e = employeeService.getEmployeeById(s.getScheduleId());
+                Optional<TakeSchedule> takeSchedule = takeScheduleService
+                        .getTakeScheduleByScheduleId(s.getScheduleId());
+                Optional<Employee> e = employeeService.getEmployeeById(takeSchedule.get().getEmployeeId());
                 JSONObject _object = new JSONObject();
-                int patient = 0;
+                System.out.println(e);
                 _object.put("docterFirstName", e.get().getEmployeeFirstName());
                 _object.put("docterMiddleName", e.get().getEmployeeMiddleName());
                 _object.put("docterLastName", e.get().getEmployeeLastName());
@@ -62,11 +64,11 @@ public class ScheduleController {
                 _object.put("scheduleStartTIme", s.getScheduleStart());
                 _object.put("scheduleFinishTime", s.getScheduleEnd());
                 _object.put("scheduleCapacity", s.getScheduleCapacity());
-
                 _object.put("patientCount", appointments.size());
                 objects.add(_object);
             }
             if (!(data != null && data.isEmpty())) {
+
                 return ResponseEntity.ok().body(objects);
             } else {
                 return ResponseEntity.status(500).body("Schedule List Not Found");
@@ -303,9 +305,11 @@ public class ScheduleController {
             List<JSONObject> objects = new ArrayList<>();
             for (Schedule s : data) {
                 List<Appointment> appointments = appointmentService.getAppointmentByScheduleId(s.getScheduleId());
-                Optional<Employee> e = employeeService.getEmployeeById(s.getScheduleId());
+                Optional<TakeSchedule> takeSchedule = takeScheduleService
+                        .getTakeScheduleByScheduleId(s.getScheduleId());
+                Optional<Employee> e = employeeService.getEmployeeById(takeSchedule.get().getEmployeeId());
                 JSONObject _object = new JSONObject();
-                int patient = 0;
+                System.out.println(e);
                 _object.put("docterFirstName", e.get().getEmployeeFirstName());
                 _object.put("docterMiddleName", e.get().getEmployeeMiddleName());
                 _object.put("docterLastName", e.get().getEmployeeLastName());
@@ -316,14 +320,14 @@ public class ScheduleController {
                 _object.put("scheduleStartTIme", s.getScheduleStart());
                 _object.put("scheduleFinishTime", s.getScheduleEnd());
                 _object.put("scheduleCapacity", s.getScheduleCapacity());
-
                 _object.put("patientCount", appointments.size());
                 objects.add(_object);
             }
 
             return ResponseEntity.ok().body(objects);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("server error");
+            System.out.println(e);
+            return ResponseEntity.status(500).body(e);
         }
     }
 }
