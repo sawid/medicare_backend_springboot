@@ -46,8 +46,28 @@ public class ScheduleController {
     public ResponseEntity<?> getSchedule() {
         try {
             List<Schedule> data = scheduleService.getSchedule();
+            List<JSONObject> objects = new ArrayList<>();
+            for (Schedule s : data) {
+                List<Appointment> appointments = appointmentService.getAppointmentByScheduleId(s.getScheduleId());
+                Optional<Employee> e = employeeService.getEmployeeById(s.getScheduleId());
+                JSONObject _object = new JSONObject();
+                int patient = 0;
+                _object.put("docterFirstName", e.get().getEmployeeFirstName());
+                _object.put("docterMiddleName", e.get().getEmployeeMiddleName());
+                _object.put("docterLastName", e.get().getEmployeeLastName());
+                _object.put("docterDepartMent", e.get().getEmployeeDepartment());
+                _object.put("scheduleId", s.getScheduleId());
+                _object.put("scheduleType", s.getScheduleType());
+                _object.put("scheduleDate", s.getScheduleDate());
+                _object.put("scheduleStartTIme", s.getScheduleStart());
+                _object.put("scheduleFinishTime", s.getScheduleEnd());
+                _object.put("scheduleCapacity", s.getScheduleCapacity());
+
+                _object.put("patientCount", appointments.size());
+                objects.add(_object);
+            }
             if (!(data != null && data.isEmpty())) {
-                return ResponseEntity.ok().body(data);
+                return ResponseEntity.ok().body(objects);
             } else {
                 return ResponseEntity.status(500).body("Schedule List Not Found");
             }
