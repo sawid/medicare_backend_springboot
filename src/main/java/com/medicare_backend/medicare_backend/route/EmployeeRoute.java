@@ -1,7 +1,6 @@
 package com.medicare_backend.medicare_backend.route;
 
 import org.springframework.web.bind.annotation.*;
-
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
 import com.medicare_backend.medicare_backend.controller.EmployeeController;
@@ -16,22 +15,16 @@ import com.medicare_backend.medicare_backend.schema.entity.Patient;
 import com.medicare_backend.medicare_backend.schema.entity.Schedule;
 import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.schema.relationship.TakeSchedule;
-import com.medicare_backend.medicare_backend.schema.entity.Patient;
-import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.service.EmployeeService;
 import com.medicare_backend.medicare_backend.service.InternalPayload;
 import com.medicare_backend.medicare_backend.service.PatientService;
 import com.medicare_backend.medicare_backend.service.ScheduleService;
 import com.medicare_backend.medicare_backend.service.TakeScheduleService;
-import com.medicare_backend.medicare_backend.service.PatientService;
 
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -176,7 +169,8 @@ public class EmployeeRoute {
             if (takeSchedule == null || takeSchedule.isEmpty()) {
                 return ResponseEntity.status(400).body("TakeSchedule is  empty");
             }
-            JSONObject _datajason = new JSONObject();
+            // JSONObject _datajason = new JSONObject();
+            List<JSONObject> objects = new ArrayList<>();
             for (TakeSchedule data : takeSchedule) {
                 Optional<Schedule> schedule = scheduleRepository.findById(data.getScheduleId());
                 if (schedule == null || !schedule.isPresent()) {
@@ -187,7 +181,7 @@ public class EmployeeRoute {
                 if (appointments == null || appointments.isEmpty()) {
                     return ResponseEntity.status(400).body("scheduleid is not found");
                 }
-                List<JSONObject> objects = new ArrayList<>();
+
                 JSONObject _object = new JSONObject();
                 _object.put("scheduleId", schedule.get().getScheduleId());
                 _object.put("scheduleType", schedule.get().getScheduleType());
@@ -196,9 +190,9 @@ public class EmployeeRoute {
                 _object.put("scheduleFinishTime", schedule.get().getScheduleEnd());
                 _object.put("patientCount", appointments.size());
                 objects.add(_object);
-                _datajason.put(schedule.get().getScheduleDate().toString(), objects);
+                // _datajason.put(schedule.get().getScheduleDate().toString(), objects);
             }
-            return ResponseEntity.ok().body(_datajason);
+            return ResponseEntity.ok().body(objects);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error");
         }

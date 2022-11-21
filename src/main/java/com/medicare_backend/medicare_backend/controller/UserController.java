@@ -80,6 +80,7 @@ public class UserController {
                     // payload.put("patientMiddleName", userQuery.get(0).getPatientMiddleName());
                     // payload.put("patientLastName", userQuery.get(0).getPatientLastName());
                     payload.put("patientNationalId", userQuery.get(0).getPatientNationalId());
+                    payload.put("patientId", Long.toString(userQuery.get(0).getpatientHNId()));
                     // payload.put("patientPhoneNumber", userQuery.get(0).getPatientPhoneNumber());
                     // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
                     // String formattedString =

@@ -18,7 +18,6 @@ import com.medicare_backend.medicare_backend.schema.entity.Schedule;
 import com.medicare_backend.medicare_backend.schema.relationship.Appointment;
 import com.medicare_backend.medicare_backend.schema.relationship.TakeSchedule;
 import com.medicare_backend.medicare_backend.schema.request.AddAppointment;
-import com.medicare_backend.medicare_backend.schema.request.AddSchedule;
 import com.medicare_backend.medicare_backend.schema.request.PostPoneAppointment;
 import com.medicare_backend.medicare_backend.service.AppointmentService;
 import com.medicare_backend.medicare_backend.service.PatientService;
@@ -103,25 +102,27 @@ public class PatientController {
 
     @GetMapping(path = "/getappointmentbyPatient/{id}")
     public ResponseEntity<?> getAppointmentByPatientId(@PathVariable("id") long patientId) {
-
         try {
-
+            // Optional<Patient> patient = patientService.getPatientById(patientId);
             List<Appointment> appointments = appointmentRepository
                     .findAppointmentByappointmentPatientId(patientId);
             if (appointments == null || appointments.isEmpty()) {
                 return ResponseEntity.status(400).body("Patient with ID : " + patientId +
                         "is not exiting");
             }
-            JSONObject _Object = new JSONObject();
+            List<JSONObject> data = new ArrayList<>();
             for (Appointment a : appointments) {
-                List<JSONObject> data = new ArrayList<>();
+
                 JSONObject object = new JSONObject();
                 Optional<Employee> employee = employeeRepository.findById(a.getAppointmentDoctorId());
+                Optional<Schedule> schedule = scheduleService.getScheduleById(a.getAppointmentScheduleId());
                 if (employee == null || !employee.isPresent()) {
                     return ResponseEntity.status(400).body("Employee with ID : " + patientId +
                             "is not exiting");
                 }
+                object.put("EmployeeId", employee.get().getEmployeeId());
                 object.put("scheduleId", a.getAppointmentScheduleId());
+                object.put("Scheduletype", schedule.get().getScheduleType());
                 object.put("appointmentDate", a.getAppointmentDate());
                 object.put("appointmentTimeStart", a.getAppiontmentTimeStart());
                 object.put("appointmentTimeEnd", a.getAppiontmentTimeEnd());
@@ -130,11 +131,8 @@ public class PatientController {
                 object.put("EmployeeLastName", employee.get().getEmployeeLastName());
                 object.put("EmployeeDepartment", employee.get().getEmployeeDepartment());
                 data.add(object);
-                _Object.put(a.getAppointmentDate().toString(), data);
-                // patientCount++;
-
             }
-            return ResponseEntity.ok().body(_Object);
+            return ResponseEntity.ok().body(data);
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.status(500).body(e);
