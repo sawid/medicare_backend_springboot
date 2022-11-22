@@ -89,7 +89,9 @@ public class EmployeeController {
                     payload.put("employeeFirstName", userQuery.get(0).getEmployeeFirstName());
                     // payload.put("employeeMiddleName", userQuery.get(0).getEmployeeMiddleName());
                     // payload.put("employeeLastName", userQuery.get(0).getEmployeeLastName());
+                    payload.put("employeeId", Long.toString(userQuery.get(0).getEmployeeId()));
                     payload.put("employeeNationalId", userQuery.get(0).getEmployeeNationalId());
+                    payload.put("employeeIsAdmin", Boolean.toString(userQuery.get(0).getEmployeeIsAdmin()));
                     // payload.put("employeePhoneNumber",
                     // userQuery.get(0).getEmployeePhoneNumber(//));
                     payload.put("employeeRole", "TempRole");
@@ -147,8 +149,9 @@ public class EmployeeController {
             _employee.setEmployeeRole(employee.getEmployeeRole());
             _employee.setEmployeeDepartment(employee.getEmployeeDepartment());
             if (employee.getEmployeePassword() != null) {
-                byte[] hash = authservice.getEncryptedPassword(employee.getEmployeePassword(), "salt".getBytes());
-                _employee.setEmployeePassword(authservice.bytesToHex(hash));
+                byte[] hash = AuthenticationService.getEncryptedPassword(employee.getEmployeePassword(),
+                        "salt".getBytes());
+                _employee.setEmployeePassword(AuthenticationService.bytesToHex(hash));
             }
 
             return _employee;
@@ -168,11 +171,9 @@ public class EmployeeController {
         try {
             if (strategyType == 1) {
                 getEmployeeStrategyContext.setStrategy(new GetAllEmployee(employeeRepository));
-            }
-            else if (strategyType == 2) {
+            } else if (strategyType == 2) {
                 getEmployeeStrategyContext.setStrategy(new GetDoctorEmployee(employeeRepository));
-            }
-            else if (strategyType == 3) {
+            } else if (strategyType == 3) {
                 getEmployeeStrategyContext.setStrategy(new GetNurseEmployee(employeeRepository));
             }
             System.out.println(getEmployeeStrategyContext.executeGetEmployee());
@@ -183,8 +184,6 @@ public class EmployeeController {
             List<Employee> tempList = new ArrayList<Employee>();
             return tempList;
         }
-        
 
-        
     }
 }

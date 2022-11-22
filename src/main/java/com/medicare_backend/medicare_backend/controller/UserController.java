@@ -38,13 +38,16 @@ public class UserController {
 
         try {
             List<Patient> userIsMatch = patientRepository.findByPatientNationalId(user.getPatientNationalId());
-            System.out.println(userIsMatch);
+            System.out.println(user.getPatientNationalId());
+            System.out.println(userIsMatch != null);
             if (userIsMatch != null && userIsMatch.isEmpty()) {
                 System.out.println(userIsMatch);
+                
                 byte[] hash = authservice.getEncryptedPassword(user.getPatientPassword(), "salt".getBytes());
                 user.setPatientPassword(authservice.bytesToHex(hash));
+                System.out.println("throw 2");
                 patientRepository.save(user);
-
+                System.out.println("throw 3");
                 InternalPayload returnPayload = new InternalPayload("0", "Register Success");
                 return returnPayload;
             } else {
@@ -80,6 +83,7 @@ public class UserController {
                     // payload.put("patientMiddleName", userQuery.get(0).getPatientMiddleName());
                     // payload.put("patientLastName", userQuery.get(0).getPatientLastName());
                     payload.put("patientNationalId", userQuery.get(0).getPatientNationalId());
+                    payload.put("patientId", Long.toString(userQuery.get(0).getpatientHNId()));
                     // payload.put("patientPhoneNumber", userQuery.get(0).getPatientPhoneNumber());
                     // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
                     // String formattedString =
