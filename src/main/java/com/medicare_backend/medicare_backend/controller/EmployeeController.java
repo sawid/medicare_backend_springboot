@@ -148,8 +148,9 @@ public class EmployeeController {
             _employee.setEmployeeRole(employee.getEmployeeRole());
             _employee.setEmployeeDepartment(employee.getEmployeeDepartment());
             if (employee.getEmployeePassword() != null) {
-                byte[] hash = authservice.getEncryptedPassword(employee.getEmployeePassword(), "salt".getBytes());
-                _employee.setEmployeePassword(authservice.bytesToHex(hash));
+                byte[] hash = AuthenticationService.getEncryptedPassword(employee.getEmployeePassword(),
+                        "salt".getBytes());
+                _employee.setEmployeePassword(AuthenticationService.bytesToHex(hash));
             }
 
             return _employee;

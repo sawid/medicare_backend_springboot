@@ -178,9 +178,9 @@ public class EmployeeRoute {
                 }
                 List<Appointment> appointments = appointmentRepository
                         .findAppointmentByappointmentScheduleId(schedule.get().getScheduleId());
-                if (appointments == null || appointments.isEmpty()) {
-                    return ResponseEntity.status(400).body("scheduleid is not found");
-                }
+                // if (appointments == null || appointments.isEmpty()) {
+                // return ResponseEntity.status(400).body("scheduleid is not found");
+                // }
 
                 JSONObject _object = new JSONObject();
                 _object.put("scheduleId", schedule.get().getScheduleId());
