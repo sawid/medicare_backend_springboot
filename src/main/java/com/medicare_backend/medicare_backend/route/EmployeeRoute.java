@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.Where;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -173,16 +174,16 @@ public class EmployeeRoute {
             List<JSONObject> objects = new ArrayList<>();
             for (TakeSchedule data : takeSchedule) {
                 Optional<Schedule> schedule = scheduleRepository.findById(data.getScheduleId());
+                if (!schedule.get().getScheduleStatus()) {
+                    continue;
+                }
                 if (schedule == null || !schedule.isPresent()) {
                     return ResponseEntity.status(400).body("scheduleid is not found");
                 }
                 List<Appointment> appointments = appointmentRepository
                         .findAppointmentByappointmentScheduleId(schedule.get().getScheduleId());
-                // if (appointments == null || appointments.isEmpty()) {
-                // return ResponseEntity.status(400).body("scheduleid is not found");
-                // }
-
                 JSONObject _object = new JSONObject();
+
                 _object.put("scheduleId", schedule.get().getScheduleId());
                 _object.put("scheduleType", schedule.get().getScheduleType());
                 _object.put("scheduleDate", schedule.get().getScheduleDate());
