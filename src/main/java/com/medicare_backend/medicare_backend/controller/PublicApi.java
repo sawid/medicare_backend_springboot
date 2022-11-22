@@ -38,8 +38,6 @@ public class PublicApi {
     private TakeScheduleService takeScheduleService;
     @Autowired
     private EmployeeService employeeService;
-    @Autowired
-    private TokenAuthenticationService tokenService;
 
     @GetMapping(path = "/getSlotTime")
     public ResponseEntity<?> getSchedule() {
