@@ -20,8 +20,8 @@ public class Patient {
     private String patientPhoneNumber;
     private LocalDate patientBirthDate;
     private String patientLocation;
-    private Integer patientBloodType = 999;
-    private Integer patientProfileIndex = 999;
+    private Integer patientBloodType;
+    private Integer patientProfileIndex = 0;
     // *****//
     private String patientMedicine;
     private String patientAllergy;
