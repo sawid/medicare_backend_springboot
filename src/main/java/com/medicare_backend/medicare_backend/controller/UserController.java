@@ -38,13 +38,16 @@ public class UserController {
 
         try {
             List<Patient> userIsMatch = patientRepository.findByPatientNationalId(user.getPatientNationalId());
-            System.out.println(userIsMatch);
+            System.out.println(user.getPatientNationalId());
+            System.out.println(userIsMatch != null);
             if (userIsMatch != null && userIsMatch.isEmpty()) {
                 System.out.println(userIsMatch);
+                
                 byte[] hash = authservice.getEncryptedPassword(user.getPatientPassword(), "salt".getBytes());
                 user.setPatientPassword(authservice.bytesToHex(hash));
+                System.out.println("throw 2");
                 patientRepository.save(user);
-
+                System.out.println("throw 3");
                 InternalPayload returnPayload = new InternalPayload("0", "Register Success");
                 return returnPayload;
             } else {

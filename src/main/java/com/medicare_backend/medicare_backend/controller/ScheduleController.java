@@ -58,6 +58,7 @@ public class ScheduleController {
                 _object.put("docterMiddleName", e.get().getEmployeeMiddleName());
                 _object.put("docterLastName", e.get().getEmployeeLastName());
                 _object.put("docterDepartMent", e.get().getEmployeeDepartment());
+                _object.put("docterEmployeeId", e.get().getEmployeeId());
                 _object.put("scheduleId", s.getScheduleId());
                 _object.put("scheduleType", s.getScheduleType());
                 _object.put("scheduleDate", s.getScheduleDate());
