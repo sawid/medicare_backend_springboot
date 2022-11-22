@@ -21,7 +21,7 @@ public class Patient {
     private LocalDate patientBirthDate;
     private String patientLocation;
     private Integer patientBloodType;
-    private Integer patientProfileIndex = 0;
+    private Integer patientProfileIndex;
     // *****//
     private String patientMedicine;
     private String patientAllergy;
