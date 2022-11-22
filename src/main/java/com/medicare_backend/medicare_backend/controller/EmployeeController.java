@@ -91,6 +91,7 @@ public class EmployeeController {
                     // payload.put("employeeLastName", userQuery.get(0).getEmployeeLastName());
                     payload.put("employeeId", Long.toString(userQuery.get(0).getEmployeeId()));
                     payload.put("employeeNationalId", userQuery.get(0).getEmployeeNationalId());
+                    payload.put("employeeIsAdmin", Boolean.toString(userQuery.get(0).getEmployeeIsAdmin()));
                     // payload.put("employeePhoneNumber",
                     // userQuery.get(0).getEmployeePhoneNumber(//));
                     payload.put("employeeRole", "TempRole");
