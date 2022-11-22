@@ -66,6 +66,7 @@ public class ScheduleController {
                 _object.put("scheduleFinishTime", s.getScheduleEnd());
                 _object.put("scheduleCapacity", s.getScheduleCapacity());
                 _object.put("patientCount", appointments.size());
+                _object.put("scheduleStatus", s.getScheduleStatus());
                 objects.add(_object);
             }
             if (!(data != null && data.isEmpty())) {
