@@ -226,14 +226,14 @@ public class PatientController {
 
             // Move to new appointment //checked
 
-            String dateDelete = appointmentService.deleteAppointmentByPatientId(patient.get().getpatientHNId());
+            String dateDelete = appointmentService.deleteAppointmentByPatientIdAndScheduleId(patient.get().getpatientHNId(), postponeAppointment.getPreviousScheduleId());
             if (dateDelete != "Delete Success") {
                 return ResponseEntity.status(400).body("No Appointment in this Schedule");
             }
             String data = appointmentService.createNewAppointment(schedule, addAppointment,
                     patient.get().getpatientHNId(), takeSchedule.get().getEmployeeId());
-            if (data == "Post Pone Appointment Success") {
-                return ResponseEntity.ok().body(data);
+            if (data == "Create Success") {
+                return ResponseEntity.ok().body("Post Pone Success");
             }
 
             return ResponseEntity.status(400).body(data);

@@ -18,4 +18,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> deleteByAppointmentPatientId(long appointmentPatientId);
 
+    List<Appointment> deleteByAppointmentPatientIdAndAppointmentScheduleId(long appointmentPatientId, long appointmentScheduleId);
+
 }
